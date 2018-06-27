@@ -2,7 +2,7 @@
   "name": "news-recorder",
   "version": "1.0.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "node callhandler.js",
     "test": "NODE_ENV=test && ./node_modules/.bin/eslint . && ./node_modules/.bin/jest"
   },
   "description": "Create an IVR phone tree with Node and Twilio.",

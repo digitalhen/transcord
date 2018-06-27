@@ -3,7 +3,7 @@ require('./src/helpers/connectionHelper');
 
 console.log("Running DB test...");
 
-User.findOne({phoneNumber: '+14156694558'})
+User.findOne({phoneNumber: '+14156694559'})
 	.then(function(blah) {
 		if(blah==null) {
 			console.log("No match");
