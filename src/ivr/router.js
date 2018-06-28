@@ -65,7 +65,7 @@ router.post('/recording', (req, res) => {
     		const name = user.name;
         const emailAddress = user.emailAddress;
 
-    		return res.send(recording(name, emailAddress numberFrom, numberCalled, recordingUrl));
+    		return res.send(recording(name, emailAddress, numberFrom, numberCalled, recordingUrl));
     	}
     })
     .catch(function(err) {
