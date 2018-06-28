@@ -57,6 +57,10 @@ router.post('/recording', (req, res) => {
 	const numberCalled = req.query.numberCalled;
 	const recordingUrl = req.body.RecordingUrl;
 
+  console.log("In recording, numberFrom: " + numberFrom);
+  console.log("In recording, numberCalled: " + numberCalled);
+  console.log("In recording, recordingUrl: " + recordingUrl);
+
   User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
     	if(user==null) {
