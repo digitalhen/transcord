@@ -64,7 +64,7 @@ router.post('/recording', (req, res) => {
   User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
     	if(user==null) {
-    		return res.send(reject());
+    		// TODO: we should never reach here?
     	} else {
     		const name = user.name;
         const emailAddress = user.emailAddress;
