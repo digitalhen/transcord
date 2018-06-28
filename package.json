@@ -30,11 +30,13 @@
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.3.2",
+    "dotenv": "^6.0.0",
     "express": "~4.14.0",
     "jade": "~1.11.0",
     "mongoose": "^5.1.7",
     "morgan": "~1.7.0",
     "nodemailer": "^4.6.7",
+    "pm2": "^2.10.4",
     "serve-favicon": "~2.3.2",
     "stylus": "0.54.5",
     "twilio": "^3.0.0-rc.17"
