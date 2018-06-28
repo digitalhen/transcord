@@ -46,7 +46,7 @@ exports.dialer = function dialer(numberFrom, numberCalled) {
 
 	const dial = voiceResponse.dial({
 		record: 'record-from-ringing-dual',
-		recordingStatusCallback: '/ivr/recording?numberFrom=' + numberFrom + ' &numberCalled=' + numberCalled,
+		recordingStatusCallback: '/ivr/recording?numberFrom=' + numberFrom + '&numberCalled=' + numberCalled,
 		method: 'POST'
 	});
 
