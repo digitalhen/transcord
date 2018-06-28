@@ -11,22 +11,22 @@ router.get('*', (req, res) => {
 // POST: /ivr/welcome
 router.post('/welcome', (req, res) => {
 
-  const callFrom = req.body.From;
+  const numberFrom = req.body.From;
 
-  console.log("Incoming call from: " + callFrom);
+  console.log("Incoming call from: " + numberFrom);
 
 
   //return res.send(welcome(callFrom));
 
-  User.findOne({phoneNumber: callFrom})
+  User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
-	if(user==null) {
-		return res.send(reject());
-	} else {
-		const name = user.name;
-	
-		return res.send(welcome(name, callFrom));
-	}
+    	if(user==null) {
+    		return res.send(reject());
+    	} else {
+    		const name = user.name;
+
+    		return res.send(welcome(name, numberFrom));
+    	}
     })
     .catch(function(err) {
         console.log(err);
@@ -36,8 +36,9 @@ router.post('/welcome', (req, res) => {
 
 // POST: /ivr/dialer
 router.post('/dialer', (req, res) => {
-	const number = req.body.Digits;
-	return res.send(dialer(number));
+  const numberFrom = req.body.Called;
+	const numberCalled = req.body.Digits;
+	return res.send(dialer(numberFrom, numberCalled));
 });
 
 // POST: /ivr/privacynotice
@@ -52,10 +53,24 @@ router.post('/privacyconnect', (req, res) => {
 
 // POST: /ivr/recording
 router.post('/recording', (req, res) => {
+  const numberFrom = req.query.numberFrom;
 	const numberCalled = req.query.numberCalled;
 	const recordingUrl = req.body.RecordingUrl;
 
-	return res.send(recording(numberCalled,recordingUrl));
+  User.findOne({phoneNumber: numberFrom})
+    .then(function(user) {
+    	if(user==null) {
+    		return res.send(reject());
+    	} else {
+    		const name = user.name;
+        const emailAddress = user.emailAddress;
+
+    		return res.send(recording(name, emailAddress numberFrom, numberCalled, recordingUrl));
+    	}
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 });
 
 /*

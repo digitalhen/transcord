@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
+//const User = require('../models/user');
 
 exports.reject = function reject() {
 	const voiceResponse = new VoiceResponse();
@@ -12,10 +13,10 @@ exports.reject = function reject() {
 
 }
 
-	
-	
 
-exports.welcome = function welcome(name, callFrom) {
+
+
+exports.welcome = function welcome(name, numberFrom) {
   const voiceResponse = new VoiceResponse();
 
 
@@ -36,16 +37,16 @@ exports.welcome = function welcome(name, callFrom) {
   // TODO: if this is not a valid user: return rejectCall();
 };
 
-exports.dialer = function dialer(number) {
+exports.dialer = function dialer(numberFrom, numberCalled) {
 	// TODO: verify number is 10 digits long?
 
 	const voiceResponse = new VoiceResponse();
 
-	voiceResponse.say("Connecting you now.");	
+	voiceResponse.say("Connecting you now.");
 
 	const dial = voiceResponse.dial({
 		record: 'record-from-ringing-dual',
-		recordingStatusCallback: '/ivr/recording?numberCalled=' + number,
+		recordingStatusCallback: '/ivr/recording?numberFrom=' + numberFrom + ' &numberCalled=' + numberCalled,
 		method: 'POST'
 	});
 
@@ -85,9 +86,11 @@ exports.privacyconnect = function privacyconnect() {
 	return voiceResponse.toString();
 };
 
-exports.recording = function recording(numberCalled, recordingUrl) {
+exports.recording = function recording(name, email address, numberFrom, numberCalled, recordingUrl) {
+	// TODO: save to the database
 
-	sendEmail('recording@digitalhen.com', numberCalled, recordingUrl);
+	// TODO: send the email
+	sendEmail(name, emailAddress, numberCalled, recordingUrl);
 
 	return "";
 };
@@ -191,7 +194,7 @@ function redirectWelcome() {
   return twiml.toString();
 }
 
-function sendEmail(emailTo, numberCalled, recordingUrl) {
+function sendEmail(name, emailTo, numberCalled, recordingUrl) {
 	// create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -206,10 +209,10 @@ function sendEmail(emailTo, numberCalled, recordingUrl) {
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"News Recorder" <digitalhen@gmail.com>', // sender address
-        to: emailTo, // list of receivers
+        to: '"' + name + '" <' + emailTo + '>', // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
-        text: 'Here is your call recording: ' + recordingUrl, // plain text body
-        html: '<b>Thank you for using News Recorder!</b><br/>' + 
+        text: 'Dear ' + name + ',\n\nHere is your call recording: ' + recordingUrl, // plain text body
+        html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
 		'The call recording can be found here: ' + recordingUrl
 // html body
     };
@@ -223,4 +226,4 @@ function sendEmail(emailTo, numberCalled, recordingUrl) {
 
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     });
-} 
+}
