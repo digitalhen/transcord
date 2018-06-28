@@ -36,7 +36,7 @@ router.post('/welcome', (req, res) => {
 
 // POST: /ivr/dialer
 router.post('/dialer', (req, res) => {
-  const numberFrom = req.body.Called;
+  const numberFrom = req.body.Caller;
 	const numberCalled = req.body.Digits;
 	return res.send(dialer(numberFrom, numberCalled));
 });
