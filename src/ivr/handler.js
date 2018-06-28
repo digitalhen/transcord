@@ -53,7 +53,7 @@ exports.dialer = function dialer(numberFrom, numberCalled) {
 	dial.number({
 		url: '/ivr/privacynotice',
 		method: 'POST'
-	}, number);
+	}, numberCalled);
 
 	return voiceResponse.toString();
 };
