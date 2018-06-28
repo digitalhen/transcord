@@ -209,7 +209,7 @@ function sendEmail(name, emailTo, numberCalled, recordingUrl) {
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"News Recorder" <digitalhen@gmail.com>', // sender address
-        to: '"' + name + '" <' + emailTo + '>', // list of receivers
+        to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your call recording: ' + recordingUrl, // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +

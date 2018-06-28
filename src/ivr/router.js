@@ -57,21 +57,13 @@ router.post('/recording', (req, res) => {
 	const numberCalled = decodeURIComponent(req.query.numberCalled);
 	const recordingUrl = req.body.RecordingUrl;
 
-  console.log("In recording, numberFrom: " + numberFrom);
-  console.log("In recording, numberCalled: " + numberCalled);
-  console.log("In recording, recordingUrl: " + recordingUrl);
-
   User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
     	if(user==null) {
-        console.log("In recording db, user was null");
     		// TODO: we should never reach here?
     	} else {
         const name = user.name;
         const emailAddress = user.emailAddress;
-
-        console.log("In recording db, name: " + name);
-        console.log("In recording db, emailAddress: " + emailAddress);
 
     		return res.send(recording(name, emailAddress, numberFrom, numberCalled, recordingUrl));
     	}
