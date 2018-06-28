@@ -1,6 +1,7 @@
 const twilio = require('twilio');
 const Router = require('express').Router;
 const ivrRouter = require('./ivr/router');
+require('dotenv').config();
 
 const shouldValidate = process.env.NODE_ENV !== 'test';
 
