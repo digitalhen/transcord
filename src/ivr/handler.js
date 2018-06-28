@@ -58,7 +58,7 @@ exports.dialer = function dialer(numberFrom, numberCalled) {
 	return voiceResponse.toString();
 };
 
-exports.privacynotice = function privacynotice() {
+exports.privacynotice = function privacynotice(name) {
 	// TODO: check if a privacy notice is set, if not just skip straight to connecting you to the call
 
 	const voiceResponse = new VoiceResponse();
@@ -69,7 +69,7 @@ exports.privacynotice = function privacynotice() {
 		method: 'POST',
 	});
 
-	gather.say("This is a call from the Wall Street Journal, and will be recorded. Please press any key to accept.");
+	gather.say("You have an incoming call from " + name + ", which will be recorded. Please press any key to accept.");
 
 	voiceResponse.say("Goodbye.");
 

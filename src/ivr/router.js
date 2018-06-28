@@ -43,7 +43,23 @@ router.post('/dialer', (req, res) => {
 
 // POST: /ivr/privacynotice
 router.post('/privacynotice', (req, res) => {
-        return res.send(privacynotice());
+    const numberFrom = req.body.Caller;
+
+    User.findOne({phoneNumber: numberFrom})
+      .then(function(user) {
+        if(user==null) {
+          // TODO: we should never reach here?
+        } else {
+          const name = user.name;
+
+          return res.send(privacynotice(name));
+        }
+      })
+      .catch(function(err) {
+          console.log(err);
+      });
+
+
 });
 
 // POST: /ivr/dialer
