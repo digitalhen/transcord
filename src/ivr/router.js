@@ -63,9 +63,9 @@ router.post('/recording', (req, res) => {
     		// TODO: we should never reach here?
     	} else {
         const name = user.name;
-        const emailAddress = user.emailAddress;
+        const email = user.email;
 
-    		return res.send(recording(name, emailAddress, numberFrom, numberCalled, recordingUrl));
+    		return res.send(recording(name, email, numberFrom, numberCalled, recordingUrl));
     	}
     })
     .catch(function(err) {
