@@ -53,8 +53,8 @@ router.post('/privacyconnect', (req, res) => {
 
 // POST: /ivr/recording
 router.post('/recording', (req, res) => {
-  const numberFrom = req.query.numberFrom;
-	const numberCalled = req.query.numberCalled;
+  const numberFrom = decodeURIComponent(req.query.numberFrom);
+	const numberCalled = decodeURIComponent(req.query.numberCalled);
 	const recordingUrl = req.body.RecordingUrl;
 
   console.log("In recording, numberFrom: " + numberFrom);
@@ -64,10 +64,14 @@ router.post('/recording', (req, res) => {
   User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
     	if(user==null) {
+        console.log("In recording db, user was null");
     		// TODO: we should never reach here?
     	} else {
-    		const name = user.name;
+        const name = user.name;
         const emailAddress = user.emailAddress;
+
+        console.log("In recording db, name: " + name);
+        console.log("In recording db, emailAddress: " + emailAddress);
 
     		return res.send(recording(name, emailAddress, numberFrom, numberCalled, recordingUrl));
     	}
