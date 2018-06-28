@@ -86,7 +86,7 @@ exports.privacyconnect = function privacyconnect() {
 	return voiceResponse.toString();
 };
 
-exports.recording = function recording(name, email address, numberFrom, numberCalled, recordingUrl) {
+exports.recording = function recording(name, emailAddress, numberFrom, numberCalled, recordingUrl) {
 	// TODO: save to the database
 
 	// TODO: send the email
