@@ -1,3 +1,5 @@
+require('dotenv').config();
+const config = require('./config');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -7,6 +9,17 @@ const bodyParser = require('body-parser');
 const router = require('./src/router');
 
 const app = express();
+
+// app startup
+console.log('Starting up in ' + process.env.NODE_ENV + ' mode');
+require('./src/helpers/connectionHelper');
+
+const server = app.listen(config.port, function() {
+  console.log('Express server listening on port ' + server.address().port);
+});
+
+module.exports = server;
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
