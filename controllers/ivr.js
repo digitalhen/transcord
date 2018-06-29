@@ -197,18 +197,22 @@ function redirectWelcome() {
 function sendEmail(name, emailTo, numberCalled, recordingUrl) {
 	// create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        /*host: 'smtp.gmail.com',
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
             user: 'digitalhen@gmail.com', // generated ethereal user
             pass: 'iybfrzmemnvkyzhl' // generated ethereal password
-        }
+        }*/
+	host: 'localhost',
+	port: 25,
+	secure: false,
+	ignoreTLS: true,
     });
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"News Recorder" <digitalhen@gmail.com>', // sender address
+        from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your call recording: ' + recordingUrl, // plain text body
