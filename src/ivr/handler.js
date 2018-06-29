@@ -69,7 +69,7 @@ exports.privacynotice = function privacynotice(name) {
 		method: 'POST',
 	});
 
-	gather.say("You have an incoming call from " + name + ", which will be recorded. Please press any key to accept.");
+	gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
 
 	voiceResponse.say("Goodbye.");
 

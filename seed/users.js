@@ -5,6 +5,7 @@ const users = [
   {name: 'Terry Chapman', email: 'blahblah@digitalhen.com', phoneNumber: '+12124442796'},
   {name: 'Joe Blogs', email: 'joeblogs@digitalhen.com', phoneNumber: '+15014442720'},
   {name: 'Jennifer Yee', email: 'jyee16@gmail.com', phoneNumber: '+19176502722'},
+  {name: 'Dan Keeler', email: 'dan.keeler@wsj.com', phoneNumber: '+19174789011'},
 ];
 
 db.users.insert(users);
