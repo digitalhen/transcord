@@ -1,6 +1,6 @@
 const Router = require('express').Router;
 const User = require('../models/user');
-const {reject, welcome, dialer, privacynotice, privacyconnect, recording} = require('../ivr/handler');
+const {reject, welcome, dialer, privacynotice, privacyconnect, recording} = require('../controllers/ivr');
 
 const router = new Router();
 
