@@ -1,11 +1,11 @@
 db.dropDatabase();
 
 const users = [
-  {name: 'Henry Williams', email: 'recording@digitalhen.com', phoneNumber: '+14156694559'},
-  {name: 'Terry Chapman', email: 'blahblah@digitalhen.com', phoneNumber: '+12124442796'},
-  {name: 'Joe Blogs', email: 'joeblogs@digitalhen.com', phoneNumber: '+15014442720'},
-  {name: 'Jennifer Yee', email: 'jyee16@gmail.com', phoneNumber: '+19176502722'},
-  {name: 'Dan Keeler', email: 'dan.keeler@wsj.com', phoneNumber: '+19174789011'},
+  {username: 'digitalhen', name: 'Henry Williams', password: '123', email: 'recording@digitalhen.com', phoneNumber: '+14156694559'},
+  {username: 'tchapman', name: 'Terry Chapman', password: '123', email: 'blahblah@digitalhen.com', phoneNumber: '+12124442796'},
+  {username: 'jblogs', name: 'Joe Blogs', password: '123', email: 'joeblogs@digitalhen.com', phoneNumber: '+15014442720'},
+  {username: 'jyee', name: 'Jennifer Yee', password: '123', email: 'jyee16@gmail.com', phoneNumber: '+19176502722'},
+  {username: 'dkeeler', name: 'Dan Keeler', password: '123', email: 'dan.keeler@wsj.com', phoneNumber: '+19174789011'},
 ];
 
 db.users.insert(users);
