@@ -6,13 +6,13 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const router = require('./src/router');
+const router = require('./routes/index');
 
 const app = express();
 
 // app startup
 console.log('Starting up in ' + process.env.NODE_ENV + ' mode');
-require('./src/helpers/connectionHelper');
+require('./helpers/connectionHelper');
 
 const server = app.listen(config.port, function() {
   console.log('Express server listening on port ' + server.address().port);
