@@ -34,9 +34,21 @@ userController.login = function(req, res) {
 
 // Post login
 userController.doLogin = function(req, res) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return console.log(err); }
+    if (!user) { return res.redirect('/login'); }
+    req.logIn(user, function(err) {
+      if (err) { return console.log(err); }
+      //Areturn res.redirect('/users/' + user.username);
+      return res.redirect('/');
+    });
+  //})(req, res, next);
+  })(req, res);
+
+/*
   passport.authenticate('local')(req, res, function () {
     res.redirect('/');
-  });
+  }); */
 };
 
 // logout
