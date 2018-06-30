@@ -14,6 +14,13 @@ userController.register = function(req, res) {
   res.render('register');
 };
 
+// Go to profile page
+userController.profile = function(req, res) {
+    if (!req.user) { return res.redirect('/login'); }
+
+	res.render('profile', { user : req.user });
+};
+
 // Post registration
 userController.doRegister = function(req, res) {
   User.register(new User({ username : req.body.username, name: req.body.name, email: req.body.email, phoneNumber: req.body.phoneNumber }), req.body.password, function(err, user) {
@@ -25,6 +32,38 @@ userController.doRegister = function(req, res) {
       res.redirect('/');
     });
   });
+};
+
+// User update
+userController.doUpdate = function(req, res) {
+	/*User.update({_id: req.session.passport.user.id}, {
+        	name: req.body.name,
+		username: req.body.username,
+		phoneNumber: req.body.phoneNumber,
+		email: req.body.email,
+    	}, function (err){
+        	console.log(err);
+	});*/
+
+	User
+    .findOneAndUpdate({ _id: req.session.passport.user }, {
+		name: req.body.name,
+                username: req.body.username,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+	})
+    .exec(function(err, user) {
+       if (err) return res.render('profile', {
+	 user: req.session.passport.user
+         //err: err.message
+       });
+	console.log(user);
+	console.log(err);
+       return res.render('profile', {
+         user: req.session.passport.user
+       });
+     });
+   
 };
 
 // Go to login page

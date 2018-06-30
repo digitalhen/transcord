@@ -16,6 +16,12 @@ router.get('/register', auth.register);
 // route for register action
 router.post('/register', auth.doRegister);
 
+// route for user profile
+router.get('/profile', auth.profile);
+
+// route for profile update
+router.post('/profile', auth.doUpdate);
+
 // route to login page
 router.get('/login', auth.login);
 
