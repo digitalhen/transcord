@@ -98,6 +98,70 @@ userController.doUpdate = function(req, res) {
     });
 };
 
+// validate
+userController.validate = function(req, res) {
+    var response = {};
+
+    if (req.body.username) {
+        User.findOne({
+                username: req.body.username
+            })
+            .then(function(user) {
+                if (user == null) {
+                    response.exists = false;
+                    // TODO: we should never reach here?
+                } else {
+                    response.exists = true;
+                }
+
+                res.send(JSON.stringify(response));
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    } else if (req.body.email) {
+        User.findOne({
+                email: req.body.email
+            })
+            .then(function(user) {
+                if (user == null) {
+                    response.exists = false;
+                    // TODO: we should never reach here?
+                } else {
+                    response.exists = true;
+                }
+
+                res.send(JSON.stringify(response));
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    } else if (req.body.phoneNumber) {
+
+        User.findOne({
+                phoneNumber: req.body.phoneNumber
+            })
+            .then(function(user) {
+                if (user == null) {
+                    response.exists = false;
+                    // TODO: we should never reach here?
+                } else {
+                    response.exists = true;
+                }
+
+                res.send(JSON.stringify(response));
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    } else {
+        res.send("Invalid request");
+    }
+
+
+
+}
+
 // Go to login page
 userController.login = function(req, res) {
     res.render('login');

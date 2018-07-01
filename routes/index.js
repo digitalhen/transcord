@@ -26,6 +26,9 @@ router.post('/profile', auth.doUpdate);
 // route for Dashboard
 router.get('/dashboard', dash.list);
 
+// route for validation
+router.post('/validate', auth.validate);
+
 // route to login page
 router.get('/login', auth.login);
 
