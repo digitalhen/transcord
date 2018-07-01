@@ -125,7 +125,7 @@ ivrController.recording = function(req, res) {
 
 				// TODO save the record here
 				if(user.recordings==null) {
-					user.recordings = {};
+					user.recordings = [];
 				}
 
 				user.recordings.push({numberCalled: numberCalled, recordingUrl: recordingUrl});
