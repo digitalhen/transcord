@@ -123,7 +123,7 @@ ivrController.recording = function(req, res) {
         const name = user.name;
         const email = user.email;
 
-				sendEmail(name, emailAddress, numberCalled, recordingUrl);
+				sendEmail(name, email, numberCalled, recordingUrl);
 
 				res.send('');
     	}
