@@ -133,23 +133,21 @@ ivrController.recording = function(req, res) {
 		      .then(function(recording) {
 						const parentCallSid = recording.callSid;
 
-						//console.log(recording);
+						console.log(recording);
 
 						// lets look up the parent here (from)...
 						twilioClient.calls(parentCallSid)
 				      .fetch()
 				      .then(function(call) {
-								//console.log(call);
+								console.log(call);
 
 								// TODO: look up child call here (to)...
 								twilioClient.calls.each({
 								    parentCallSid: parentCallSid
-								},
-								    //calls => console.log(calls)
-										// TODO: make this accomodate conference calls
-
-										calls => sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl)
-								);
+								}, function(calls) {
+										console.log(calls);
+										sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl);
+								});
 
 
 							})
