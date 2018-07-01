@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
 			bridgeNumber: String,
 			numberCalled: String,
 			numberCalledFormatted: String,
-			duration: Double,
+			duration: Number,
 			recordingUrl: String
 		}
 	]
