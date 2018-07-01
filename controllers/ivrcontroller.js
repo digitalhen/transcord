@@ -116,8 +116,6 @@ ivrController.privacyconnect = function(req, res) {
 }
 
 ivrController.recording = function(req, res) {
-    const numberFrom = decodeURIComponent(req.query.numberFrom);
-    const numberCalled = decodeURIComponent(req.query.numberCalled);
     const recordingUrl = req.body.RecordingUrl;
     const recordingSid = req.body.RecordingSid;
 
