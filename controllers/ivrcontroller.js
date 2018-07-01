@@ -61,7 +61,7 @@ ivrController.dialer = function(req, res) {
 
     const dial = voiceResponse.dial({
         record: 'record-from-ringing-dual',
-        recordingStatusCallback: '/ivr/recording?numberFrom=' + encodeURIComponent(numberFrom) + '&numberCalled=' + encodeURIComponent(numberCalled),
+        recordingStatusCallback: '/ivr/recording',
         method: 'POST'
     });
 
@@ -120,7 +120,7 @@ ivrController.recording = function(req, res) {
     const recordingSid = req.body.RecordingSid;
 
     // lookup the call here
-
+/*
     User.findOne({
             combinedPhoneNumber: numberFrom
         })
@@ -130,7 +130,7 @@ ivrController.recording = function(req, res) {
             } else {
                 const name = user.name;
                 const email = user.email;
-
+ */
                 // Look up the recording here....
                 twilioClient.recordings(recordingSid)
                     .fetch()
@@ -141,38 +141,52 @@ ivrController.recording = function(req, res) {
                         twilioClient.calls(parentCallSid)
                             .fetch()
                             .then(function(parentCall) {
+                                // TODO: Look up the user here:
 
-                                // TODO: look up child call here (to)...
-                                twilioClient.calls.each({
-                                    parentCallSid: parentCallSid
-                                }, function(childCall) {
-                                    sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+                                User.findOne({
+                                        combinedPhoneNumber: parentCall.from;
+                                    })
+                                    .then(function(user) {
+                                        if (user == null) {
+                                            // TODO: we should never reach here?
+                                        } else {
+                                            const name = user.name;
+                                            const email = user.email;
 
-                                    // TODO: capture full sprectrum of calls
-                                    user.recordings.push({
-																			  startTime: parentCall.startTime,
-																				endTime: parentCall.endTime,
-																				numberFrom: parentCall.from,
-																				numberFromFormatted: parentCall.fromFormatted,
-																				bridgeNumber: parentCall.to,
-																				numberCalled: childCall.to,
-                                        numberCalledFormatted: childCall.toFormatted,
-																				duration: parseFloat(recording.duration),
-                                        recordingUrl: recordingUrl
-                                    });
+                                            twilioClient.calls.each({
+                                                parentCallSid: parentCallSid
+                                            }, function(childCall) {
+                                                sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
 
-                                    User.update({
-                                        _id: user._id
-                                    }, {
-                                        recordings: user.recordings
-                                    }, function(err, numberAffected, rawResponse) {
-                                        if (err) {
-                                            console.log('There was an error');
+                                                // TODO: capture full sprectrum of calls
+                                                user.recordings.push({
+            																			  startTime: parentCall.startTime,
+            																				endTime: parentCall.endTime,
+            																				numberFrom: parentCall.from,
+            																				numberFromFormatted: parentCall.fromFormatted,
+            																				bridgeNumber: parentCall.to,
+            																				numberCalled: childCall.to,
+                                                    numberCalledFormatted: childCall.toFormatted,
+            																				duration: parseFloat(recording.duration),
+                                                    recordingUrl: recordingUrl
+                                                });
+
+                                                User.update({
+                                                    _id: user._id
+                                                }, {
+                                                    recordings: user.recordings
+                                                }, function(err, numberAffected, rawResponse) {
+                                                    if (err) {
+                                                        console.log('There was an error');
+                                                    }
+                                                });
+
+                                                // TODO, fix for conference calls
+                                            });
                                         }
-                                    });
+                                      });
 
-                                    // TODO, fix for conference calls
-                                });
+
 
 
                             })
@@ -184,11 +198,11 @@ ivrController.recording = function(req, res) {
 
 
                 res.send('');
-            }
+      /*      }
         })
         .catch(function(err) {
             console.log(err);
-        });
+        });*/
 }
 
 /**
