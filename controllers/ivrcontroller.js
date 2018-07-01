@@ -142,7 +142,7 @@ ivrController.recording = function(req, res) {
                         // lets look up the parent here (from)...
                         twilioClient.calls(parentCallSid)
                             .fetch()
-                            .then(function(call) {
+                            .then(function(parentCall) {
 
                                 // TODO: look up child call here (to)...
                                 twilioClient.calls.each({
@@ -152,7 +152,14 @@ ivrController.recording = function(req, res) {
 
                                     // TODO: capture full sprectrum of calls
                                     user.recordings.push({
-                                        numberCalled: childCall.toFormatted,
+																			  startTime: parentCall.startTime,
+																				endTime: parentCall.endTime,
+																				numberFrom: parentCall.from,
+																				numberFromFormatted: parentCall.fromFormatted,
+																				bridgeNumber: parentCall.to,
+																				numberCalled: childCall.to,
+                                        numberCalledFormatted: childCall.toFormatted,
+																				duration: parseFloat(recording.duration),
                                         recordingUrl: recordingUrl
                                     });
 

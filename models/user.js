@@ -15,7 +15,19 @@ const UserSchema = new mongoose.Schema({
 	password: String,
 	email: String,
 	phoneNumber: String,
-	recordings: [{numberCalled: String, recordingUrl: String}]
+	recordings: [
+		{
+			startTime: Date,
+			endTime: Date,
+			numberFrom: String,
+			numberFromFormatted: String,
+			bridgeNumber: String,
+			numberCalled: String,
+			numberCalledFormatted: String,
+			duration: Double,
+			recordingUrl: String
+		}
+	]
 });
 
 UserSchema.plugin(passportLocalMongoose);
