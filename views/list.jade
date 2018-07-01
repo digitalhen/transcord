@@ -4,9 +4,15 @@ block content
   div
     table
       thead
-        tr: th Recording
+        tr.head
+          th Start Time
+          th To
+          th Duration
+          th Audio
       tbody
         each recording in user.recordings
           tr
-            td
-              recording.recordingUrl !{recording.recordingUrl}
+            td !{recording.statTime}
+            td !{recording.numberCalledFormatted}
+            td !{recording.duration}
+            td a(href=recording.recordingUrl) Listen
