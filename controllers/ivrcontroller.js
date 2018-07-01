@@ -123,10 +123,6 @@ ivrController.recording = function(req, res) {
         const name = user.name;
         const email = user.email;
 
-				if(user.recordings==null) {
-					user.recordings = [];
-				}
-
 				user.recordings.push({numberCalled: numberCalled, recordingUrl: recordingUrl});
 
 				User.update({
