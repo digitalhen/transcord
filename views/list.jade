@@ -13,10 +13,10 @@ block content
         each recording in user.recordings
           tr
             td
-              !{recording.statTime}
+              #{recording.statTime}
             td
-              !{recording.numberCalledFormatted}
+              #{recording.numberCalledFormatted}
             td
-              !{recording.duration}
+              #{recording.duration}
             td
               a(href=recording.recordingUrl) Listen
