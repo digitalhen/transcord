@@ -3,7 +3,7 @@ var passport = require("passport");
 var User = require("../models/user");
 
 var moment = require("moment");
-var ne = require('node-each');
+var ce = require('cloneextend');
 
 var dashController = {};
 
@@ -16,14 +16,19 @@ dashController.list = function(req, res) {
       return res.redirect('/login');
   }
 
-  var user = req.user;
+  var user = ce.clone(req.user);
 
+/*
   // TODO: pre-render the dates before sending it to Jade
-  ne.each(user.recordings, function(el, i) {
-    el.startTimeFormatted = moment(el.startTime).format('MMMM Do YYYY, h:mm a');
-  });
+  for (var i=0; i<user.recordings.length; i++) {
+	console.log(moment(user.recordings[i].startTime).format('MMMM Do YYYY, h:mm a'));
+	user.recordings[i].push({startTime = moment(user.recordings[i].startTime).format('MMMM Do YYYY, h:mm a');
+  } */
+
+  user.recordings.forEach(function(recording) { recording.test = 'blah'; });
 
   console.log(user);
+
 
   res.render('list', {
       user: user,
