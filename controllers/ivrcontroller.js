@@ -115,7 +115,7 @@ ivrController.recording = function(req, res) {
 	const numberFrom = decodeURIComponent(req.query.numberFrom);
 	const numberCalled = decodeURIComponent(req.query.numberCalled);
 	const recordingUrl = req.body.RecordingUrl;
-	const recordingSid = req.body.recordingSid;
+	const recordingSid = req.body.RecordingSid;
 
 	// lookup the call here
 
