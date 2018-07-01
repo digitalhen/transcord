@@ -115,6 +115,7 @@ ivrController.recording = function(req, res) {
 	const numberFrom = decodeURIComponent(req.query.numberFrom);
 	const numberCalled = decodeURIComponent(req.query.numberCalled);
 	const recordingUrl = req.body.RecordingUrl;
+	const recordingSid = req.body.recordingSid;
 
 	// lookup the call here
 
@@ -127,9 +128,20 @@ ivrController.recording = function(req, res) {
         const email = user.email;
 
 				// TODO: look up the call nHere
-				twilioClient.recordings('RE557ce644e5ab84fa21cc21112e22c485')
+				twilioClient.recordings(recordingSid)
 		      .fetch()
-		      .then(recording => console.log(recording.callSid))
+		      .then(function(recording) {
+						const callSid = recording.CallSid;
+
+						console.log(recording);
+
+						twilioClient.calls(callSid)
+				      .fetch()
+				      .then(function(call) {
+								console.log(call);
+							})
+				      .done();
+					})
 		      .done();
 
 				user.recordings.push({numberCalled: numberCalled, recordingUrl: recordingUrl});
