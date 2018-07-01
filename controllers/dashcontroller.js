@@ -14,7 +14,7 @@ dashController.list = function(req, res) {
   }
 
   res.render('list', {
-      user: user,
+      user: req.user,
   });
 };
 
