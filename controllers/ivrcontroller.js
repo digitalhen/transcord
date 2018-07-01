@@ -148,7 +148,7 @@ ivrController.recording = function(req, res) {
 								    //calls => console.log(calls)
 										// TODO: make this accomodate conference calls
 
-										sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl)
+										calls => sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl)
 								);
 
 
