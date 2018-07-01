@@ -2,6 +2,9 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
 
+var moment = require("moment");
+var ne = require('node-each');
+
 var dashController = {};
 
 
@@ -13,10 +16,17 @@ dashController.list = function(req, res) {
       return res.redirect('/login');
   }
 
+  var user = req.user;
+
   // TODO: pre-render the dates before sending it to Jade
+  ne.each(user.recordings, function(el, i) {
+    el.startTimeFormatted = moment(el.startTime).format('MMMM Do YYYY, h:mm a');
+  });
+
+  console.log(user);
 
   res.render('list', {
-      user: req.user
+      user: user,
   });
 };
 
