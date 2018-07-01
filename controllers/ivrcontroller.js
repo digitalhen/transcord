@@ -127,7 +127,7 @@ ivrController.recording = function(req, res) {
         const email = user.email;
 
 				// TODO: look up the call nHere
-				client.recordings('RE557ce644e5ab84fa21cc21112e22c485')
+				twilioClient.recordings('RE557ce644e5ab84fa21cc21112e22c485')
 		      .fetch()
 		      .then(recording => console.log(recording.callSid))
 		      .done();
