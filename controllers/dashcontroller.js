@@ -13,6 +13,8 @@ dashController.list = function(req, res) {
       return res.redirect('/login');
   }
 
+  // TODO: pre-render the dates before sending it to Jade
+
   res.render('list', {
       user: req.user
   });

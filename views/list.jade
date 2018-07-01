@@ -19,4 +19,5 @@ block content
             td
               #{recording.duration}
             td
-              a(href=recording.recordingUrl) Listen
+              audio(controls='')
+                source(src=recording.recordingUrl, type='audio/wav')
