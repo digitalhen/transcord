@@ -2,7 +2,7 @@ extends layout
 
 block content
   div
-    table
+    table.table
       thead
         tr.head
           th Start Time
@@ -13,11 +13,11 @@ block content
         each recording in user.recordings
           tr
             td
-              !{moment(recording.statTime).format('MM/DD/YYYY')}
+              !{moment(recording.statTime).format('MM/DD/YYYY h:mm a')}
             td
               !{recording.numberCalledFormatted}
             td
-              !{moment.utc(recording.duration*1000).format('HH:mm:ss')}
+              !{moment.utc(recording.duration*1000).format('mm:ss')}
             td
               audio(controls='')
                 source(src=recording.recordingUrl, type='audio/wav')
