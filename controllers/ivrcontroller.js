@@ -144,7 +144,7 @@ ivrController.recording = function(req, res) {
                                 // TODO: Look up the user here:
 
                                 User.findOne({
-                                        combinedPhoneNumber: parentCall.from;
+                                        combinedPhoneNumber: parentCall.from
                                     })
                                     .then(function(user) {
                                         if (user == null) {
