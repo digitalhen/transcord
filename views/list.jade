@@ -1,20 +1,21 @@
 extends layout
 
 block content
-  div
+  .container
+    h2 Calls (!{user.recordings.length})
     table.table
       thead
         tr.head
-          th Start Time
+          th Date
           th To
-          th Duration
+          th Length
           th Audio
       tbody
-        each recording in user.recordings
+        - user.recordings.forEach(function(recording) {
           tr
             td
-              - function newDate(dateObject) { return new Date(dateObject); }
-              !{moment(newDate(recording.statTime)).format('MM/DD/YYYY h:mm a')}
+              - recording.startTimeFormatted = new Date(recording.startTime.toString());
+              !{moment(recording.startTimeFormatted).format('MMM DD, YYYY h:mm a')}
             td
               !{recording.numberCalledFormatted}
             td
@@ -22,3 +23,4 @@ block content
             td
               audio(controls='')
                 source(src=recording.recordingUrl, type='audio/wav')
+        - })

@@ -17,15 +17,17 @@ h2 {
   font-size: 22px !important;
   font-weight: 700 !important; }
 
+.form-container {
+  padding: 20px 0px;
+  background-color: white; }
+
 .table {
   background-color: white; }
   .table tbody tr td {
     vertical-align: middle; }
 
 .form-signin {
-  max-width: 500px !important;
-  background-color: white;
-  padding: 5px 15px; }
+  max-width: 500px !important; }
   .form-signin .setting-group {
     margin-bottom: 10px !important; }
     .form-signin .setting-group .setting {

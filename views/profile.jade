@@ -4,42 +4,43 @@ block content
   .container
     form#form-profile.form-signin(role='form', action="/profile",method="post")
       h2.form-signin-heading Profile
-      .setting-group.setting-name
-        label.setting-label Name
-        .setting
-          input.form-control(type='text', name="name", original=user.name, value=user.name)
-          label.error.notification(for="name")
-          label.information
-      .setting-group.setting-username
-        label.setting-label Username
-        .setting
-          input.form-control(type='text', name="username", original=user.username, value=user.username)
-          label.error.notification(for="username")
-          label.information
-      .setting-group.setting-password
-        label.setting-label Password
-        .setting
-          input.form-control(type='password', name="password", placeholder='Enter new password')
-          label.error.notification(for="password")
-          label.information At least 8 characters, containing one uppercase letter, one lowercase letter.
-      .setting-group.setting-email
-        label.setting-label Email
-        .setting
-          input.form-control(type='text', name="email", original=user.email, value=user.email)
-          label.error.notification(for="email")
-          label.information This will be used to send you recordings & transcripts.
-      .setting-group.setting-phoneNumber
-        label.setting-label Phone number
-        .setting
-          label.prefix +1
-          input.form-control(type='text', name="phoneNumber", original=user.phoneNumber, value=user.phoneNumber)
-          label.error.notification(for="phoneNumber")
-          label.information U.S. numbers only.
+      div.form-container
+        .setting-group.setting-name
+          label.setting-label Name
+          .setting
+            input.form-control(type='text', name="name", original=user.name, value=user.name)
+            label.error.notification(for="name")
+            label.information
+        .setting-group.setting-username
+          label.setting-label Username
+          .setting
+            input.form-control(type='text', name="username", original=user.username, value=user.username)
+            label.error.notification(for="username")
+            label.information
+        .setting-group.setting-password
+          label.setting-label Password
+          .setting
+            input.form-control(type='password', name="password", placeholder='Enter new password')
+            label.error.notification(for="password")
+            label.information At least 8 characters, containing one uppercase letter, one lowercase letter.
+        .setting-group.setting-email
+          label.setting-label Email
+          .setting
+            input.form-control(type='text', name="email", original=user.email, value=user.email)
+            label.error.notification(for="email")
+            label.information This will be used to send you recordings & transcripts.
+        .setting-group.setting-phoneNumber
+          label.setting-label Phone number
+          .setting
+            label.prefix +1
+            input.form-control(type='text', name="phoneNumber", original=user.phoneNumber, value=user.phoneNumber)
+            label.error.notification(for="phoneNumber")
+            label.information U.S. numbers only.
 
-      if (status)
-        .message-group
-          label.message-label !{status.message}
+        if (status)
+          .message-group
+            label.message-label !{status.message}
 
-      .setting-group
-        .setting
-          button.btn.btn-lg.btn-primary.btn-block(type='submit') Update
+        .setting-group
+          .setting
+            button.btn.btn-lg.btn-primary.btn-block(type='submit') Update
