@@ -13,11 +13,11 @@ block content
         each recording in user.recordings
           tr
             td
-              #{moment(recording.statTime).format('MM/DD/YYYY')}
+              !{moment(recording.statTime).format('MM/DD/YYYY')}
             td
-              #{recording.numberCalledFormatted}
+              !{recording.numberCalledFormatted}
             td
-              #{recording.duration}
+              !{moment.utc(recording.duration*1000).format('HH:mm:ss')}
             td
               audio(controls='')
                 source(src=recording.recordingUrl, type='audio/wav')
