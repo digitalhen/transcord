@@ -144,10 +144,11 @@ ivrController.recording = function(req, res) {
 
 
 								twilioClient.calls.list({
-									parentCallSid: callSid
+								    parentCallSid: callSid
 								},
-									calls => console.log(calls);
+								    calls => console.log(calls)
 								);
+
 
 							})
 				      .done();
