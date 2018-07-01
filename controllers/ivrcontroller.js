@@ -143,8 +143,8 @@ ivrController.recording = function(req, res) {
 								// TODO: look up child call here
 
 
-								twilioClient.calls.list({
-								    ParentCallSid: callSid
+								twilioClient.calls.each({
+								    parentCallSid: callSid
 								},
 								    calls => console.log(calls)
 								);
