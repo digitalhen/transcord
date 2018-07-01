@@ -123,14 +123,21 @@ ivrController.recording = function(req, res) {
         const name = user.name;
         const email = user.email;
 
-				// TODO save the record here
 				if(user.recordings==null) {
 					user.recordings = [];
 				}
 
 				user.recordings.push({numberCalled: numberCalled, recordingUrl: recordingUrl});
 
-				user.save();
+				User.update({
+		        _id: user._id
+		    }, {
+					recordings: user.recordings
+				}, function(err, numberAffected, rawResponse) {
+		        if (err) {
+		            console.log('There was an error');
+		        }
+			  };
 
 				sendEmail(name, email, numberCalled, recordingUrl);
 
