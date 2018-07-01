@@ -1,5 +1,12 @@
 extends layout
 
 block content
-  h1 Your recordings
-  p Coming soon
+  div
+    table
+      thead
+        tr: th Recording
+      tbody
+        each recording, i in user.recordings
+          tr
+            td
+              recording.recordingUrl
