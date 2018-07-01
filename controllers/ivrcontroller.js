@@ -146,6 +146,8 @@ ivrController.recording = function(req, res) {
 								    parentCallSid: parentCallSid
 								}, function(calls) {
 										console.log(calls);
+										console.log(recording.duration);
+										console.log(calls[0].toFormatted);
 										sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl);
 								});
 
