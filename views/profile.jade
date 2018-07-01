@@ -2,39 +2,39 @@ extends layout
 
 block content
   .container
-    form.form-signin(role='form', action="/profile",method="post", style='max-width: 300px;')
+    form#form-profile.form-signin(role='form', action="/profile",method="post")
       h2.form-signin-heading Profile
       .setting-group.setting-name
         label.setting-label Name
         .setting
-          input.form-control(type='text', name="name", value=user.name)
-          p.notification
-          p.information
+          input.form-control(type='text', name="name", original=user.name, value=user.name)
+          label.error.notification(for="name")
+          label.information
       .setting-group.setting-username
         label.setting-label Username
         .setting
-          input.form-control(type='text', name="username", value=user.username)
-          p.notification
-          p.information
+          input.form-control(type='text', name="username", original=user.username, value=user.username)
+          label.error.notification(for="username")
+          label.information
       .setting-group.setting-password
         label.setting-label Password
         .setting
           input.form-control(type='password', name="password", placeholder='Enter new password')
-          p.notification
-          p.information
+          label.error.notification(for="password")
+          label.information At least 8 characters, containing one uppercase letter, one lowercase letter.
       .setting-group.setting-email
         label.setting-label Email
         .setting
-          input.form-control(type='text', name="email", value=user.email)
-          p.notification
-          p.information
+          input.form-control(type='text', name="email", original=user.email, value=user.email)
+          label.error.notification(for="email")
+          label.information This will be used to send you recordings & transcripts.
       .setting-group.setting-phoneNumber
         label.setting-label Phone number
         .setting
-          p.prefix +1
-          input.form-control(type='text', name="phoneNumber", value=user.phoneNumber)
-          p.notification
-          p.information
+          label.prefix +1
+          input.form-control(type='text', name="phoneNumber", original=user.phoneNumber, value=user.phoneNumber)
+          label.error.notification(for="phoneNumber")
+          label.information U.S. numbers only.
 
       if (status)
         .message-group
