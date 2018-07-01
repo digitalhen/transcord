@@ -6,7 +6,7 @@ block content
       thead
         tr: th Recording
       tbody
-        each recording, i in user.recordings
+        each recording in user.recordings
           tr
             td
-              recording.recordingUrl !{recording.url}
+              recording.recordingUrl !{recording.recordingUrl}
