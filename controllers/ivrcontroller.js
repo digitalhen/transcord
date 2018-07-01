@@ -144,11 +144,13 @@ ivrController.recording = function(req, res) {
 								// TODO: look up child call here (to)...
 								twilioClient.calls.each({
 								    parentCallSid: parentCallSid
-								}, function(calls) {
-										console.log(calls);
+								}, function(childCall) {
+										console.log(childCall);
 										console.log(recording.duration);
-										console.log(calls[0].toFormatted);
-										sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl);
+										console.log(childCall.toFormatted);
+										sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+
+										// TODO, fix for conference calls
 								});
 
 
