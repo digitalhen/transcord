@@ -19,6 +19,8 @@ h2 {
 
 .table {
   background-color: white; }
+  .table tbody tr td {
+    vertical-align: middle; }
 
 .form-signin {
   max-width: 500px !important;

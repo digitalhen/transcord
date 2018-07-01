@@ -42,6 +42,14 @@ button {
 
 .table {
 	background-color: white;
+
+	tbody {
+		tr {
+			td {
+				vertical-align: middle
+			}
+		}
+	}
 }
 
 .form-signin {
