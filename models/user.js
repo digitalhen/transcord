@@ -14,7 +14,9 @@ const UserSchema = new mongoose.Schema({
 	name: String,
 	password: String,
 	email: String,
+	countryCode: String,
 	phoneNumber: String,
+	combinedPhoneNumber: String,
 	recordings: [
 		{
 			startTime: Date,

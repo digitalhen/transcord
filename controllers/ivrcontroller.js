@@ -25,7 +25,7 @@ ivrController.welcome = function(req, res) {
     console.log("Incoming call from: " + numberFrom);
 
     User.findOne({
-            phoneNumber: numberFrom
+            combinedPhoneNumber: numberFrom
         })
         .then(function(user) {
             if (user == null) {
@@ -77,7 +77,7 @@ ivrController.privacynotice = function(req, res) {
     const numberFrom = req.body.Caller;
 
     User.findOne({
-            phoneNumber: numberFrom
+            combinedPhoneNumber: numberFrom
         })
         .then(function(user) {
             if (user == null) {
@@ -122,7 +122,7 @@ ivrController.recording = function(req, res) {
     // lookup the call here
 
     User.findOne({
-            phoneNumber: numberFrom
+            combinedPhoneNumber: numberFrom
         })
         .then(function(user) {
             if (user == null) {

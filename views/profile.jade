@@ -4,29 +4,42 @@ block content
   .container
     form.form-signin(role='form', action="/profile",method="post", style='max-width: 300px;')
       h2.form-signin-heading Profile
-      .setting-group
+      .setting-group.setting-name
         label.setting-label Name
         .setting
           input.form-control(type='text', name="name", value=user.name)
-      .setting-group
+          p.notification
+          p.information
+      .setting-group.setting-username
         label.setting-label Username
         .setting
           input.form-control(type='text', name="username", value=user.username)
-      .setting-group
+          p.notification
+          p.information
+      .setting-group.setting-password
         label.setting-label Password
         .setting
           input.form-control(type='password', name="password", placeholder='Enter new password')
-      .setting-group
+          p.notification
+          p.information
+      .setting-group.setting-email
         label.setting-label Email
         .setting
           input.form-control(type='text', name="email", value=user.email)
-      .setting-group
+          p.notification
+          p.information
+      .setting-group.setting-phoneNumber
         label.setting-label Phone number
         .setting
+          p.prefix +1
           input.form-control(type='text', name="phoneNumber", value=user.phoneNumber)
+          p.notification
+          p.information
 
       if (status)
         .message-group
           label.message-label !{status.message}
 
-      button.btn.btn-lg.btn-primary.btn-block(type='submit') Update
+      .setting-group
+        .setting
+          button.btn.btn-lg.btn-primary.btn-block(type='submit') Update

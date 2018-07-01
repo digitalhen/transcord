@@ -4,6 +4,7 @@
 $color_gallery_approx: #eee;
 $white: #fff;
 $color_mystic_approx: #e6ecf0;
+$color_grey_notification: #657786;
 
 //@extend-elements
 //original selectors
@@ -11,17 +12,20 @@ $color_mystic_approx: #e6ecf0;
 %extend_1 {
 	display: inline-block;
 	width: 222px !important;
-	padding: 4px !important;
+	padding: 2px 4px !important;
 	font-size: 14px !important;
 	margin: 0;
 	outline: 0;
 	background-color: $white;
 	border: 1px solid $color_mystic_approx;
 	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-	border-radius: 3px;
+	border-radius: 0px !important;
 }
 
-
+.navbar-default {
+	border-radius: 0px;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 1px 2px rgba(0, 0, 0, 0.35);
+}
 h2 {
 	font-size: 22px !important;
 	font-weight: 700 !important;
@@ -35,22 +39,67 @@ textarea {
 button {
 	@extend %extend_1;
 }
-.setting {
-	display: block;
-	margin-left: 140px;
-}
-.setting-label {
-	float: left;
-	width: 120px;
-	padding-top: 5px;
-	text-align: right;
-	margin: 0;
-	font-size: 14px;
-	line-height: 20px;
-	border-bottom: 0;
-	font-weight: 200;
-}
+
 .form-signin {
+	max-width: 500px !important;
+	background-color: white;
+	padding: 5px 15px;
+
+	.setting-group {
+		margin-bottom: 10px !important;
+
+		.setting {
+			display: block;
+			margin-left: 140px;
+
+			input {
+				margin-bottom: 5px;
+				margin-right: 5px;
+				margin-left: 2px;
+				display: inline-block;
+			}
+
+			label.prefix {
+				display: inline-block;
+				font-weight: 200;
+			}
+
+			label.notification {
+				display: inline-block;
+				font-size: 10px;
+				color: green;
+				font-weight: 200;
+
+				&.error {
+					color: red;
+				}
+			}
+
+			label.information {
+				font-size: 10px;
+				color: $color_grey_notification;
+				max-width: 200px;
+				padding-left: 4px;
+				font-weight: 200;
+			}
+
+			button {
+				border-radius: 10px !important;
+			}
+		}
+		.setting-label {
+			float: left;
+			width: 120px;
+			padding-top: 5px;
+			text-align: right;
+			margin: 0;
+			font-size: 14px;
+			line-height: 20px;
+			border-bottom: 0;
+			font-weight: 200;
+		}
+	}
+
 	.form-signin-heading {
 		margin-bottom: 10px;
 	}

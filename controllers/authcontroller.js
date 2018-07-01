@@ -33,7 +33,9 @@ userController.doRegister = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        phoneNumber: req.body.phoneNumber
+        countryCode: '+1',
+        phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
+        combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
     }), req.body.password, function(err, user) {
         if (err) {
             return res.render('register', {
@@ -59,7 +61,9 @@ userController.doUpdate = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        phoneNumber: req.body.phoneNumber
+        countryCode: '+1',
+        phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
+        combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
         // TODO: handle updating password somehow
     }, function(err, numberAffected, rawResponse) {
         if (err) {
@@ -108,10 +112,10 @@ userController.validate = function(req, res) {
             })
             .then(function(user) {
                 if (user == null) {
-                    response.exists = false;
+                    response = true;
                     // TODO: we should never reach here?
                 } else {
-                    response.exists = true;
+                    response = false;
                 }
 
                 res.send(JSON.stringify(response));
@@ -125,10 +129,10 @@ userController.validate = function(req, res) {
             })
             .then(function(user) {
                 if (user == null) {
-                    response.exists = false;
+                    response = true;
                     // TODO: we should never reach here?
                 } else {
-                    response.exists = true;
+                    response = false;
                 }
 
                 res.send(JSON.stringify(response));
@@ -139,14 +143,15 @@ userController.validate = function(req, res) {
     } else if (req.body.phoneNumber) {
 
         User.findOne({
-                phoneNumber: req.body.phoneNumber
+                countryCode: '+1',
+                phoneNumber: req.body.phoneNumber.replace(/\D/g,'')
             })
             .then(function(user) {
                 if (user == null) {
-                    response.exists = false;
+                    response = true;
                     // TODO: we should never reach here?
                 } else {
-                    response.exists = true;
+                    response = false;
                 }
 
                 res.send(JSON.stringify(response));
@@ -155,7 +160,7 @@ userController.validate = function(req, res) {
                 console.log(err);
             });
     } else {
-        res.send("Invalid request");
+        res.status(404).send('Not found');
     }
 
 
