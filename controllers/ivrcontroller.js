@@ -139,6 +139,12 @@ ivrController.recording = function(req, res) {
 				      .fetch()
 				      .then(function(call) {
 								console.log(call);
+
+								twilioClient.calls()
+						      .each({parent_call_sid: callSid},
+										calls => console.log(calls)
+									);
+
 							})
 				      .done();
 					})
