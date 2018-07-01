@@ -131,7 +131,7 @@ ivrController.recording = function(req, res) {
 				twilioClient.recordings(recordingSid)
 		      .fetch()
 		      .then(function(recording) {
-						const callSid = recording.CallSid;
+						const callSid = recording.callSid;
 
 						console.log(recording);
 
