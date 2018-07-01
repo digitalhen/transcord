@@ -13,7 +13,7 @@ block content
         each recording in user.recordings
           tr
             td
-              #{recording.statTime}
+              #{moment(recording.statTime).format('MM/DD/YYYY')}
             td
               #{recording.numberCalledFormatted}
             td

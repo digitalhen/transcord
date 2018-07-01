@@ -9,6 +9,9 @@ const router = require('./routes/index');
 
 const app = express();
 
+// add moment to Locals
+app.locals.moment = require('moment');
+
 // app startup
 console.log('Starting up in ' + process.env.NODE_ENV + ' mode');
 require('./helpers/connectionHelper');
