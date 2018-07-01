@@ -13,7 +13,8 @@ block content
         each recording in user.recordings
           tr
             td
-              !{moment(recording.statTime).format('MM/DD/YYYY h:mm a')}
+              - function newDate(dateObject) { return new Date(dateObject); }
+              !{moment(newDate(recording.statTime)).format('MM/DD/YYYY h:mm a')}
             td
               !{recording.numberCalledFormatted}
             td

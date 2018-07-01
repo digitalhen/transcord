@@ -2,8 +2,6 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
 
-var moment = require("moment");
-
 var dashController = {};
 
 
@@ -12,6 +10,8 @@ dashController.list = function(req, res) {
   if (!req.user) {
       return res.redirect('/login');
   }
+
+
 
   res.render('list', {
       user: req.user,
