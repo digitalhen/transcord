@@ -8,174 +8,182 @@ var ivrController = {};
 
 
 function reject() {
-	const voiceResponse = new VoiceResponse();
+    const voiceResponse = new VoiceResponse();
 
-	voiceResponse.say('Welcome to News Record. Your number was not recognized. Please visit news record dot com to register.');
+    voiceResponse.say('Welcome to News Record. Your number was not recognized. Please visit news record dot com to register.');
 
-	voiceResponse.hangup();
+    voiceResponse.hangup();
 
-  return voiceResponse.toString();
+    return voiceResponse.toString();
 
 }
 
 ivrController.welcome = function(req, res) {
 
-	  const numberFrom = req.body.From;
+    const numberFrom = req.body.From;
 
-	  console.log("Incoming call from: " + numberFrom);
+    console.log("Incoming call from: " + numberFrom);
 
-		User.findOne({phoneNumber: numberFrom})
-	    .then(function(user) {
-	    	if(user==null) {
-					res.send(reject());
-	    	} else {
-	    		const name = user.name;
-					const voiceResponse = new VoiceResponse();
+    User.findOne({
+            phoneNumber: numberFrom
+        })
+        .then(function(user) {
+            if (user == null) {
+                res.send(reject());
+            } else {
+                const name = user.name;
+                const voiceResponse = new VoiceResponse();
 
-					const gather = voiceResponse.gather({
-			                action: '/ivr/dialer',
-			                finishOnKey: '#',
-			                method: 'POST',
-			        });
+                const gather = voiceResponse.gather({
+                    action: '/ivr/dialer',
+                    finishOnKey: '#',
+                    method: 'POST',
+                });
 
-					gather.say("Hello " + name + ", please enter the number you wish to dial, followed by the # key.");
+                gather.say("Hello " + name + ", please enter the number you wish to dial, followed by the # key.");
 
-			    res.send(voiceResponse.toString());
-	    	}
-	    })
-	    .catch(function(err) {
-	        console.log(err);
-	    });
+                res.send(voiceResponse.toString());
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 
 };
 
 ivrController.dialer = function(req, res) {
-	const numberFrom = req.body.Caller;
-	const numberCalled = req.body.Digits;
+    const numberFrom = req.body.Caller;
+    const numberCalled = req.body.Digits;
 
-	const voiceResponse = new VoiceResponse();
+    const voiceResponse = new VoiceResponse();
 
-	voiceResponse.say("Connecting you now.");
+    voiceResponse.say("Connecting you now.");
 
-	const dial = voiceResponse.dial({
-		record: 'record-from-ringing-dual',
-		recordingStatusCallback: '/ivr/recording?numberFrom=' + encodeURIComponent(numberFrom) + '&numberCalled=' + encodeURIComponent(numberCalled),
-		method: 'POST'
-	});
+    const dial = voiceResponse.dial({
+        record: 'record-from-ringing-dual',
+        recordingStatusCallback: '/ivr/recording?numberFrom=' + encodeURIComponent(numberFrom) + '&numberCalled=' + encodeURIComponent(numberCalled),
+        method: 'POST'
+    });
 
-	dial.number({
-		url: '/ivr/privacynotice',
-		method: 'POST'
-	}, numberCalled);
+    dial.number({
+        url: '/ivr/privacynotice',
+        method: 'POST'
+    }, numberCalled);
 
-	res.send(voiceResponse.toString());
+    res.send(voiceResponse.toString());
 };
 
 ivrController.privacynotice = function(req, res) {
-	const numberFrom = req.body.Caller;
+    const numberFrom = req.body.Caller;
 
-	User.findOne({phoneNumber: numberFrom})
-		.then(function(user) {
-			if(user==null) {
-				// TODO: we should never reach here?
-			} else {
-				const name = user.name;
+    User.findOne({
+            phoneNumber: numberFrom
+        })
+        .then(function(user) {
+            if (user == null) {
+                // TODO: we should never reach here?
+            } else {
+                const name = user.name;
 
-				const voiceResponse = new VoiceResponse();
+                const voiceResponse = new VoiceResponse();
 
-				const gather = voiceResponse.gather({
-					action: '/ivr/privacyconnect',
-					numDigits: '1',
-					method: 'POST',
-				});
+                const gather = voiceResponse.gather({
+                    action: '/ivr/privacyconnect',
+                    numDigits: '1',
+                    method: 'POST',
+                });
 
-				gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
+                gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
 
-				voiceResponse.say("Goodbye.");
+                voiceResponse.say("Goodbye.");
 
-				voiceResponse.hangup();
+                voiceResponse.hangup();
 
-				res.send(voiceResponse.toString());
-			}
-		})
-		.catch(function(err) {
-				console.log(err);
-		});
+                res.send(voiceResponse.toString());
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 };
 
 ivrController.privacyconnect = function(req, res) {
-	const voiceResponse = new VoiceResponse();
+    const voiceResponse = new VoiceResponse();
 
-	voiceResponse.say("Connecting you to the call.");
+    voiceResponse.say("Connecting you to the call.");
 
-	res.send(voiceResponse.toString());
+    res.send(voiceResponse.toString());
 }
 
 ivrController.recording = function(req, res) {
-	const numberFrom = decodeURIComponent(req.query.numberFrom);
-	const numberCalled = decodeURIComponent(req.query.numberCalled);
-	const recordingUrl = req.body.RecordingUrl;
-	const recordingSid = req.body.RecordingSid;
+    const numberFrom = decodeURIComponent(req.query.numberFrom);
+    const numberCalled = decodeURIComponent(req.query.numberCalled);
+    const recordingUrl = req.body.RecordingUrl;
+    const recordingSid = req.body.RecordingSid;
 
-	// lookup the call here
+    // lookup the call here
 
-  User.findOne({phoneNumber: numberFrom})
-    .then(function(user) {
-    	if(user==null) {
-    		// TODO: we should never reach here?
-    	} else {
-        const name = user.name;
-        const email = user.email;
+    User.findOne({
+            phoneNumber: numberFrom
+        })
+        .then(function(user) {
+            if (user == null) {
+                // TODO: we should never reach here?
+            } else {
+                const name = user.name;
+                const email = user.email;
 
-				// Look up the recording here....
-				twilioClient.recordings(recordingSid)
-		      .fetch()
-		      .then(function(recording) {
-						const parentCallSid = recording.callSid;
+                // Look up the recording here....
+                twilioClient.recordings(recordingSid)
+                    .fetch()
+                    .then(function(recording) {
+                        const parentCallSid = recording.callSid;
 
-						// lets look up the parent here (from)...
-						twilioClient.calls(parentCallSid)
-				      .fetch()
-				      .then(function(call) {
+                        // lets look up the parent here (from)...
+                        twilioClient.calls(parentCallSid)
+                            .fetch()
+                            .then(function(call) {
 
-								// TODO: look up child call here (to)...
-								twilioClient.calls.each({
-								    parentCallSid: parentCallSid
-								}, function(childCall) {
-										sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+                                // TODO: look up child call here (to)...
+                                twilioClient.calls.each({
+                                    parentCallSid: parentCallSid
+                                }, function(childCall) {
+                                    sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
 
-										// TODO: capture full sprectrum of calls
-										user.recordings.push({numberCalled: childCall.toFormatted, recordingUrl: recordingUrl});
+                                    // TODO: capture full sprectrum of calls
+                                    user.recordings.push({
+                                        numberCalled: childCall.toFormatted,
+                                        recordingUrl: recordingUrl
+                                    });
 
-										User.update({
-								        _id: user._id
-								    }, {
-											recordings: user.recordings
-										}, function(err, numberAffected, rawResponse) {
-								        if (err) {
-								            console.log('There was an error');
-								        }
-									  });
+                                    User.update({
+                                        _id: user._id
+                                    }, {
+                                        recordings: user.recordings
+                                    }, function(err, numberAffected, rawResponse) {
+                                        if (err) {
+                                            console.log('There was an error');
+                                        }
+                                    });
 
-										// TODO, fix for conference calls
-								});
-
-
-							})
-				      .done();
-					})
-		      .done();
-
+                                    // TODO, fix for conference calls
+                                });
 
 
+                            })
+                            .done();
+                    })
+                    .done();
 
 
-				res.send('');
-    	}
-    })
-    .catch(function(err) {
-        console.log(err);
-    });
+
+
+                res.send('');
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 }
 
 /**
@@ -183,20 +191,20 @@ ivrController.recording = function(req, res) {
  * @return {String}
  */
 function redirectWelcome() {
-  const twiml = new VoiceResponse();
+    const twiml = new VoiceResponse();
 
-  twiml.say('Returning to the main menu', {
-    voice: 'alice',
-    language: 'en-GB',
-  });
+    twiml.say('Returning to the main menu', {
+        voice: 'alice',
+        language: 'en-GB',
+    });
 
-  twiml.redirect('/welcome');
+    twiml.redirect('/welcome');
 
-  return twiml.toString();
+    return twiml.toString();
 }
 
 function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
-	// create reusable transporter object using the default SMTP transport
+    // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         /*host: 'smtp.gmail.com',
         port: 587,
@@ -205,10 +213,10 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
             user: 'digitalhen@gmail.com', // generated ethereal user
             pass: 'iybfrzmemnvkyzhl' // generated ethereal password
         }*/
-	host: 'localhost',
-	port: 25,
-	secure: false,
-	ignoreTLS: true,
+        host: 'localhost',
+        port: 25,
+        secure: false,
+        ignoreTLS: true,
     });
 
     // setup email data with unicode symbols
@@ -218,8 +226,8 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl, // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-		'Here is your ' + duration + ' second call recording: ' + recordingUrl
-// html body
+            'Here is your ' + duration + ' second call recording: ' + recordingUrl
+        // html body
     };
 
     // send mail with defined transport object
