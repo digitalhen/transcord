@@ -2,6 +2,9 @@ $(document).ready(function(){
   // Autoformatting on phone numbers
   $('input[name="phoneNumber"]').mask('(000) 000-0000');
 
+  // table sorting
+  $('table.table').tablesorter();
+
   // add a method to check passwordField
   $.validator.addMethod("pwcheck", function(value) {
      return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
