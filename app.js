@@ -1,5 +1,4 @@
 require('dotenv').config();
-const config = require('./config');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -14,7 +13,7 @@ const app = express();
 console.log('Starting up in ' + process.env.NODE_ENV + ' mode');
 require('./helpers/connectionHelper');
 
-const server = app.listen(config.port, function() {
+const server = app.listen(process.env.PORT, function() {
   console.log('Express server listening on port ' + server.address().port);
 });
 

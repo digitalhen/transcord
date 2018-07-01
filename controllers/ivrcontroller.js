@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
 //const User = require('../models/user
@@ -115,6 +116,8 @@ ivrController.recording = function(req, res) {
 	const numberCalled = decodeURIComponent(req.query.numberCalled);
 	const recordingUrl = req.body.RecordingUrl;
 
+	// lookup the call here
+
   User.findOne({phoneNumber: numberFrom})
     .then(function(user) {
     	if(user==null) {
@@ -122,6 +125,12 @@ ivrController.recording = function(req, res) {
     	} else {
         const name = user.name;
         const email = user.email;
+
+				// TODO: look up the call nHere
+				client.recordings('RE557ce644e5ab84fa21cc21112e22c485')
+		      .fetch()
+		      .then(recording => console.log(recording.callSid))
+		      .done();
 
 				user.recordings.push({numberCalled: numberCalled, recordingUrl: recordingUrl});
 
