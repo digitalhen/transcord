@@ -137,7 +137,7 @@ ivrController.recording = function(req, res) {
 		        if (err) {
 		            console.log('There was an error');
 		        }
-			  };
+			  });
 
 				sendEmail(name, email, numberCalled, recordingUrl);
 
