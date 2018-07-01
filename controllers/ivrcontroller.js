@@ -127,26 +127,28 @@ ivrController.recording = function(req, res) {
         const name = user.name;
         const email = user.email;
 
-				// TODO: look up the call nHere
+				// Look up the recording here....
 				twilioClient.recordings(recordingSid)
 		      .fetch()
 		      .then(function(recording) {
-						const callSid = recording.callSid;
+						const parentCallSid = recording.callSid;
 
-						console.log(recording);
+						//console.log(recording);
 
-						twilioClient.calls(callSid)
+						// lets look up the parent here (from)...
+						twilioClient.calls(parentCallSid)
 				      .fetch()
 				      .then(function(call) {
-								console.log(call);
+								//console.log(call);
 
-								// TODO: look up child call here
-
-
+								// TODO: look up child call here (to)...
 								twilioClient.calls.each({
-								    parentCallSid: callSid
+								    parentCallSid: parentCallSid
 								},
-								    calls => console.log(calls)
+								    //calls => console.log(calls)
+										// TODO: make this accomodate conference calls
+
+										sendEmail(name, email, recording.duration, calls[0].toFormatted, recordingUrl);
 								);
 
 
@@ -167,7 +169,7 @@ ivrController.recording = function(req, res) {
 		        }
 			  });
 
-				sendEmail(name, email, numberCalled, recordingUrl);
+
 
 				res.send('');
     	}
@@ -194,7 +196,7 @@ function redirectWelcome() {
   return twiml.toString();
 }
 
-function sendEmail(name, emailTo, numberCalled, recordingUrl) {
+function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
 	// create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         /*host: 'smtp.gmail.com',
@@ -215,9 +217,9 @@ function sendEmail(name, emailTo, numberCalled, recordingUrl) {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
-        text: 'Dear ' + name + ',\n\nHere is your call recording: ' + recordingUrl, // plain text body
+        text: 'Dear ' + name + ',\n\nHere is your ' + duration + 'second call recording: ' + recordingUrl, // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-		'The call recording can be found here: ' + recordingUrl
+		'Here is your ' + duration + 'second call recording: ' + recordingUrl
 // html body
     };
 
