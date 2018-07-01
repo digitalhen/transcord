@@ -51,7 +51,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(router);
 
-/*
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
@@ -65,8 +64,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: (app.get('env') === 'development') ? err : {},
+    error: (app.get('env') === 'development' || app.get('env') === 'test') ? err : {},
   });
 });
-*/
+
 module.exports = app;

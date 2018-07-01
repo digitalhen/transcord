@@ -2,6 +2,7 @@ const twilio = require('twilio');
 const express = require('express');
 const router = express.Router();
 const auth = require('../controllers/authcontroller');
+const dash = require('../controllers/dashcontroller');
 const ivrRouter = require('./ivr');
 require('dotenv').config();
 
@@ -21,6 +22,9 @@ router.get('/profile', auth.profile);
 
 // route for profile update
 router.post('/profile', auth.doUpdate);
+
+// route for Dashboard
+router.get('/dashboard', dash.list);
 
 // route to login page
 router.get('/login', auth.login);
