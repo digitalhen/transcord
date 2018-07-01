@@ -55,6 +55,8 @@ userController.doUpdate = function(req, res) {
         return res.redirect('/login');
     }
 
+    console.log("I'm in the update");
+
     User.update({
         _id: req.user._id
     }, {

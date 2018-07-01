@@ -36,47 +36,72 @@ $(document).ready(function(){
       name: "required",
       username: {
         required: true,
-        notEqual: $('#form-profile input[name="username"]').attr('original'),
+        //notEqual: $('#form-profile input[name="username"]').attr('original'),
         remote: {
-          url: '/validate',
-          type: 'post',
-          data: {
-            username: function() {
-              //console.log($('#form-register input[name="username"]').val());
-              return $('#form-profile input[name="username"]').val();
+          param: {
+            url: '/validate',
+            type: 'post',
+            data: {
+              username: function() {
+                //console.log($('#form-register input[name="username"]').val());
+                return $('#form-profile input[name="username"]').val();
+              }
             }
+          },
+          depends: function() {
+            return ($('#form-profile input[name="username"]').val() !== $('#form-profile input[name="username"]').attr('original'));
           }
+          /*
+          depends: function(element) {
+              // compare email address in form to hidden field
+              return ($(element).val() !== $('#form-profile input[name="username"]').attr('original'));
+          }*/
         }
       },
       password: {
-          required: true,
-          pwcheck: true
+          pwcheck: {
+            depends: function(element) {
+              return ($(element).val().length > 0);
+            }
+          },
       },
       email: {
         email: true,
-        notEqual: $('#form-profile input[name="email"]').attr('original'),
+        //notEqual: $('#form-profile input[name="email"]').attr('original'),
         remote: {
-          url: '/validate',
-          type: 'post',
-          data: {
-            email: function() {
-              //console.log($('#form-register input[name="username"]').val());
-              return $('#form-register input[name="email"]').val();
-            }
+          param: {
+            url: '/validate',
+            type: 'post',
+            data: {
+              email: function() {
+                //console.log($('#form-register input[name="username"]').val());
+                return $('#form-profile input[name="email"]').val();
+              }
+            },
+          },
+          depends: function(element) {
+              // compare email address in form to hidden field
+              return ($(element).val() !== $('#form-profile input[name="email"]').attr('original'));
           }
         }
       },
       phoneNumber: {
         phoneUS: true,
-        notEqual: $('#form-profile input[name="phoneNumber"]').attr('original'),
+        //notEqual: $('#form-profile input[name="phoneNumber"]').attr('original'),
         remote: {
-          url: '/validate',
-          type: 'post',
-          data: {
-            phoneNumber: function() {
-              //console.log($('#form-register input[name="username"]').val());
-              return $('#form-register input[name="phoneNumber"]').val();
-            }
+          param: {
+            url: '/validate',
+            type: 'post',
+            data: {
+              phoneNumber: function() {
+                //console.log($('#form-register input[name="username"]').val());
+                return $('#form-profile input[name="phoneNumber"]').val();
+              }
+            },
+          },
+          depends: function(element) {
+              // compare email address in form to hidden field
+              return ($(element).val() !== $('#form-profile input[name="phoneNumber"]').attr('original'));
           }
         }
       }
@@ -157,6 +182,14 @@ $(document).ready(function(){
   });
 
   // disable submit if not valid
+  $('#form-profile input').on('blur keyup', function() {
+      if ($("#form-profile").valid()) {
+          $('#form-profile button[type="submit"]').prop('disabled', false);
+      } else {
+          $('#form-profile button[type="submit"]').prop('disabled', 'disabled');
+      }
+  });
+
   $('#form-login input').on('blur keyup', function() {
       if ($("#form-login").valid()) {
           $('#form-login button[type="submit"]').prop('disabled', false);
