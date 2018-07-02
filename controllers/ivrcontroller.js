@@ -376,13 +376,17 @@ function buildTranscription(leftResults, rightResults) {
       newLine.side = 'left';
 
       // compute the float start time
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined') {
-        newLine.startTime = parseFloat(result.alternatives[0].words[0].startTime.seconds + result.alternatives[0].words[0].startTime.nanos)
-      } else {
-        newLine.startTime = parseFloat("0" + result.alternatives[0].words[0].startTime.nanos)
-      }
+      var startTimeSecond, startTimeNano = "0";
 
-      newLine.startTime = result.alternatives[0].words[0].startTime;
+      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
+        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
+
+      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
+        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
+
+      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
+
+
       newLine.transcript = result.alternatives[0].transcript;
 
       combinedTranscript.push(newLine);
@@ -398,11 +402,15 @@ function buildTranscription(leftResults, rightResults) {
       newLine.side = 'right';
 
       // compute the float start time
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined') {
-        newLine.startTime = parseFloat(result.alternatives[0].words[0].startTime.seconds + result.alternatives[0].words[0].startTime.nanos)
-      } else {
-        newLine.startTime = parseFloat("0" + result.alternatives[0].words[0].startTime.nanos)
-      }
+      var startTimeSecond, startTimeNano = "0";
+
+      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
+        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
+
+      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
+        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
+
+      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
 
       newLine.transcript = result.alternatives[0].transcript;
 
