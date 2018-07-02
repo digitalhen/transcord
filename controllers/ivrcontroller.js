@@ -356,6 +356,9 @@ function runTranscription(user, recordingObject) {
 }
 
 function buildTranscription(leftResults, rightResults) {
+  console.log("leftResults:");
+  console.log(leftResults);
+
   var combinedTranscript = [];
 
   leftResults.alternatives.forEach(function (alternative) {
