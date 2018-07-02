@@ -546,7 +546,7 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
     var plaintextTranscript = '';
     var htmlTranscript = '';
 
-    transcript.forEach(function(line) {
+    transcription.forEach(function(line) {
       if(line.side=='left') {
         plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
         htmlTranscript += '<b>You said:</b><br/>' + line.transcript + "<br/><br/>";
