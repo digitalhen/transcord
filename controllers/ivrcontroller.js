@@ -306,15 +306,13 @@ function runTranscription(user, recordingObject) {
     .then(data => {
       console.log(data);
       const response = data[0];
-      response.results.forEach(result => {
-        status.left = true;
 
-        recordingObject.transcriptionLeft = JSON.stringify(result.alternatives);
+      status.left = true;
 
-        if(status.main && status.left && status.right)
-          pushRecording(user,recordingObject);
+      recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
-      });
+      if(status.main && status.left && status.right)
+        pushRecording(user,recordingObject);
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -329,15 +327,13 @@ function runTranscription(user, recordingObject) {
       })
       .then(data => {
         const response = data[0];
-        response.results.forEach(result => {
-          status.right = true;
 
-          recordingObject.transcriptionRight = JSON.stringify(result.alternatives);
+        status.right = true;
 
-          if(status.main && status.left && status.right)
-            pushRecording(user,recordingObject);
+        recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
-        });
+        if(status.main && status.left && status.right)
+          pushRecording(user,recordingObject);
       })
       .catch(err => {
         console.error('ERROR:', err);
