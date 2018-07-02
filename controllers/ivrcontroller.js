@@ -3,6 +3,11 @@ const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.e
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
 const storage = require('@google-cloud/storage');
+const https   = require('https');
+const request = require('request');
+const fs      = require('fs');
+const path    = require('path');
+const ffmpeg = require('fluent-ffmpeg');
 
 
 //const User = require('../models/user
@@ -224,20 +229,22 @@ function redirectWelcome() {
 }
 
 function processFiles(recordingSid, recordingUrl) {
+	console.log("Processing files for: " + recordingUrl);
+	
     const PROJECT_ID = 'transcord-2018';
 
     var gcs = storage({
         projectId: PROJECT_ID,
-        keyFilename: '../credentials/auth.json'
+        keyFilename: 'credentials/google.json'
     });
 
     let bucket = gcs.bucket('transcord.app');
 
     var filename = path.basename(recordingUrl);
-    var dest = '../downloads/' + filename;
+    var dest = __basedir + '/downloads/' + filename;
     var stream = fs.createWriteStream(dest + '.wav');
 
-    https.get(file, function(resp) {
+    https.get(recordingUrl, function(resp) {
         resp.pipe(stream);
 
         console.log('File downloaded');

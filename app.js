@@ -9,6 +9,9 @@ const router = require('./routes/index');
 
 const app = express();
 
+// storage root of project
+global.__basedir = __dirname;
+
 // add moment to Locals
 app.locals.moment = require('moment');
 
