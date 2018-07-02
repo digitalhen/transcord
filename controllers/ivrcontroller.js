@@ -369,7 +369,7 @@ function buildTranscription(leftResults, rightResults) {
   leftResults.forEach(function (result) {
     var newLine = {};
 
-    console.log(result.alternatives);
+    console.log(JSON.stringify(result.alternatives));
 
     // if there are any words, lets grab them
     if(result.alternatives.length > 0 && result.alternatives[0].words.length > 0) {
