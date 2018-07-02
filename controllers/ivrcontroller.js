@@ -330,7 +330,7 @@ function runTranscription(user, recordingObject) {
 
         status.right = true;
 
-        recordingObject.transcriptionLeft = JSON.stringify(response.results);
+        recordingObject.transcriptionRight = JSON.stringify(response.results);
 
         if(status.main && status.left && status.right)
           pushRecording(user,recordingObject);
