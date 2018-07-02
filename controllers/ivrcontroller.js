@@ -395,7 +395,11 @@ function buildTranscription(leftResults, rightResults) {
     }
   });
 
+  console.log(combinedTranscript);
+
   combinedTranscript = sort(combinedTranscript); // sorts by startTime;
+
+  console.log(combinedTranscript);
 
   return combinedTranscript;
 
