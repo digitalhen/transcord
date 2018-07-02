@@ -428,7 +428,7 @@ function buildTranscription(leftResults, rightResults) {
 
   function sort(arr) {
     arr.sort(function(a,b) {
-      var valueA=a.startTime, b.startTime;
+      var valueA=a.startTime, valueB=b.startTime;
       if(valueA < valueB) // ascending
         return -1;
       if(valueA > valueB)
