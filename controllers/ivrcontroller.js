@@ -360,22 +360,22 @@ function buildTranscription(leftResults, rightResults) {
 
   var combinedTranscript = [];
 
-  leftResults.alternatives[0].forEach(function (alternative) {
+  leftResults.forEach(function (result) {
     var newLine = {};
 
     newLine.side = 'left';
-    newLine.startTime = alternative.words[0].startTime;
-    newLine.transcript = alternative.transcript;
+    newLine.startTime = result.alternatives[0].words[0].startTime;
+    newLine.transcript = result.alternatives[0].transcript;
 
     combinedTranscript.push(newLine);
   });
 
-  rightResults.alternatives[0].forEach(function (alternative) {
+  rightResults.forEach(function (result) {
     var newLine = {};
 
     newLine.side = 'right';
-    newLine.startTime = alternative.words[0].startTime;
-    newLine.transcript = alternative.transcript;
+    newLine.startTime = result.alternatives[0].words[0].startTime;
+    newLine.transcript = result.alternatives[0].transcript;
 
     combinedTranscript.push(newLine);
   });
