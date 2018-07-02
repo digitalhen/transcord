@@ -230,6 +230,8 @@ function redirectWelcome() {
 }
 
 function runTranscription(user, recordingObject) {
+  console.log("Running transcriptions for recording: " + recordingObject.recordingSid);
+
   var status = {
     main: false,
     left: false,
