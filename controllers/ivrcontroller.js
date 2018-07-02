@@ -231,6 +231,7 @@ function redirectWelcome() {
 
 function runTranscription(user, recordingObject) {
   var status = {
+    main: false,
     left: false,
     right: false
   }
@@ -238,6 +239,13 @@ function runTranscription(user, recordingObject) {
   const config = {
     enableWorldTimeOffsets: true,
     languageCode: 'en-US'
+  };
+
+  const main = {
+    config: {languageCode: 'en-US'},
+    audio: {
+      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-main.wav'
+    }
   };
 
   const left = {
@@ -250,12 +258,40 @@ function runTranscription(user, recordingObject) {
   const right = {
     config: config,
     audio: {
-      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-left.wav'
+      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-right.wav'
     }
   };
 
   const client = new speech.SpeechClient({projectId: PROJECT_ID,
         keyFilename: GOOGLE_KEY});
+
+    client
+      .longRunningRecognize(main)
+      .then(data => {
+        const operation = data[0];
+        // Get a Promise representation of the final result of the job
+        return operation.promise();
+      })
+      .then(data => {
+        console.log(data);
+        const response = data[0];
+        response.results.forEach(result => {
+          const transcription = response.results
+            .map(result => result.alternatives[0].transcript)
+            .join('\n');
+
+          status.main = true;
+
+          recordingObject.transcription = transcription;
+
+          if(status.main && status.left && status.right)
+            pushRecording(user,recordingObject);
+
+        });
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
 
   client
     .longRunningRecognize(left)
@@ -272,7 +308,7 @@ function runTranscription(user, recordingObject) {
 
         recordingObject.transcriptionLeft = JSON.stringify(result.alternatives);
 
-        if(status.left && status.right)
+        if(status.main && status.left && status.right)
           pushRecording(user,recordingObject);
 
       });
@@ -295,7 +331,7 @@ function runTranscription(user, recordingObject) {
 
           recordingObject.transcriptionRight = JSON.stringify(result.alternatives);
 
-          if(status.left && status.right)
+          if(status.main && status.left && status.right)
             pushRecording(user,recordingObject);
 
         });
@@ -320,7 +356,7 @@ function pushRecording(user, recordingObject) {
       }
   });
 
-  sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl);
+  sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, recordingObject.transcription);
 
 }
 
@@ -425,7 +461,7 @@ function processFiles(user, recordingObject) {
     });
 }
 
-function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
+function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcription) {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         /*host: 'smtp.gmail.com',
@@ -446,9 +482,12 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
-        text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl, // plain text body
+        text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl +
+          'You said: ' + transcription,
+        // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a>'
+            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a></br>' +
+            'You said: ' + transcription
         // html body
     };
 
