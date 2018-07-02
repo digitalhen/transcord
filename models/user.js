@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
 	combinedPhoneNumber: String,
 	recordings: [
 		{
+			recordingSid: String,
 			startTime: Date,
 			endTime: Date,
 			numberFrom: String,
@@ -27,7 +28,9 @@ const UserSchema = new mongoose.Schema({
 			numberCalled: String,
 			numberCalledFormatted: String,
 			duration: Number,
-			recordingUrl: String
+			recordingUrl: String,
+			recordingUrlLeft: String,
+			recordingUrlRight: String
 		}
 	]
 });

@@ -2,6 +2,9 @@ const nodemailer = require('nodemailer');
 const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
+const storage = require('@google-cloud/storage');
+
+
 //const User = require('../models/user
 
 var ivrController = {};
@@ -119,96 +122,94 @@ ivrController.recording = function(req, res) {
     const recordingUrl = req.body.RecordingUrl;
     const recordingSid = req.body.RecordingSid;
 
-    // lookup the call here
-/*
-    User.findOne({
-            combinedPhoneNumber: numberFrom
-        })
-        .then(function(user) {
-            if (user == null) {
-                // TODO: we should never reach here?
-            } else {
-                const name = user.name;
-                const email = user.email;
- */
-                // Look up the recording here....
-                twilioClient.recordings(recordingSid)
-                    .fetch()
-                    .then(function(recording) {
-                        const parentCallSid = recording.callSid;
+    // Look up the recording here....
+    twilioClient.recordings(recordingSid)
+        .fetch()
+        .then(function(recording) {
+            const parentCallSid = recording.callSid;
 
-                        // lets look up the parent here (from)...
-                        twilioClient.calls(parentCallSid)
-                            .fetch()
-                            .then(function(parentCall) {
-                                // TODO: Look up the user here:
+            // lets look up the parent here (from)...
+            twilioClient.calls(parentCallSid)
+                .fetch()
+                .then(function(parentCall) {
+                    // TODO: Look up the user here:
 
-                                User.findOne({
-                                        combinedPhoneNumber: parentCall.from
-                                    })
-                                    .then(function(user) {
-                                        if (user == null) {
-                                            // TODO: we should never reach here?
-                                        } else {
-                                            const name = user.name;
-                                            const email = user.email;
+                    User.findOne({
+                            combinedPhoneNumber: parentCall.from
+                        })
+                        .then(function(user) {
+                            if (user == null) {
+                                // TODO: we should never reach here?
+                            } else {
+                                const name = user.name;
+                                const email = user.email;
 
-                                            twilioClient.calls.each({
-                                                parentCallSid: parentCallSid
-                                            }, function(childCall) {
-                                                sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+                                twilioClient.calls.each({
+                                    parentCallSid: parentCallSid
+                                }, function(childCall) {
+                                    sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
 
-                                                // TODO: capture full sprectrum of calls
-                                                user.recordings.push({
-            																			  startTime: parentCall.startTime,
-            																				endTime: parentCall.endTime,
-            																				numberFrom: parentCall.from,
-            																				numberFromFormatted: parentCall.fromFormatted,
-            																				bridgeNumber: parentCall.to,
-            																				numberCalled: childCall.to,
-                                                    numberCalledFormatted: childCall.toFormatted,
-            																				duration: parseFloat(recording.duration),
-                                                    recordingUrl: recordingUrl
-                                                });
+                                    // TODO: capture full sprectrum of calls
+                                    user.recordings.push({
+                                        recordingSid: recordingSid,
+                                        startTime: parentCall.startTime,
+                                        endTime: parentCall.endTime,
+                                        numberFrom: parentCall.from,
+                                        numberFromFormatted: parentCall.fromFormatted,
+                                        bridgeNumber: parentCall.to,
+                                        numberCalled: childCall.to,
+                                        numberCalledFormatted: childCall.toFormatted,
+                                        duration: parseFloat(recording.duration),
+                                        recordingUrl: recordingUrl,
+                                        recordingUrlLeft: 'publicUrls.left',
+                                        recordingUrlRight: 'publicUrls.right'
+                                    });
 
-                                                User.update({
-                                                    _id: user._id
-                                                }, {
-                                                    recordings: user.recordings
-                                                }, function(err, numberAffected, rawResponse) {
-                                                    if (err) {
-                                                        console.log('There was an error');
-                                                    }
-                                                });
-
-                                                // TODO, fix for conference calls
-                                            });
+                                    User.update({
+                                        _id: user._id
+                                    }, {
+                                        recordings: user.recordings
+                                    }, function(err, numberAffected, rawResponse) {
+                                        if (err) {
+                                            console.log('There was an error');
                                         }
-                                      });
+                                    });
+
+                                    // call download for this file
+                                    processFiles(recordingSid, recordingUrl);
+                                    // TODO: can i make the email thing plug in to this?
+
+
+
+                                    // TODO, fix for conference calls
+                                });
+                            }
+                        });
 
 
 
 
-                            })
-                            .done();
-                    })
-                    .done();
-
-
-
-
-                res.send('');
-      /*      }
+                })
+                .done();
         })
-        .catch(function(err) {
-            console.log(err);
-        });*/
+        .done();
+
+
+
+
+    res.send('');
+    /*      }
+      })
+      .catch(function(err) {
+          console.log(err);
+      });*/
 }
 
 /**
- * Returns an xml with the redirect
- * @return {String}
+ * UTILITY SCRIPTS
  */
+
+
 function redirectWelcome() {
     const twiml = new VoiceResponse();
 
@@ -220,6 +221,80 @@ function redirectWelcome() {
     twiml.redirect('/welcome');
 
     return twiml.toString();
+}
+
+function processFiles(recordingSid, recordingUrl) {
+    const PROJECT_ID = 'transcord-2018';
+
+    var gcs = storage({
+        projectId: PROJECT_ID,
+        keyFilename: '../credentials/auth.json'
+    });
+
+    let bucket = gcs.bucket('transcord.app');
+
+    var filename = path.basename(recordingUrl);
+    var dest = '../downloads/' + filename;
+    var stream = fs.createWriteStream(dest + '.wav');
+
+    https.get(file, function(resp) {
+        resp.pipe(stream);
+
+        console.log('File downloaded');
+
+        var right = ffmpeg(dest + '.wav')
+            .inputFormat('wav')
+            .audioChannels(2)
+            .audioBitrate('64k')
+            .outputOptions('-map_channel 0.0.1')
+            .on('end', function() {
+                bucket.upload(dest + '-right.mp3', (err, file) => {
+                    console.log('Uploading right file.');
+                    fs.unlink(dest + '-right.mp3', (err, file) => {
+                        console.log('Deleting right file.');
+                    });
+                });
+            })
+            .save(dest + '-right.mp3');
+
+        console.log('Right file saved');
+
+        var left = ffmpeg(dest + '.wav')
+            .inputFormat('wav')
+            .audioChannels(2)
+            .audioBitrate('64k')
+            .outputOptions('-map_channel 0.0.0')
+            .on('end', function() {
+                bucket.upload(dest + '-left.mp3', (err, file) => {
+                    console.log('Uploading left file.');
+                    fs.unlink(dest + '-left.mp3', (err, file) => {
+                        console.log('Deleting left file.');
+                    });
+                });
+            })
+            .save(dest + '-left.mp3');
+
+        console.log('Left file saved');
+
+        bucket.upload(dest + '.wav', (err, file) => {
+            console.log('Uploading main file.');
+            // if it's ok upload?
+            fs.unlink(dest + '.wav', (err, file) => {
+                console.log('Deleting main file.');
+            });
+        });
+
+        bucket.file(filename + '.wav').getSignedUrl({
+            action: 'read',
+            expires: '03-09-2491'
+        }).then(signedUrls => {
+            console.log('Main file URL: ' + signedUrls[0]);
+        });
+
+
+    }).on('error', function(e) {
+        response.send("error connecting" + e.message);
+    });
 }
 
 function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
