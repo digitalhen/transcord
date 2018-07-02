@@ -320,8 +320,10 @@ function runTranscription(user, recordingObject) {
       recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
       if(status.left && status.right) {
-        recordingObject.transcription = JSON.stringify(buildTranscription(leftResults, rightResults));
-        pushRecording(user,recordingObject);
+        var transcription = buildTranscription(leftResults, rightResults);
+        recordingObject.transcription = JSON.stringify(transcription);
+        saveToDatabase(user,recordingObject);
+        sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
       }
     })
     .catch(err => {
@@ -345,8 +347,10 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcriptionRight = JSON.stringify(response.results);
 
         if(status.left && status.right) {
-          recordingObject.transcription = JSON.stringify(buildTranscription(leftResults, rightResults));
-          pushRecording(user,recordingObject);
+          var transcription = buildTranscription(leftResults, rightResults);
+          recordingObject.transcription = JSON.stringify(transcription);
+          saveToDatabase(user,recordingObject);
+          sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
         }
 
       })
@@ -389,9 +393,9 @@ function buildTranscription(leftResults, rightResults) {
     }
   });
 
-  sort(combinedTranscript); // sorts by startTime;
+  combinedTranscript = sort(combinedTranscript); // sorts by startTime;
 
-
+  return combinedTranscript;
 
   function sort(arr) {
     arr.sort(function(a,b) {
@@ -403,11 +407,9 @@ function buildTranscription(leftResults, rightResults) {
       return 0;
     });
   }
-
-  return combinedTranscript;
 }
 
-function pushRecording(user, recordingObject) {
+function saveToDatabase(user, recordingObject) {
   console.log("Finishing processing files for user: " + user.username + ", pushing to database & sending email.");
 
   user.recordings.push(recordingObject);
@@ -421,9 +423,6 @@ function pushRecording(user, recordingObject) {
           console.log('There was an error');
       }
   });
-
-  sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, recordingObject.transcription);
-
 }
 
 function processFiles(user, recordingObject) {
@@ -543,17 +542,32 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
         ignoreTLS: true,
     });
 
+    // loop through transcription object and build up the email
+    var plaintextTranscript = '';
+    var htmlTranscript = '';
+
+    transcript.forEach(function(line) {
+      if(line.side=='left') {
+        plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
+        htmlTranscript += '<b>You said:</b><br/>' + line.transcript + "<br/><br/>";
+      } else if(line.side=='right') {
+        plaintextTranscript += 'They said:\n' + line.transcript + "\n\n";
+        htmlTranscript += '<b>They said:</b><br/>' + line.transcript + "<br/><br/>";
+      }
+    });
+
+
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl +
-          '\n\nYou said: ' + transcription,
+          plaintextTranscript,
         // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
             '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a><br/><br/>' +
-            '<b>You said:</b> ' + transcription
+            htmlTranscript
         // html body
     };
 
