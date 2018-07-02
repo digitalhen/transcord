@@ -277,19 +277,20 @@ function runTranscription(user, recordingObject) {
       .then(data => {
         console.log(data);
         const response = data[0];
+        const transcription = '';
+
         response.results.forEach(result => {
-          const transcription = response.results
+          transcription = response.results
             .map(result => result.alternatives[0].transcript)
             .join('\n');
-
-          status.main = true;
-
-          recordingObject.transcription = transcription;
-
-          if(status.main && status.left && status.right)
-            pushRecording(user,recordingObject);
-
         });
+
+        status.main = true;
+
+        recordingObject.transcription = transcription;
+
+        if(status.main && status.left && status.right)
+          pushRecording(user,recordingObject);
       })
       .catch(err => {
         console.error('ERROR:', err);
@@ -305,15 +306,13 @@ function runTranscription(user, recordingObject) {
     .then(data => {
       console.log(data);
       const response = data[0];
-      response.results.forEach(result => {
-        status.left = true;
 
-        recordingObject.transcriptionLeft = JSON.stringify(result.alternatives);
+      status.left = true;
 
-        if(status.main && status.left && status.right)
-          pushRecording(user,recordingObject);
+      recordingObject.transcriptionLeft = JSON.stringify(response);
 
-      });
+      if(status.main && status.left && status.right)
+        pushRecording(user,recordingObject);
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -327,15 +326,15 @@ function runTranscription(user, recordingObject) {
         return operation.promise();
       })
       .then(data => {
-        const response = data[0];
-        response.results.forEach(result => {
+          console.log(data);
+          const response = data[0];
+
           status.right = true;
 
-          recordingObject.transcriptionRight = JSON.stringify(result.alternatives);
+          recordingObject.transcriptionLeft = JSON.stringify(response);
 
           if(status.main && status.left && status.right)
             pushRecording(user,recordingObject);
-
         });
       })
       .catch(err => {
