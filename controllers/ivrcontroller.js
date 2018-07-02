@@ -231,6 +231,8 @@ function redirectWelcome() {
 }
 
 function pushRecording(user, recordingObject) {
+  console.log("Finishing processing files for user: " + user.username + ", pushing to database & sending email.");
+
   user.recordings.push(recordingObject);
 
   User.update({
@@ -271,8 +273,6 @@ function processFiles(user, recordingObject) {
     https.get(recordingObject.recordingUrl, function(resp) {
         resp.pipe(stream);
 
-        console.log('File downloaded');
-
         var right = ffmpeg(dest + '.wav')
             .inputFormat('wav')
             .audioChannels(2)
@@ -280,16 +280,14 @@ function processFiles(user, recordingObject) {
             .outputOptions('-map_channel 0.0.1')
             .on('end', function() {
                 bucket.upload(dest + '-right.mp3', (err, file) => {
-                    console.log('Uploading right file.');
                     fs.unlink(dest + '-right.mp3', (err, file) => {
                       bucket.file(filename + '-right.mp3').getSignedUrl({
                           action: 'read',
                           expires: '03-09-2491'
                       }).then(signedUrls => {
-                          //console.log('Main file URL: ' + signedUrls[0]);
                           recordingObject.recordingUrlRight = signedUrls[0];
 
-                          status.main = true;
+                          status.right = true;
 
                           if(status.main && status.left && status.right)
                             pushRecording(user, recordingObject);
@@ -299,7 +297,6 @@ function processFiles(user, recordingObject) {
             })
             .save(dest + '-right.mp3');
 
-        //console.log('Right file saved');
 
         var left = ffmpeg(dest + '.wav')
             .inputFormat('wav')
@@ -308,14 +305,11 @@ function processFiles(user, recordingObject) {
             .outputOptions('-map_channel 0.0.0')
             .on('end', function() {
                 bucket.upload(dest + '-left.mp3', (err, file) => {
-                    //console.log('Uploading left file.');
                     fs.unlink(dest + '-left.mp3', (err, file) => {
-                        //console.log('Deleting left file.');
                         bucket.file(filename + '-left.mp3').getSignedUrl({
                             action: 'read',
                             expires: '03-09-2491'
                         }).then(signedUrls => {
-                            //console.log('Main file URL: ' + signedUrls[0]);
                             recordingObject.recordingUrlLeft = signedUrls[0];
 
                             status.left = true;
@@ -328,18 +322,13 @@ function processFiles(user, recordingObject) {
             })
             .save(dest + '-left.mp3');
 
-        //console.log('Left file saved');
 
         bucket.upload(dest + '.wav', (err, file) => {
-            //console.log('Uploading main file.');
-            // if it's ok upload?
             fs.unlink(dest + '.wav', (err, file) => {
-                //console.log('Deleting main file.');
                 bucket.file(filename + '.wav').getSignedUrl({
                     action: 'read',
                     expires: '03-09-2491'
                 }).then(signedUrls => {
-                    //console.log('Main file URL: ' + signedUrls[0]);
                     recordingObject.recordingUrl = signedUrls[0];
 
                     status.main = true;
@@ -381,7 +370,7 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl) {
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl, // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-            'Here is your ' + duration + ' second call recording: ' + recordingUrl
+            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a>'
         // html body
     };
 
