@@ -274,7 +274,7 @@ function processFiles(user, recordingObject) {
         res.pipe(stream).on('close', function() {
               var main = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
-                  .audioChannels(2)
+                  .audioChannels(1)
                   .audioBitrate('64k')
                   .on('end', function() {
                       bucket.upload(dest + '-main.wav', (err, file) => {
@@ -298,7 +298,7 @@ function processFiles(user, recordingObject) {
 
               var right = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
-                  .audioChannels(2)
+                  .audioChannels(1)
                   .audioBitrate('64k')
                   .outputOptions('-map_channel 0.0.1')
                   .on('end', function() {
@@ -323,7 +323,7 @@ function processFiles(user, recordingObject) {
 
               var left = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
-                  .audioChannels(2)
+                  .audioChannels(1)
                   .audioBitrate('64k')
                   .outputOptions('-map_channel 0.0.0')
                   .on('end', function() {
