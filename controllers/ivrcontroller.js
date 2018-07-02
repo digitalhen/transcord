@@ -232,8 +232,11 @@ function redirectWelcome() {
 function runTranscription(user, recordingObject) {
   console.log("Running transcriptions for recording: " + recordingObject.recordingSid);
 
+  var leftResults = [];
+  var rightResults = [];
+
   var status = {
-    main: false,
+    //main: false,
     left: false,
     right: false
   }
@@ -243,12 +246,13 @@ function runTranscription(user, recordingObject) {
     languageCode: 'en-US'
   };
 
+  /*
   const main = {
     config: {languageCode: 'en-US'},
     audio: {
       uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-main.wav'
     }
-  };
+  }; */
 
   const left = {
     config: config,
@@ -267,6 +271,7 @@ function runTranscription(user, recordingObject) {
   const client = new speech.SpeechClient({projectId: PROJECT_ID,
         keyFilename: GOOGLE_KEY});
 
+    /*
     client
       .longRunningRecognize(main)
       .then(data => {
@@ -296,6 +301,7 @@ function runTranscription(user, recordingObject) {
         console.error('ERROR:', err);
       });
 
+  */
   client
     .longRunningRecognize(left)
     .then(data => {
@@ -309,10 +315,14 @@ function runTranscription(user, recordingObject) {
 
       status.left = true;
 
+      leftResults = response.results;
+
       recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
-      if(status.main && status.left && status.right)
+      if(status.left && status.right) {
+        recordingObject.transcription = JSON.stringify(buildTranscription(leftResults, rightResults));
         pushRecording(user,recordingObject);
+      }
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -330,14 +340,60 @@ function runTranscription(user, recordingObject) {
 
         status.right = true;
 
+        rightResults = response.results;
+
         recordingObject.transcriptionRight = JSON.stringify(response.results);
 
-        if(status.main && status.left && status.right)
+        if(status.left && status.right) {
+          recordingObject.transcription = JSON.stringify(buildTranscription(leftResults, rightResults));
           pushRecording(user,recordingObject);
+        }
+
       })
       .catch(err => {
         console.error('ERROR:', err);
       });
+}
+
+function buildTranscription(leftResults, rightResults) {
+  var combinedTranscript = [];
+
+  leftResults.alternatives(function (alternative) {
+    var newLine = {};
+
+    newLine.side = 'left';
+    newLine.startTime = alternative.words[0].startTime;
+    newLine.transcript = alternative.transcript;
+
+    combinedTranscript.push(newLine);
+  });
+
+  rightResults.alternatives(function (alternative) {
+    var newLine = {};
+
+    newLine.side = 'right';
+    newLine.startTime = alternative.words[0].startTime;
+    newLine.transcript = alternative.transcript;
+
+    combinedTranscript.push(newLine);
+  });
+
+  sort(combinedTranscript); // sorts by startTime;
+
+
+
+  function sort(arr) {
+    arr.sort(function(a,b) {
+      var valueA=parseFloat(a.startTime.substring(0, a.startTime.length -1)), valueB=parseFloat(b.startTime.substring(0, b.startTime.length -1));
+      if(valueA < valueB) // ascending
+        return -1;
+      if(valueA > valueB)
+        return 1;
+      return 0;
+    });
+  }
+
+  return combinedTranscript;
 }
 
 function pushRecording(user, recordingObject) {
