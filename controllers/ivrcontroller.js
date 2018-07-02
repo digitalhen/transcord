@@ -10,8 +10,8 @@ const fs      = require('fs');
 const path    = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 
-
-//const User = require('../models/user
+const PROJECT_ID = 'transcord-2018';
+const GOOGLE_KEY = 'credentials/google.json';
 
 var ivrController = {};
 
@@ -237,7 +237,7 @@ function runTranscription(user, recordingObject) {
 
   const config = {
     enableWorldTimeOffsets: true,
-    languageCode = 'en-US'
+    languageCode: 'en-US'
   };
 
   const left = {
@@ -254,40 +254,27 @@ function runTranscription(user, recordingObject) {
     }
   };
 
-  const client = new speech.SpeechClient();
+  const client = new speech.SpeechClient({projectId: PROJECT_ID,
+        keyFilename: GOOGLE_KEY});
 
   client
     .longRunningRecognize(left)
     .then(data => {
       const operation = data[0];
       // Get a Promise representation of the final result of the job
-      //return operation.promise();
+      return operation.promise();
     })
     .then(data => {
+      console.log(data);
       const response = data[0];
       response.results.forEach(result => {
         status.left = true;
 
-        recordingObject.transcriptionLeft = result.alternatives;
+        recordingObject.transcriptionLeft = JSON.stringify(result.alternatives);
 
         if(status.left && status.right)
           pushRecording(user,recordingObject);
 
-        console.log(`Transcription: ${result.alternatives[0].transcript}`);
-        result.alternatives[0].words.forEach(wordInfo => {
-          // NOTE: If you have a time offset exceeding 2^32 seconds, use the
-          // wordInfo.{x}Time.seconds.high to calculate seconds.
-          const startSecs =
-            `${wordInfo.startTime.seconds}` +
-            `.` +
-            wordInfo.startTime.nanos / 100000000;
-          const endSecs =
-            `${wordInfo.endTime.seconds}` +
-            `.` +
-            wordInfo.endTime.nanos / 100000000;
-          console.log(`Word: ${wordInfo.word}`);
-          console.log(`\t ${startSecs} secs - ${endSecs} secs`);
-        });
       });
     })
     .catch(err => {
@@ -299,33 +286,18 @@ function runTranscription(user, recordingObject) {
       .then(data => {
         const operation = data[0];
         // Get a Promise representation of the final result of the job
-        //return operation.promise();
+        return operation.promise();
       })
       .then(data => {
         const response = data[0];
         response.results.forEach(result => {
           status.right = true;
 
-          recordingObject.transcriptionRight = result.alternatives;
+          recordingObject.transcriptionRight = JSON.stringify(result.alternatives);
 
           if(status.left && status.right)
             pushRecording(user,recordingObject);
 
-          console.log(`Transcription: ${result.alternatives[0].transcript}`);
-          result.alternatives[0].words.forEach(wordInfo => {
-            // NOTE: If you have a time offset exceeding 2^32 seconds, use the
-            // wordInfo.{x}Time.seconds.high to calculate seconds.
-            const startSecs =
-              `${wordInfo.startTime.seconds}` +
-              `.` +
-              wordInfo.startTime.nanos / 100000000;
-            const endSecs =
-              `${wordInfo.endTime.seconds}` +
-              `.` +
-              wordInfo.endTime.nanos / 100000000;
-            console.log(`Word: ${wordInfo.word}`);
-            console.log(`\t ${startSecs} secs - ${endSecs} secs`);
-          });
         });
       })
       .catch(err => {
@@ -361,11 +333,10 @@ function processFiles(user, recordingObject) {
 
 	console.log("Processing files for: " + recordingObject.recordingUrl);
 
-    const PROJECT_ID = 'transcord-2018';
 
     var gcs = storage({
         projectId: PROJECT_ID,
-        keyFilename: 'credentials/google.json'
+        keyFilename: GOOGLE_KEY
     });
 
     let bucket = gcs.bucket('transcord.app');

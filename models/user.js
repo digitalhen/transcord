@@ -30,7 +30,10 @@ const UserSchema = new mongoose.Schema({
 			duration: Number,
 			recordingUrl: String,
 			recordingUrlLeft: String,
-			recordingUrlRight: String
+			recordingUrlRight: String,
+			transcription: String,
+			transcriptionLeft: String,
+			transcriptionRight: String,
 		}
 	]
 });
