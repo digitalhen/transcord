@@ -420,22 +420,12 @@ function buildTranscription(leftResults, rightResults) {
 
   console.log(combinedTranscript);
 
-  combinedTranscript = sort(combinedTranscript); // sorts by startTime;
+  combinedTranscript.sort(function(a,b) { return a.startTime - b.startTime; }); // sorts by startTime;
 
   console.log(combinedTranscript);
 
   return combinedTranscript;
 
-  function sort(arr) {
-    arr.sort(function(a,b) {
-      var valueA=a.startTime, valueB=b.startTime;
-      if(valueA < valueB) // ascending
-        return -1;
-      if(valueA > valueB)
-        return 1;
-      return 0;
-    });
-  }
 }
 
 function saveToDatabase(user, recordingObject) {
