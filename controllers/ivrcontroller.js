@@ -356,12 +356,11 @@ function runTranscription(user, recordingObject) {
 }
 
 function buildTranscription(leftResults, rightResults) {
-  console.log("leftResults:");
-  console.log(leftResults);
+  console.log("Building transcription...");
 
   var combinedTranscript = [];
 
-  leftResults.alternatives.forEach(function (alternative) {
+  leftResults.alternatives[0].forEach(function (alternative) {
     var newLine = {};
 
     newLine.side = 'left';
@@ -371,7 +370,7 @@ function buildTranscription(leftResults, rightResults) {
     combinedTranscript.push(newLine);
   });
 
-  rightResults.alternatives.forEach(function (alternative) {
+  rightResults.alternatives[0].forEach(function (alternative) {
     var newLine = {};
 
     newLine.side = 'right';
