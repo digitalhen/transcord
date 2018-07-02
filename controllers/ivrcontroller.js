@@ -323,6 +323,7 @@ function runTranscription(user, recordingObject) {
         var transcription = buildTranscription(leftResults, rightResults);
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
+        console.log(transcription);
         sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
       }
     })
@@ -350,6 +351,7 @@ function runTranscription(user, recordingObject) {
           var transcription = buildTranscription(leftResults, rightResults);
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
+          console.log(transcription);
           sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
         }
 
