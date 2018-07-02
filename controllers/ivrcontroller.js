@@ -363,21 +363,28 @@ function buildTranscription(leftResults, rightResults) {
   leftResults.forEach(function (result) {
     var newLine = {};
 
-    newLine.side = 'left';
-    newLine.startTime = result.alternatives[0].words[0].startTime;
-    newLine.transcript = result.alternatives[0].transcript;
+    // if there are any words, lets grab them
+    if(result.alternatives[0].words.length > 0) {
+      newLine.side = 'left';
+      newLine.startTime = result.alternatives[0].words[0].startTime;
+      newLine.transcript = result.alternatives[0].transcript;
 
-    combinedTranscript.push(newLine);
+      combinedTranscript.push(newLine);
+    }
+
   });
 
   rightResults.forEach(function (result) {
     var newLine = {};
 
-    newLine.side = 'right';
-    newLine.startTime = result.alternatives[0].words[0].startTime;
-    newLine.transcript = result.alternatives[0].transcript;
+    // if there are any words, lets grab them
+    if(result.alternatives[0].words.length > 0) {
+      newLine.side = 'right';
+      newLine.startTime = result.alternatives[0].words[0].startTime;
+      newLine.transcript = result.alternatives[0].transcript;
 
-    combinedTranscript.push(newLine);
+      combinedTranscript.push(newLine);
+    }
   });
 
   sort(combinedTranscript); // sorts by startTime;
