@@ -363,6 +363,8 @@ function buildTranscription(leftResults, rightResults) {
   leftResults.forEach(function (result) {
     var newLine = {};
 
+    console.log(result.alternatives);
+
     // if there are any words, lets grab them
     if(typeof result.alternatives !== 'undefined' && result.alternatives[0].words.length > 0) {
       newLine.side = 'left';
@@ -376,6 +378,8 @@ function buildTranscription(leftResults, rightResults) {
 
   rightResults.forEach(function (result) {
     var newLine = {};
+
+    console.log(result.alternatives);
 
     // if there are any words, lets grab them
     if(typeof result.alternatives !== 'undefined' && result.alternatives[0].words.length > 0) {
