@@ -364,7 +364,7 @@ function buildTranscription(leftResults, rightResults) {
     var newLine = {};
 
     // if there are any words, lets grab them
-    if(result.alternatives[0].words.length > 0) {
+    if(typeof result.alternatives !== 'undefined' && result.alternatives[0].words.length > 0) {
       newLine.side = 'left';
       newLine.startTime = result.alternatives[0].words[0].startTime;
       newLine.transcript = result.alternatives[0].transcript;
@@ -378,7 +378,7 @@ function buildTranscription(leftResults, rightResults) {
     var newLine = {};
 
     // if there are any words, lets grab them
-    if(result.alternatives[0].words.length > 0) {
+    if(typeof result.alternatives !== 'undefined' && result.alternatives[0].words.length > 0) {
       newLine.side = 'right';
       newLine.startTime = result.alternatives[0].words[0].startTime;
       newLine.transcript = result.alternatives[0].transcript;
