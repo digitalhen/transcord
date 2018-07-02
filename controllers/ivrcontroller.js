@@ -485,11 +485,11 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
         to: emailTo, // list of receivers
         subject: 'Recording of your call to ' + numberCalled, // Subject line
         text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl +
-          'You said: ' + transcription,
+          '\n\nYou said: ' + transcription,
         // plain text body
         html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a></br>' +
-            'You said: ' + transcription
+            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a><br/><br/>' +
+            '<b>You said:</b> ' + transcription
         // html body
     };
 
