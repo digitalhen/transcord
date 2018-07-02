@@ -270,78 +270,81 @@ function processFiles(user, recordingObject) {
     var dest = __basedir + '/downloads/' + filename;
     var stream = fs.createWriteStream(dest + '.wav');
 
-    https.get(recordingObject.recordingUrl, function(resp) {
-        resp.pipe(stream);
+    https.get(recordingObject.recordingUrl, function(res) {
+        res.pipe(stream).on('close', function() {
+              var main = ffmpeg(dest + '.wav')
+                  .inputFormat('wav')
+                  .audioChannels(2)
+                  .audioBitrate('64k')
+                  .on('end', function() {
+                      bucket.upload(dest + '.mp3', (err, file) => {
+                          fs.unlink(dest + '.wav', (err, file) => {});
+                          fs.unlink(dest + '.mp3', (err, file) => {
+                            bucket.file(filename + '.mp3').getSignedUrl({
+                                action: 'read',
+                                expires: '03-09-2491'
+                            }).then(signedUrls => {
+                                recordingObject.recordingUrl = signedUrls[0];
 
-        var right = ffmpeg(dest + '.wav')
-            .inputFormat('wav')
-            .audioChannels(2)
-            .audioBitrate('64k')
-            .outputOptions('-map_channel 0.0.1')
-            .on('end', function() {
-                bucket.upload(dest + '-right.mp3', (err, file) => {
-                    fs.unlink(dest + '-right.mp3', (err, file) => {
-                      bucket.file(filename + '-right.mp3').getSignedUrl({
-                          action: 'read',
-                          expires: '03-09-2491'
-                      }).then(signedUrls => {
-                          recordingObject.recordingUrlRight = signedUrls[0];
+                                status.main = true;
 
-                          status.right = true;
-
-                          if(status.main && status.left && status.right)
-                            pushRecording(user, recordingObject);
+                                if(status.main && status.left && status.right)
+                                  pushRecording(user, recordingObject);
+                            });
+                          });
                       });
-                    });
-                });
-            })
-            .save(dest + '-right.mp3');
+                  })
+                  .save(dest + '.mp3');
+
+              var right = ffmpeg(dest + '.wav')
+                  .inputFormat('wav')
+                  .audioChannels(2)
+                  .audioBitrate('64k')
+                  .outputOptions('-map_channel 0.0.1')
+                  .on('end', function() {
+                      bucket.upload(dest + '-right.mp3', (err, file) => {
+                          fs.unlink(dest + '-right.mp3', (err, file) => {
+                            bucket.file(filename + '-right.mp3').getSignedUrl({
+                                action: 'read',
+                                expires: '03-09-2491'
+                            }).then(signedUrls => {
+                                recordingObject.recordingUrlRight = signedUrls[0];
+
+                                status.right = true;
+
+                                if(status.main && status.left && status.right)
+                                  pushRecording(user, recordingObject);
+                            });
+                          });
+                      });
+                  })
+                  .save(dest + '-right.mp3');
 
 
-        var left = ffmpeg(dest + '.wav')
-            .inputFormat('wav')
-            .audioChannels(2)
-            .audioBitrate('64k')
-            .outputOptions('-map_channel 0.0.0')
-            .on('end', function() {
-                bucket.upload(dest + '-left.mp3', (err, file) => {
-                    fs.unlink(dest + '-left.mp3', (err, file) => {
-                        bucket.file(filename + '-left.mp3').getSignedUrl({
-                            action: 'read',
-                            expires: '03-09-2491'
-                        }).then(signedUrls => {
-                            recordingObject.recordingUrlLeft = signedUrls[0];
+              var left = ffmpeg(dest + '.wav')
+                  .inputFormat('wav')
+                  .audioChannels(2)
+                  .audioBitrate('64k')
+                  .outputOptions('-map_channel 0.0.0')
+                  .on('end', function() {
+                      bucket.upload(dest + '-left.mp3', (err, file) => {
+                          fs.unlink(dest + '-left.mp3', (err, file) => {
+                              bucket.file(filename + '-left.mp3').getSignedUrl({
+                                  action: 'read',
+                                  expires: '03-09-2491'
+                              }).then(signedUrls => {
+                                  recordingObject.recordingUrlLeft = signedUrls[0];
 
-                            status.left = true;
+                                  status.left = true;
 
-                            if(status.main && status.left && status.right)
-                              pushRecording(user, recordingObject);
-                        });
-                    });
-                });
-            })
-            .save(dest + '-left.mp3');
-
-
-        bucket.upload(dest + '.wav', (err, file) => {
-            fs.unlink(dest + '.wav', (err, file) => {
-                bucket.file(filename + '.wav').getSignedUrl({
-                    action: 'read',
-                    expires: '03-09-2491'
-                }).then(signedUrls => {
-                    recordingObject.recordingUrl = signedUrls[0];
-
-                    status.main = true;
-
-                    if(status.main && status.left && status.right)
-                      pushRecording(user, recordingObject);
-                });
-            });
+                                  if(status.main && status.left && status.right)
+                                    pushRecording(user, recordingObject);
+                              });
+                          });
+                      });
+                  })
+                  .save(dest + '-left.mp3');
         });
-
-
-
-
     }).on('error', function(e) {
         response.send("error connecting" + e.message);
     });
