@@ -152,10 +152,11 @@ ivrController.recording = function(req, res) {
                                 twilioClient.calls.each({
                                     parentCallSid: parentCallSid
                                 }, function(childCall) {
-                                    sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+                                    //sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
+
 
                                     // TODO: capture full sprectrum of calls
-                                    user.recordings.push({
+                                    var recordingObject = {
                                         recordingSid: recordingSid,
                                         startTime: parentCall.startTime,
                                         endTime: parentCall.endTime,
@@ -166,10 +167,11 @@ ivrController.recording = function(req, res) {
                                         numberCalledFormatted: childCall.toFormatted,
                                         duration: parseFloat(recording.duration),
                                         recordingUrl: recordingUrl,
-                                        recordingUrlLeft: 'publicUrls.left',
-                                        recordingUrlRight: 'publicUrls.right'
-                                    });
+                                        recordingUrlLeft: '',
+                                        recordingUrlRight: ''
+                                    };
 
+                                    /*
                                     User.update({
                                         _id: user._id
                                     }, {
@@ -178,10 +180,10 @@ ivrController.recording = function(req, res) {
                                         if (err) {
                                             console.log('There was an error');
                                         }
-                                    });
+                                    }); */
 
                                     // call download for this file
-                                    processFiles(recordingSid, recordingUrl);
+                                    processFiles(user, recordingObject);
                                     // TODO: can i make the email thing plug in to this?
 
 
@@ -228,9 +230,31 @@ function redirectWelcome() {
     return twiml.toString();
 }
 
-function processFiles(recordingSid, recordingUrl) {
-	console.log("Processing files for: " + recordingUrl);
-	
+function pushRecording(user, recordingObject) {
+  user.recordings.push(recordingObject);
+
+  User.update({
+      _id: user._id
+  }, {
+      recordings: user.recordings
+  }, function(err, numberAffected, rawResponse) {
+      if (err) {
+          console.log('There was an error');
+      }
+  });
+
+  sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl);
+}
+
+function processFiles(user, recordingObject) {
+  var status = {
+    main: false,
+    left: false,
+    right: false
+  };
+
+	console.log("Processing files for: " + recordingObject.recordingUrl);
+
     const PROJECT_ID = 'transcord-2018';
 
     var gcs = storage({
@@ -240,11 +264,11 @@ function processFiles(recordingSid, recordingUrl) {
 
     let bucket = gcs.bucket('transcord.app');
 
-    var filename = path.basename(recordingUrl);
+    var filename = path.basename(recordingObject.recordingUrl);
     var dest = __basedir + '/downloads/' + filename;
     var stream = fs.createWriteStream(dest + '.wav');
 
-    https.get(recordingUrl, function(resp) {
+    https.get(recordingObject.recordingUrl, function(resp) {
         resp.pipe(stream);
 
         console.log('File downloaded');
@@ -258,13 +282,24 @@ function processFiles(recordingSid, recordingUrl) {
                 bucket.upload(dest + '-right.mp3', (err, file) => {
                     console.log('Uploading right file.');
                     fs.unlink(dest + '-right.mp3', (err, file) => {
-                        console.log('Deleting right file.');
+                      bucket.file(filename + '-right.mp3').getSignedUrl({
+                          action: 'read',
+                          expires: '03-09-2491'
+                      }).then(signedUrls => {
+                          //console.log('Main file URL: ' + signedUrls[0]);
+                          recordingObject.recordingUrlRight = signedUrls[0];
+
+                          status.main = true;
+
+                          if(status.main && status.left && status.right)
+                            pushRecording(user, recordingObject);
+                      });
                     });
                 });
             })
             .save(dest + '-right.mp3');
 
-        console.log('Right file saved');
+        //console.log('Right file saved');
 
         var left = ffmpeg(dest + '.wav')
             .inputFormat('wav')
@@ -273,30 +308,49 @@ function processFiles(recordingSid, recordingUrl) {
             .outputOptions('-map_channel 0.0.0')
             .on('end', function() {
                 bucket.upload(dest + '-left.mp3', (err, file) => {
-                    console.log('Uploading left file.');
+                    //console.log('Uploading left file.');
                     fs.unlink(dest + '-left.mp3', (err, file) => {
-                        console.log('Deleting left file.');
+                        //console.log('Deleting left file.');
+                        bucket.file(filename + '-left.mp3').getSignedUrl({
+                            action: 'read',
+                            expires: '03-09-2491'
+                        }).then(signedUrls => {
+                            //console.log('Main file URL: ' + signedUrls[0]);
+                            recordingObject.recordingUrlLeft = signedUrls[0];
+
+                            status.left = true;
+
+                            if(status.main && status.left && status.right)
+                              pushRecording(user, recordingObject);
+                        });
                     });
                 });
             })
             .save(dest + '-left.mp3');
 
-        console.log('Left file saved');
+        //console.log('Left file saved');
 
         bucket.upload(dest + '.wav', (err, file) => {
-            console.log('Uploading main file.');
+            //console.log('Uploading main file.');
             // if it's ok upload?
             fs.unlink(dest + '.wav', (err, file) => {
-                console.log('Deleting main file.');
+                //console.log('Deleting main file.');
+                bucket.file(filename + '.wav').getSignedUrl({
+                    action: 'read',
+                    expires: '03-09-2491'
+                }).then(signedUrls => {
+                    //console.log('Main file URL: ' + signedUrls[0]);
+                    recordingObject.recordingUrl = signedUrls[0];
+
+                    status.main = true;
+
+                    if(status.main && status.left && status.right)
+                      pushRecording(user, recordingObject);
+                });
             });
         });
 
-        bucket.file(filename + '.wav').getSignedUrl({
-            action: 'read',
-            expires: '03-09-2491'
-        }).then(signedUrls => {
-            console.log('Main file URL: ' + signedUrls[0]);
-        });
+
 
 
     }).on('error', function(e) {
