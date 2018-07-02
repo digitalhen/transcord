@@ -277,10 +277,8 @@ function runTranscription(user, recordingObject) {
       .then(data => {
         console.log(data);
         const response = data[0];
-        const transcription = '';
-
         response.results.forEach(result => {
-          transcription = response.results
+          const transcription = response.results
             .map(result => result.alternatives[0].transcript)
             .join('\n');
         });
@@ -306,13 +304,15 @@ function runTranscription(user, recordingObject) {
     .then(data => {
       console.log(data);
       const response = data[0];
+      response.results.forEach(result => {
+        status.left = true;
 
-      status.left = true;
+        recordingObject.transcriptionLeft = JSON.stringify(result.alternatives);
 
-      recordingObject.transcriptionLeft = JSON.stringify(response);
+        if(status.main && status.left && status.right)
+          pushRecording(user,recordingObject);
 
-      if(status.main && status.left && status.right)
-        pushRecording(user,recordingObject);
+      });
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -326,15 +326,16 @@ function runTranscription(user, recordingObject) {
         return operation.promise();
       })
       .then(data => {
-          console.log(data);
-          const response = data[0];
-
+        const response = data[0];
+        response.results.forEach(result => {
           status.right = true;
 
-          recordingObject.transcriptionLeft = JSON.stringify(response);
+          recordingObject.transcriptionRight = JSON.stringify(result.alternatives);
 
           if(status.main && status.left && status.right)
             pushRecording(user,recordingObject);
+
+        });
       })
       .catch(err => {
         console.error('ERROR:', err);
