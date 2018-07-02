@@ -10,9 +10,12 @@ var storage = require('@google-cloud/storage');
 
 const PROJECT_ID = 'transcord-2018';
 
+// storage root of project
+global.__basedir = __dirname;
+
 var gcs = storage({
 	projectId: PROJECT_ID,
-	keyFilename: 'auth.json'
+	keyFilename: '../credentials/google.json'
 });
 
 console.log('hi!');
@@ -24,7 +27,7 @@ function downloadFile() {
 
     var filename = path.basename( file );
     var ssl      = file.split(':')[0];
-    var dest     = 'downloads/'+ filename;
+    var dest     = __basedir + '/downloads/'+ filename;
     var stream   = fs.createWriteStream( dest + '.wav' );
 
         https.get( file, function( resp ) {
@@ -38,14 +41,14 @@ function downloadFile() {
 				.audioBitrate('64k')
 				.outputOptions('-map_channel 0.0.1')
 				.on('end', function() {
-					bucket.upload(dest + '-right.mp3', (err, file) => {
+					bucket.upload(dest + '-right.wav', (err, file) => {
 						console.log('Uploading right file.');
-						fs.unlink(dest + '-right.mp3', (err, file) => {
+						fs.unlink(dest + '-right.wav', (err, file) => {
                         				console.log('Deleting right file.');
 						});	
                 			});	
 				})
-				.save(dest + '-right.mp3');
+				.save(dest + '-right.wav');
 
 		console.log('Right file saved');
 
@@ -55,14 +58,14 @@ function downloadFile() {
                                 .audioBitrate('64k')
                                 .outputOptions('-map_channel 0.0.0')
 				.on('end', function() {
-					bucket.upload(dest + '-left.mp3', (err, file) => {
+					bucket.upload(dest + '-left.wav', (err, file) => {
                                                 console.log('Uploading left file.');
-                                                fs.unlink(dest + '-left.mp3', (err, file) => {
+                                                fs.unlink(dest + '-left.wav', (err, file) => {
                                                         console.log('Deleting left file.');
                                                 });
                                         });
 				})
-                                .save(dest + '-left.mp3');
+                                .save(dest + '-left.wav');
 
 		console.log('Left file saved');
 
