@@ -277,7 +277,7 @@ function runTranscription(user, recordingObject) {
       .then(data => {
         console.log(data);
         const response = data[0];
-        const transcription = '';
+        var transcription = '';
 
         response.results.forEach(result => {
           transcription = response.results
