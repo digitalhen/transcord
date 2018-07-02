@@ -335,7 +335,6 @@ function runTranscription(user, recordingObject) {
 
           if(status.main && status.left && status.right)
             pushRecording(user,recordingObject);
-        });
       })
       .catch(err => {
         console.error('ERROR:', err);
