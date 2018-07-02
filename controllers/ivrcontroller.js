@@ -239,7 +239,7 @@ function runTranscription(user, recordingObject) {
   }
 
   const config = {
-    enableWorldTimeOffsets: true,
+    enableWordTimeOffsets: true,
     languageCode: 'en-US'
   };
 
