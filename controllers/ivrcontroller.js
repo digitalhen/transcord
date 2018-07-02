@@ -366,6 +366,7 @@ function buildTranscription(leftResults, rightResults) {
 
   var combinedTranscript = [];
 
+  // go through the two seperate transcripts and combined them together
   leftResults.forEach(function (result) {
     var newLine = {};
 
@@ -418,11 +419,8 @@ function buildTranscription(leftResults, rightResults) {
     }
   });
 
-  console.log(combinedTranscript);
-
+  // sort the array so the two cominbed transcripts are in order
   combinedTranscript.sort(function(a,b) { return a.startTime - b.startTime; }); // sorts by startTime;
-
-  console.log(combinedTranscript);
 
   return combinedTranscript;
 
@@ -564,8 +562,6 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
     // loop through transcription object and build up the email
     var plaintextTranscript = '';
     var htmlTranscript = '';
-
-    console.log(transcription);
 
     transcription.forEach(function(line) {
       if(line.side=='left') {
