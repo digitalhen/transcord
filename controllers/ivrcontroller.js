@@ -277,8 +277,10 @@ function runTranscription(user, recordingObject) {
       .then(data => {
         console.log(data);
         const response = data[0];
+        const transcription = '';
+
         response.results.forEach(result => {
-          const transcription = response.results
+          transcription = response.results
             .map(result => result.alternatives[0].transcript)
             .join('\n');
         });
