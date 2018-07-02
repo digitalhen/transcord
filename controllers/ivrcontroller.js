@@ -3,6 +3,7 @@ const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.e
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
 const storage = require('@google-cloud/storage');
+const speech = require('@google-cloud/speech');
 const https   = require('https');
 const request = require('request');
 const fs      = require('fs');
@@ -166,9 +167,7 @@ ivrController.recording = function(req, res) {
                                         numberCalled: childCall.to,
                                         numberCalledFormatted: childCall.toFormatted,
                                         duration: parseFloat(recording.duration),
-                                        recordingUrl: recordingUrl,
-                                        recordingUrlLeft: '',
-                                        recordingUrlRight: ''
+                                        recordingUrl: recordingUrl
                                     };
 
                                     /*
@@ -230,6 +229,110 @@ function redirectWelcome() {
     return twiml.toString();
 }
 
+function runTranscription(user, recordingObject) {
+  var status = {
+    left: false,
+    right: false
+  }
+
+  const config = {
+    enableWorldTimeOffsets: true,
+    languageCode = 'en-US'
+  };
+
+  const left = {
+    config: config,
+    audio: {
+      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-left.wav'
+    }
+  };
+
+  const right = {
+    config: config,
+    audio: {
+      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-left.wav'
+    }
+  };
+
+  const client = new speech.SpeechClient();
+
+  client
+    .longRunningRecognize(left)
+    .then(data => {
+      const operation = data[0];
+      // Get a Promise representation of the final result of the job
+      //return operation.promise();
+    })
+    .then(data => {
+      const response = data[0];
+      response.results.forEach(result => {
+        status.left = true;
+
+        recordingObject.transcriptionLeft = result.alternatives;
+
+        if(status.left && status.right)
+          pushRecording(user,recordingObject);
+
+        console.log(`Transcription: ${result.alternatives[0].transcript}`);
+        result.alternatives[0].words.forEach(wordInfo => {
+          // NOTE: If you have a time offset exceeding 2^32 seconds, use the
+          // wordInfo.{x}Time.seconds.high to calculate seconds.
+          const startSecs =
+            `${wordInfo.startTime.seconds}` +
+            `.` +
+            wordInfo.startTime.nanos / 100000000;
+          const endSecs =
+            `${wordInfo.endTime.seconds}` +
+            `.` +
+            wordInfo.endTime.nanos / 100000000;
+          console.log(`Word: ${wordInfo.word}`);
+          console.log(`\t ${startSecs} secs - ${endSecs} secs`);
+        });
+      });
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+
+    client
+      .longRunningRecognize(right)
+      .then(data => {
+        const operation = data[0];
+        // Get a Promise representation of the final result of the job
+        //return operation.promise();
+      })
+      .then(data => {
+        const response = data[0];
+        response.results.forEach(result => {
+          status.right = true;
+
+          recordingObject.transcriptionRight = result.alternatives;
+
+          if(status.left && status.right)
+            pushRecording(user,recordingObject);
+
+          console.log(`Transcription: ${result.alternatives[0].transcript}`);
+          result.alternatives[0].words.forEach(wordInfo => {
+            // NOTE: If you have a time offset exceeding 2^32 seconds, use the
+            // wordInfo.{x}Time.seconds.high to calculate seconds.
+            const startSecs =
+              `${wordInfo.startTime.seconds}` +
+              `.` +
+              wordInfo.startTime.nanos / 100000000;
+            const endSecs =
+              `${wordInfo.endTime.seconds}` +
+              `.` +
+              wordInfo.endTime.nanos / 100000000;
+            console.log(`Word: ${wordInfo.word}`);
+            console.log(`\t ${startSecs} secs - ${endSecs} secs`);
+          });
+        });
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+}
+
 function pushRecording(user, recordingObject) {
   console.log("Finishing processing files for user: " + user.username + ", pushing to database & sending email.");
 
@@ -246,6 +349,7 @@ function pushRecording(user, recordingObject) {
   });
 
   sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl);
+
 }
 
 function processFiles(user, recordingObject) {
@@ -289,7 +393,7 @@ function processFiles(user, recordingObject) {
                                 status.main = true;
 
                                 if(status.main && status.left && status.right)
-                                  pushRecording(user, recordingObject);
+                                  runTranscription(user, recordingObject);
                             });
                           });
                       });
@@ -313,7 +417,7 @@ function processFiles(user, recordingObject) {
                                 status.right = true;
 
                                 if(status.main && status.left && status.right)
-                                  pushRecording(user, recordingObject);
+                                  runTranscription(user, recordingObject);
                             });
                           });
                       });
@@ -338,7 +442,7 @@ function processFiles(user, recordingObject) {
                                   status.left = true;
 
                                   if(status.main && status.left && status.right)
-                                    pushRecording(user, recordingObject);
+                                    runTranscription(user, recordingObject);
                               });
                           });
                       });
