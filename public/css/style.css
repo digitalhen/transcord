@@ -1,4 +1,4 @@
-input, textarea, button {
+form input, form textarea, form button {
   display: inline-block;
   width: 222px !important;
   padding: 2px 4px !important;
@@ -16,6 +16,42 @@ input, textarea, button {
 h2 {
   font-size: 22px !important;
   font-weight: 700 !important; }
+
+.messages .message {
+  box-sizing: border-box;
+  padding: 8px 10px;
+  max-width: 400px;
+  margin: 5px 10px;
+  border-radius: 15px;
+  position: relative;
+  clear: both;
+  font-size: 14px;
+  word-wrap: break-word; }
+
+.messages .right {
+  float: right;
+  color: #fff;
+  background-color: #0099ff; }
+  .messages .right::before {
+    content: '';
+    border: solid 10px;
+    border-color: transparent transparent #0099ff;
+    position: absolute;
+    float: right;
+    right: -7px;
+    bottom: 2px; }
+
+.messages .left {
+  float: left;
+  background-color: #ececec; }
+  .messages .left::after {
+    content: '';
+    border: solid 10px;
+    border-color: transparent transparent #ececec;
+    position: absolute;
+    z-index: 1;
+    bottom: 2px;
+    left: -7px; }
 
 .form-container {
   padding: 20px 0px;

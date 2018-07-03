@@ -2,8 +2,14 @@ extends layout
 
 block content
   .container
-    h2 Call to (#{user.recordings[0].numberCalledFormatted})
-    - transcription.forEach(function(line) {
-
-      p(class=line.side) #{line.transcript}
-    - })
+    h2 Call to #{user.recordings[0].numberCalledFormatted}
+    - user.recordings[0].startTimeFormatted = new Date(user.recordings[0].startTime.toString());
+    label !{moment(user.recordings[0].startTimeFormatted).format('MMM DD, YYYY h:mm a')}
+    table.table
+      thead
+      tbody
+        tr.messages
+          td
+            - transcription.forEach(function(line) {
+                p.message(class=line.side) #{line.transcript}
+            - })
