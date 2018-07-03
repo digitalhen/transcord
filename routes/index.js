@@ -4,6 +4,7 @@ const router = express.Router();
 const auth = require('../controllers/authcontroller');
 const dash = require('../controllers/dashcontroller');
 const ivrRouter = require('./ivr');
+const dashRouter = require('./dash');
 require('dotenv').config();
 
 const shouldValidate = process.env.NODE_ENV !== 'test';
@@ -22,9 +23,6 @@ router.get('/profile', auth.profile);
 
 // route for profile update
 router.post('/profile', auth.doUpdate);
-
-// route for Dashboard
-router.get('/dashboard', dash.list);
 
 // route for validation
 router.post('/validate', auth.validate);
@@ -46,7 +44,10 @@ router.get('/logout', auth.logout);
 });*/
 
 
-// more complex routers
+// router for Dashboard
+router.use('/dashboard', dashRouter);
+
+// routers for ivr
 router.use('/ivr', twilio.webhook({validate: shouldValidate}), ivrRouter);
 
 module.exports = router;

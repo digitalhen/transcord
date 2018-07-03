@@ -1,0 +1,25 @@
+block variables
+  title Transcript of call with #{user.recordings[0].numberCalledFormatted} - Transcord
+
+extends layout
+
+block content
+  .container
+    div.leftMenu
+      h2 Call to #{user.recordings[0].numberCalledFormatted}
+      - user.recordings[0].startTimeFormatted = new Date(user.recordings[0].startTime.toString());
+      label !{moment(user.recordings[0].startTimeFormatted).format('MMM DD, YYYY h:mm a')}
+      audio(controls='', class='transcriptAudioPlayer')
+        source(src=user.recordings[0].recordingUrl, type='audio/wav')
+    div.transcriptContainer
+      table.table
+        thead
+        tbody.messages
+          - transcription.forEach(function(line) {
+              tr(class=line.side)
+                td
+                  div.messageContainer.dimmed(time=line.startTime)
+                    p.time.hide <b>#{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}</b> #{moment.utc(line.startTime*1000).format('mm:ss')}
+                    div
+                      p.message #{line.transcript}
+          - })

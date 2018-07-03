@@ -106,6 +106,8 @@ userController.doUpdate = function(req, res) {
 
 // validate
 userController.validate = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     var response = {};
 
     if (req.body.username) {
@@ -188,7 +190,7 @@ userController.doLogin = function(req, res) {
                 return console.log(err);
             }
             //Areturn res.redirect('/users/' + user.username);
-            return res.redirect('/');
+            return res.redirect('/dashboard');
         });
         //})(req, res, next);
     })(req, res);
