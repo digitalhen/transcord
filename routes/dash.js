@@ -10,6 +10,6 @@ const router = new Router();
 router.get('/', dash.list);
 
 // ajax for getting a transcriptions
-router.get('/transcript/:callSid', dash.transcript);
+router.get('/transcript/:recordingSid', dash.transcript);
 
 module.exports = router;

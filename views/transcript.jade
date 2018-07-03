@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  .container
+    h2 Call to (#{user.recordings[0].numberCalledFormatted})
+    - transcription.forEach(function(line) {
+
+      p(class=line.side) #{line.transcript}
+    - })

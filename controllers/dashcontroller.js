@@ -21,11 +21,13 @@ dashController.transcript = function(req, res) {
       return res.redirect('/login');
   }
 
-  // find the recording here....
-  console.log(req.params.callSid);
+  // find the recording we want to display and get its transcription available
+  req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.params.recordingSid});
+  var transcription = JSON.parse(req.user.recordings[0].transcription);
 
   res.render('transcript', {
       user: req.user,
+      transcription: transcription
       //recording: recording
   });
 }

@@ -10,6 +10,7 @@ block content
           th To
           th Length
           th Audio
+          th Transcript
       tbody
         - user.recordings.forEach(function(recording) {
           tr
@@ -23,4 +24,6 @@ block content
             td
               audio(controls='')
                 source(src=recording.recordingUrl, type='audio/wav')
+            td
+              a(href='/dashboard/transcript/' + recording.recordingSid) View transcript
         - })

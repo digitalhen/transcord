@@ -30,15 +30,18 @@ h2 {
 	font-size: 22px !important;
 	font-weight: 700 !important;
 }
-input {
-	@extend %extend_1;
+form {
+	input {
+		@extend %extend_1;
+	}
+	textarea {
+		@extend %extend_1;
+	}
+	button {
+		@extend %extend_1;
+	}
 }
-textarea {
-	@extend %extend_1;
-}
-button {
-	@extend %extend_1;
-}
+
 
 .form-container {
 	padding: 20px 0px;
