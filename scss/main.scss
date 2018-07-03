@@ -46,6 +46,62 @@ form {
 }
 
 .messages {
+	tr {
+		td {
+			border-top: none !important;
+
+			p.hide {
+				display:none;
+			}
+		}
+	}
+
+	.messageContainer {
+		&.dimmed {
+			opacity: 0.6;
+		}
+	}
+
+	tr.left {
+		p {
+			float: left;
+		}
+
+		.message {
+		  float: left;
+		  background-color: $gray;
+		  &::after{
+		    content: '';
+		    border: solid 10px;
+		    border-color: transparent transparent $gray;
+		    position: absolute;
+		    z-index: 1;
+		    bottom: 2px;
+		    left: -7px;
+		  }
+		}
+	}
+
+	tr.right {
+		p {
+			float: right;
+		}
+
+		.message {
+		  float: right;
+		  color: #fff;
+		  background-color: $blue;
+		  &::before {
+		    content: '';
+		    border: solid 10px;
+		    border-color: transparent transparent $blue;
+		    position: absolute;
+		    float: right;
+		    right: -7px;
+		    bottom: 2px;
+		  }
+		}
+	}
 
 	.message {
 	  box-sizing: border-box;
@@ -57,33 +113,6 @@ form {
 	  clear: both;
 	  font-size: 14px;
 	  word-wrap: break-word;
-	}
-	.right {
-	  float: right;
-	  color: #fff;
-	  background-color: $blue;
-	  &::before {
-	    content: '';
-	    border: solid 10px;
-	    border-color: transparent transparent $blue;
-	    position: absolute;
-	    float: right;
-	    right: -7px;
-	    bottom: 2px;
-	  }
-	}
-	.left {
-	  float: left;
-	  background-color: $gray;
-	  &::after{
-	    content: '';
-	    border: solid 10px;
-	    border-color: transparent transparent $gray;
-	    position: absolute;
-	    z-index: 1;
-	    bottom: 2px;
-	    left: -7px;
-	  }
 	}
 }
 
