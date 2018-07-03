@@ -106,6 +106,8 @@ userController.doUpdate = function(req, res) {
 
 // validate
 userController.validate = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     var response = {};
 
     if (req.body.username) {
