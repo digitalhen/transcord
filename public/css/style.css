@@ -1,3 +1,18 @@
+.leftMenu {
+  width: 30%;
+  display: inline-block; }
+
+.transcriptContainer {
+  width: 60%;
+  display: inline-block;
+  float: right; }
+
+.container {
+  margin-top: 40px; }
+
+audio {
+  max-width: 100%; }
+
 form input, form textarea, form button {
   display: inline-block;
   width: 222px !important;

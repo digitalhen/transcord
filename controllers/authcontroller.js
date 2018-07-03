@@ -190,7 +190,7 @@ userController.doLogin = function(req, res) {
                 return console.log(err);
             }
             //Areturn res.redirect('/users/' + user.username);
-            return res.redirect('/');
+            return res.redirect('/dashboard');
         });
         //})(req, res, next);
     })(req, res);
