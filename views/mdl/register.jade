@@ -1,0 +1,46 @@
+block variables
+  title Register - Transcord
+
+extends layout
+
+block content
+  .container
+    form#form-register.form-signin(role='form', action="/register",method="post")
+      h2.form-signin-heading Register
+
+      div.form-container
+        .setting-group.setting-name
+          label.setting-label Name
+          .setting
+            input.form-control(type='text', name="name", placeholder='Name')
+            label.error.notification(for="name")
+            label.information
+        .setting-group.setting-username
+          label.setting-label Username
+          .setting
+            input.form-control(type='text', name="username", placeholder='Username')
+            label.error.notification(for="username")
+            label.information
+        .setting-group.setting-password
+          label.setting-label Password
+          .setting
+            input.form-control(type='password', name="password", placeholder='Password')
+            label.error.notification(for="password")
+            label.information At least 8 characters, containing one uppercase letter, one lowercase letter.
+        .setting-group.setting-email
+          label.setting-label Email
+          .setting
+            input.form-control(type='text', name="email",  placeholder='Email')
+            label.error.notification(for="email")
+            label.information This will be used to send you recordings & transcripts.
+        .setting-group.setting-phoneNumber
+          label.setting-label Phone number
+          .setting
+            label.prefix +1
+            input.form-control(type='text', name="phoneNumber",  placeholder='Phone number')
+            label.error.notification(for="phoneNumber")
+            label.information U.S. numbers only.
+
+        .setting-group
+          .setting
+            button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign Up
