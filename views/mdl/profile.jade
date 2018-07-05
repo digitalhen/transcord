@@ -4,11 +4,27 @@ block variables
 extends layout
 
 block content
-  div.mdl-grid
-    div.mdl-layout-spacer
-    div.mdl-card.mdl-shadow--16dp.mdl-cell.mdl-cell--6-col
+  div.mdl-grid(style="max-width:900px")
+    div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
       div.mdl-card__title
-        h1.mdl-card__title-text !{user.name}
-      div.mdl-card__support-text
+        h2.mdl-card__title-text !{user.name}
+      div.mdl-card__supporting-text
         p This is some text
-    div.mdl-layout-spacer
+      div.mdl-card__actions.mdl-card--border
+        a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+
+    div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
+      div.mdl-card__title
+        h2.mdl-card__title-text Profile bit
+      div.mdl-card__supporting-text
+        p This is some text
+      div.mdl-card__actions.mdl-card--border
+        a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+
+    div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--8-col
+      div.mdl-card__title
+        h2.mdl-card__title-text Calls here
+      div.mdl-card__supporting-text
+        p This is some text
+      div.mdl-card__actions.mdl-card--border
+        a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started

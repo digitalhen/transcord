@@ -2,3 +2,38 @@ block variables
   title Dashboard - Transcord
 
 extends layout
+
+block content
+  div.mdl-grid(style="max-width:900px").table-grid
+    div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col.mdl-cell--hide-phone.mdl-cell--hide-tablet
+      div.mdl-card__title
+        h2.mdl-card__title-text Calls (!{user.recordings.length})
+      div.mdl-card__supporting-text
+        table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+          thead
+            tr
+              th Date
+              th To
+              th Length
+              th.mdl-data-table__cell--non-numeric Audio
+              th.mdl-data-table__cell--non-numeric Transcript
+          tbody
+            - user.recordings.forEach(function(recording) {
+              tr
+                td
+                  - recording.startTimeFormatted = new Date(recording.startTime.toString());
+                  !{moment(recording.startTimeFormatted).format('MMM DD, YYYY h:mm a')}
+                td
+                  !{recording.numberCalledFormatted}
+                td
+                  !{moment.utc(recording.duration*1000).format('mm:ss')}
+                td.mdl-data-table__cell--non-numeric
+                  audio(controls='')
+                    source(src=recording.recordingUrl, type='audio/wav')
+                td.mdl-data-table__cell--non-numeric
+                  a(href='/dashboard/transcript/' + recording.recordingSid) Transcript
+            - })
+      div.mdl-card__actions.mdl-card--border
+        a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+  .container
+    h2 Calls (!{user.recordings.length})
