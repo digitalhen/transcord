@@ -20,6 +20,11 @@ body {
 a img {
   border: 0px; }
 
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100vh; }
+
 /*
 ::-moz-selection, ::selection {
   background-color: #6ab344;
