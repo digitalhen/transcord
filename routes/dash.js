@@ -7,7 +7,13 @@ const dash = require('../controllers/dashcontroller');
 const router = new Router();
 
 // restrict index for logged in user only
-router.get('/', dash.list);
+router.get('/', dash.dashboard);
+
+// show billing
+router.get('/billing', dash.billing);
+
+// show recordings list
+router.get('/recordings', dash.recordings)
 
 // ajax for getting a transcriptions
 router.get('/transcript/:recordingSid', dash.transcript);

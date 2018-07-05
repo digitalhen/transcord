@@ -22,6 +22,12 @@ block content
                 label.mdl-textfield__label.mdl-color-text--grey(for='textfield_password') Password
                 input#textfield_username.mdl-textfield__input(type='password' name='password')
 
+              input#submit-form(type='submit' class='hidden')
+
           div.mdl-card__actions.mdl-card--border
             div.mdl-grid
-              button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Log in
+              button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Sign in
+            div.mdl-grid
+              div.mdl-cell.mdl-cell--12-col
+                a.mdl-color-text--primary(href='/register') Sign up!
+                a.mdl-color-text--primary(style='float:right') Lost Password?

@@ -19,10 +19,10 @@ router.get('/register', auth.register);
 router.post('/register', auth.doRegister);
 
 // route for user profile
-router.get('/profile', auth.profile);
+router.get('/settings', auth.settings);
 
 // route for profile update
-router.post('/profile', auth.doUpdate);
+router.post('/settings', auth.doUpdate);
 
 // route for validation
 router.post('/validate', auth.validate);

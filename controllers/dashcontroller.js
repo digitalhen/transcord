@@ -6,15 +6,35 @@ var dashController = {};
 
 
 // Go to registration page
-dashController.list = function(req, res) {
+dashController.dashboard = function(req, res) {
   if (!req.user) {
       return res.redirect('/login');
   }
 
-  res.render('list', {
+  res.render('dashboard', {
       user: req.user,
   });
 };
+
+dashController.billing = function(req, res) {
+  if (!req.user) {
+      return res.redirect('/login');
+  }
+
+  res.render('billing', {
+      user: req.user,
+  });
+}
+
+dashController.recordings = function(req, res) {
+  if (!req.user) {
+      return res.redirect('/login');
+  }
+
+  res.render('recordings', {
+      user: req.user,
+  });
+}
 
 dashController.transcript = function(req, res) {
   if (!req.user) {

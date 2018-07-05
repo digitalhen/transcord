@@ -17,12 +17,12 @@ userController.register = function(req, res) {
 };
 
 // Go to profile page
-userController.profile = function(req, res) {
+userController.settings = function(req, res) {
     if (!req.user) {
         return res.redirect('/login');
     }
 
-    res.render('profile', {
+    res.render('settings', {
         user: req.user
     });
 };
@@ -38,9 +38,11 @@ userController.doRegister = function(req, res) {
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
     }), req.body.password, function(err, user) {
         if (err) {
+            res.redirect('/dashboard');
+            /*
             return res.render('register', {
                 user: user
-            });
+            }); */
         }
 
         passport.authenticate('local')(req, res, function() {
@@ -88,7 +90,7 @@ userController.doUpdate = function(req, res) {
                     }
 
 
-                    res.render('profile', {
+                    res.render('settings', {
                         user: user,
                         status: {
                             message: "Updated"
