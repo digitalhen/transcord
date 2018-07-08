@@ -4,13 +4,37 @@ block variables
 extends layout
 
 block content
-  div.mdl-grid.table-grid
-    - user.recordings.forEach(function(recording) {
-      div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell
-        div.mdl-card__title
-          h2.md-card__title-text Call numbers
-        div.mdl-card__supporting-text
-          !{recording.numberCalledFormatted}
-        div.mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--acent.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/transcript/' + recording.recordingSid) Transcript
-    - })
+  div.mdl-grid(style="max-width:900px")
+    div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.sidebar-card
+      div.mdl-card__title
+        h2.mdl-card__title-text !{user.name}
+      div.mdl-card__supporting-text
+        p This is some text
+      div.mdl-card__actions.mdl-card--border
+        a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+    div.mdl-card.mdl-cell.mdl-cell--8-col
+      div.mdl-grid.table-grid
+        - var i=0;
+        - user.recordings.forEach(function(recording) {
+          div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text Call to !{recording.numberCalledFormatted}
+            div.mdl-card__supporting-text
+              div.mdl-grid
+                div.mdl-card.mdl-cell.mdl-cell--4-col
+                  b !{recording.numberCalledFormatted}
+                  - recording.startTimeFormatted = new Date(recording.startTime.toString());
+                  !{moment(recording.startTimeFormatted).format('MMM DD, YYYY h:mm a')}
+                  button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
+                    i.material-icons play_arrow
+                div.mdl-card.mdl-cell.mdl-cell--8-col
+                  div.waveform(id='waveform-' + i data-recordingUrl=recording.recordingUrl)
+                    progress.progress.progress-striped(id='progress-' + i)
+            div.mdl-card__actions.mdl-card--border
+              a.mdl-button.mdl-button--acent.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/transcript/' + recording.recordingSid) Transcript
+          - i++;
+        - })
+
+block js
+  script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+  script(src="/js/recordings.js")

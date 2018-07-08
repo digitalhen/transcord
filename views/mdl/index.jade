@@ -2,6 +2,11 @@ extends layout
 
 block content
   a(name="top")
-  div.mdl-typography--text-center
-    div be together. not the same.
-    div welcome to android... be yourself.
+  div.welcome-section
+    div.welcome-display
+      div.welcome-text
+        div.mdl-typography--display-2.mdl-typography--font-thin Transcord
+        p.mdl-typography--headline.mdl-typography--font-thin This is where the dek goes
+        p
+          a.mdl-typography--font-regular.mdl-typography--text-uppercase.mdl-color-text--primary.welcome-alt-link(href='/dashboard') Click to begin
+            i.material-icons chevron_right
