@@ -46,12 +46,16 @@ html
             div.mdl-textfield__expandable-holder
               input#search-field.mdl-textfield__input(type="text")
           nav.mdl-navigation
-            a.mdl-navigation__link.mdl-typography--text-uppercase(href="/") About
+              a(href='/')
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white About
             if (user)
-              a.mdl-navigation__link.mdl-typography--text-uppercase(href="/settings") #{user.name}
-              a.mdl-navigation__link.mdl-typography--text-uppercase(href="/dashboard") Dashboard
+              a(href='/settings')
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white #{user.name}
+              a(href='/dashboard')
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Dashboard
             if (!user)
-              a.mdl-navigation__link.mdl-typography--text-uppercase(href="/login") Login
+              a(href='/login')
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Login
 
       div.mdl-layout__drawer
         span.mdl-layout-title Acme

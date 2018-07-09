@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+ $accent: rgb(255,82,82);
+ $primary: rgb(158,158,158);
+
 body {
   margin: 0;
 }
@@ -106,6 +109,62 @@ a img {
   .mdl-card {
     min-height: inherit;
   }
+
+  .mdl-card__title {
+      padding: 6px 16px;
+  }
+
+  .mdl-card__supporting-text {
+    padding: 0px;
+    width: 97%;
+    padding: 5px 8px;
+
+    .recording-play-button {
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+      z-index: 100;
+    }
+  }
+}
+
+
+.transcript-grid {
+    padding: 0px;
+    margin: inherit;
+
+    .mdl-card {
+      border-radius: 5px;
+      min-height: inherit;
+
+      &.right {
+        background-color: $accent;
+
+        .mdl-card__supporting-text {
+          color: white;
+        }
+      }
+
+      .mdl-card__supporting-text {
+        padding: 5px 8px;
+        width: 97%;
+
+        .transcript-title {
+          font-size: 12px;
+          margin: 0;
+        }
+
+        .transcript-text {
+          font-weight: 600;
+          line-height: 16px;
+        }
+
+        .transcript-time {
+          text-align: right;
+          margin: 0px;
+        }
+      }
+    }
 }
 
 .sidebar-card {

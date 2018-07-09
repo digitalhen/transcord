@@ -86,6 +86,42 @@ a img {
 .recording-card .mdl-card {
   min-height: inherit; }
 
+.recording-card .mdl-card__title {
+  padding: 6px 16px; }
+
+.recording-card .mdl-card__supporting-text {
+  padding: 0px;
+  width: 97%;
+  padding: 5px 8px; }
+  .recording-card .mdl-card__supporting-text .recording-play-button {
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    z-index: 100; }
+
+.transcript-grid {
+  padding: 0px;
+  margin: inherit; }
+  .transcript-grid .mdl-card {
+    border-radius: 5px;
+    min-height: inherit; }
+    .transcript-grid .mdl-card.right {
+      background-color: #ff5252; }
+      .transcript-grid .mdl-card.right .mdl-card__supporting-text {
+        color: white; }
+    .transcript-grid .mdl-card .mdl-card__supporting-text {
+      padding: 5px 8px;
+      width: 97%; }
+      .transcript-grid .mdl-card .mdl-card__supporting-text .transcript-title {
+        font-size: 12px;
+        margin: 0; }
+      .transcript-grid .mdl-card .mdl-card__supporting-text .transcript-text {
+        font-weight: 600;
+        line-height: 16px; }
+      .transcript-grid .mdl-card .mdl-card__supporting-text .transcript-time {
+        text-align: right;
+        margin: 0px; }
+
 .sidebar-card {
   height: 100%; }
 
