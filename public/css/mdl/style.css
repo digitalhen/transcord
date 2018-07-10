@@ -26,6 +26,10 @@ a img {
 #top-right-menu a {
   text-decoration: none; }
 
+@media screen and (max-width: 1024px) {
+  .mdl-layout__header-row {
+    padding: 0 16px 0 16px; } }
+
 /*
 ::-moz-selection, ::selection {
   background-color: #6ab344;
