@@ -49,33 +49,25 @@ html
               a(href='/')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white About
             if (user)
-              a(href='/settings')
-                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white #{user.name}
               a(href='/dashboard')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Dashboard
             if (!user)
               a(href='/login')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Login
 
-      div.mdl-layout__drawer
-        span.mdl-layout-title Acme
-        nav.mdl-navigation
-          a.mdl-navigation__link(href="") Phones
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
-          a.mdl-navigation__link(href="") Tablets
+            if(user)
+              button#top-right-menu.mdl-button.mdl-js-button.mdl-button--icon
+                    i.material-icons more_vert
+
+              ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(data-mdl-for="top-right-menu")
+                a(href="/settings")
+                  li.mdl-menu__item Settings
+                a(href='/logout')
+                  li.mdl-menu__item Log out
 
       div.mdl-layout__content
         div.mdl-layout.mdl-js-layout
-          main.mdl-layout__content.bg
-            block content
+          block content
 
 
     script(src='https://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')

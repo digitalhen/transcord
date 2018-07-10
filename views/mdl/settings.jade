@@ -1,0 +1,53 @@
+block variables
+  title Settings - Transcord
+
+extends layout
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text Settings
+            div.mdl-card__supporting-text.mdl-grid
+
+              form#form-settings(role='form' method='post' action='/settings')
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='name') Name
+                  input.mdl-textfield__input(type='text' name='name' value=user.name)
+                  span.error.mdl-textfield__error(for="name") Error message goes heres
+
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='username') Username
+                  input#username.mdl-textfield__input(type='text' name='username' value=user.username)
+                  span.error.mdl-textfield__error(for="username") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='password') Password
+                  input#password.mdl-textfield__input(type='password' name='password')
+                  span.error.mdl-textfield__error(for="password") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='email') Email
+                  input.mdl-textfield__input(type='text' name='email' value=user.email)
+                  span.error.mdl-textfield__error(for="email") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') Phone number
+                  input.mdl-textfield__input(type='text' name='phoneNumber' value=user.phoneNumber)
+                  span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres
+
+              if (status)
+                b !{status.message}
+
+                input#submit-form(type='submit' class='hidden')
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-settings-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Update
+
+  block js
+    script(src="/js/validation.js")

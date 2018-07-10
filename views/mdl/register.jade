@@ -4,43 +4,50 @@ block variables
 extends layout
 
 block content
-  .container
-    form#form-register.form-signin(role='form', action="/register",method="post")
-      h2.form-signin-heading Register
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text Register
+            div.mdl-card__supporting-text.mdl-grid
 
-      div.form-container
-        .setting-group.setting-name
-          label.setting-label Name
-          .setting
-            input.form-control(type='text', name="name", placeholder='Name')
-            label.error.notification(for="name")
-            label.information
-        .setting-group.setting-username
-          label.setting-label Username
-          .setting
-            input.form-control(type='text', name="username", placeholder='Username')
-            label.error.notification(for="username")
-            label.information
-        .setting-group.setting-password
-          label.setting-label Password
-          .setting
-            input.form-control(type='password', name="password", placeholder='Password')
-            label.error.notification(for="password")
-            label.information At least 8 characters, containing one uppercase letter, one lowercase letter.
-        .setting-group.setting-email
-          label.setting-label Email
-          .setting
-            input.form-control(type='text', name="email",  placeholder='Email')
-            label.error.notification(for="email")
-            label.information This will be used to send you recordings & transcripts.
-        .setting-group.setting-phoneNumber
-          label.setting-label Phone number
-          .setting
-            label.prefix +1
-            input.form-control(type='text', name="phoneNumber",  placeholder='Phone number')
-            label.error.notification(for="phoneNumber")
-            label.information U.S. numbers only.
+              form#form-register(role='form' method='post' action='/register')
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='name') Name
+                  input.mdl-textfield__input(type='text' name='name')
+                  span.error.mdl-textfield__error(for="name") Error message goes heres
 
-        .setting-group
-          .setting
-            button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign Up
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='username') Username
+                  input#username.mdl-textfield__input(type='text' name='username')
+                  span.error.mdl-textfield__error(for="username") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='password') Password
+                  input#password.mdl-textfield__input(type='password' name='password')
+                  span.error.mdl-textfield__error(for="password") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='email') Email
+                  input.mdl-textfield__input(type='text' name='email')
+                  span.error.mdl-textfield__error(for="email") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col.is-upgraded
+                  label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') Phone number
+                  input.mdl-textfield__input(type='text' name='phoneNumber')
+                  span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres
+
+                input#submit-form(type='submit' class='hidden')
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-register-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Register
+              div.mdl-grid
+                div.mdl-cell.mdl-cell--12-col
+                  a.mdl-color-text--primary(style='float:right') Lost Password?
+
+  block js
+    script(src="/js/validation.js")

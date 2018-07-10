@@ -18,9 +18,14 @@
 
  $accent: rgb(255,82,82);
  $primary: rgb(158,158,158);
+ $buttonaccent: rgba(255,82,82,0.8);
 
 body {
   margin: 0;
+}
+
+.mdl-button--colored:hover {
+  background-color: $buttonaccent !important;
 }
 
 /* Disable ugly boxes around images in IE10 */
@@ -29,10 +34,10 @@ a img {
   border: 0px;
 }
 
-.login-wrapper {
-  display: flex;
-  align-items: center;
-  height: 100vh;
+#top-right-menu {
+  a {
+    text-decoration: none;
+  }
 }
 
 /*
@@ -204,4 +209,14 @@ a img {
   position: relative;
   width: auto;
   background-color: #f3f3f3;
+
+  &.bg-login {
+    height: 100%;
+
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
 }

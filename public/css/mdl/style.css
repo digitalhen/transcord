@@ -16,14 +16,15 @@
 body {
   margin: 0; }
 
+.mdl-button--colored:hover {
+  background-color: rgba(255, 82, 82, 0.8) !important; }
+
 /* Disable ugly boxes around images in IE10 */
 a img {
   border: 0px; }
 
-.login-wrapper {
-  display: flex;
-  align-items: center;
-  height: 100vh; }
+#top-right-menu a {
+  text-decoration: none; }
 
 /*
 ::-moz-selection, ::selection {
@@ -154,3 +155,9 @@ a img {
   position: relative;
   width: auto;
   background-color: #f3f3f3; }
+  .bg.bg-login {
+    height: 100%; }
+    .bg.bg-login .login-wrapper {
+      display: flex;
+      align-items: center;
+      height: 100%; }

@@ -4,6 +4,17 @@ $(document).ready(function() {
       $('#form-login').submit();
   });
 
+  $('#form-register-button').click(function() {
+      $('#form-register').submit();
+  });
+
+  $('#form-settings-button').click(function() {
+      $('#form-settings').submit();
+  });
+
+  // Autoformatting on phone numbers
+  $('input[name="phoneNumber"]').mask('(000) 000-0000');
+
   // add a method to check passwordField
   $.validator.addMethod("pwcheck", function(value) {
      return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
@@ -20,17 +31,25 @@ $(document).ready(function() {
   });
 
   var loginValidator = $('#form-login').validate({
+    errorPlacement: function(error, element) {
+      $(element).parent('.mdl-textfield').addClass('is-invalid');
+      $(element).siblings('.error').text(error.text());
+    },
     rules: {
       username: "required",
       password: "required"
     },
     messages: {
-      username: "Required",
+      username: "Please enter a username.",
       password: "Please enter a password."
     }
 });
 
   var profileValidator = $('#form-profile').validate({
+    errorPlacement: function(error, element) {
+      $(element).parent('.mdl-textfield').addClass('is-invalid');
+      $(element).siblings('.error').text(error.text());
+    },
     rules: {
       name: "required",
       username: {
@@ -49,7 +68,7 @@ $(document).ready(function() {
           },
           depends: function() {
             return ($('#form-profile input[name="username"]').val() !== $('#form-profile input[name="username"]').attr('original'));
-          }
+          },
           /*
           depends: function(element) {
               // compare email address in form to hidden field
@@ -65,6 +84,7 @@ $(document).ready(function() {
           },
       },
       email: {
+        required: true,
         email: true,
         //notEqual: $('#form-profile input[name="email"]').attr('original'),
         remote: {
@@ -85,6 +105,7 @@ $(document).ready(function() {
         }
       },
       phoneNumber: {
+        required: true,
         phoneUS: true,
         //notEqual: $('#form-profile input[name="phoneNumber"]').attr('original'),
         remote: {
@@ -107,17 +128,22 @@ $(document).ready(function() {
     },
     messages: {
       name: "A name is required.",
-      password: "Please enter a valid password.",
+      password: {
+        pwcheck: "This needs at least 8 characters, with upper- and lowercase letters and a digit."
+      },
       username: {
+        required: "Please enter a username.",
         notEqual: "This is you!",
-        remote: "This username is taken.",
+        remote: "This user exists already.",
       },
       //username: "User exists already.",
       email: {
+        required: "Please enter an email address.",
         notEqual: "This is you!",
         remote: "Someone else has registered this email.",
       },
       phoneNumber: {
+        required: "Please enter a phone number.",
         notEqual: "This is you!",
         remote: "This phone number is registered in another account.",
       },
@@ -125,6 +151,10 @@ $(document).ready(function() {
   });
 
   var registerValidator = $('#form-register').validate({
+    errorPlacement: function(error, element) {
+      $(element).parent('.mdl-textfield').addClass('is-invalid');
+      $(element).siblings('.error').text(error.text());
+    },
     rules: {
       name: "required",
       username: {
@@ -145,6 +175,7 @@ $(document).ready(function() {
           pwcheck: true
       },
       email: {
+        required: true,
         email: true,
         remote: {
           url: '/validate',
@@ -158,6 +189,7 @@ $(document).ready(function() {
         }
       },
       phoneNumber: {
+        required: true,
         phoneUS: true,
         remote: {
           url: '/validate',
@@ -172,14 +204,29 @@ $(document).ready(function() {
       }
     },
     messages: {
-      name: "Required",
-      password: "Please enter a valid password.",
-      username: "User exists already.",
-      email: "An account with this email address exists.",
-      phoneNumber: "An account with this phone number exists."
+      name: "Please enter your name.",
+      password: {
+        required: "Please enter a valid password.",
+        pwcheck: "This needs at least 8 characters, with upper- and lowercase letters and a digit."
+      },
+      username: {
+        required: "Please enter a username.",
+        remote: "User exists already.",
+      },
+      email: {
+        required: "Please enter an email address.",
+        email: "Not a valid email address.",
+        remote: "An account with this email address exists.",
+      },
+      phoneNumber: {
+        required: "Please enter a phone number.",
+        phoneUS: "Not a valid US phone number.",
+        remote: "An account with this phone number exists."
+      }
     }
   });
 
+  /*
   // disable submit if not valid
   $('#form-profile input').on('blur keyup', function() {
       if ($("#form-profile").valid()) {
@@ -203,5 +250,5 @@ $(document).ready(function() {
       } else {
           $('#form-register button[type="submit"]').prop('disabled', 'disabled');
       }
-  });
+  }); */
 });
