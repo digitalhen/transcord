@@ -47,7 +47,8 @@ block content
                 button#form-register-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Register
               div.mdl-grid
                 div.mdl-cell.mdl-cell--12-col
-                  a.mdl-color-text--primary(style='float:right') Lost Password?
+                  a(href='/passwordreset' style="float:right")
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Lost Password?
 
   block js
     script(src="/js/validation.js")
