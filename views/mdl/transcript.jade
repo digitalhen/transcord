@@ -6,11 +6,18 @@ extends layout
 block content
   main.mdl-layout__content.bg
     div.mdl-grid(style="max-width:900px")
-      div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
+      div.transcript-control-card.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
         div.mdl-card__title
           h2.mdl-card__title-text Details of the call would go here
         div.mdl-card__supporting-text
           p This is some text, where we could show the sound file & tags
+          div.waveform(id='waveform-0' data-id='0' data-recordingUrl=user.recordings[0].recordingUrl)
+            progress.progress.progress-striped(id='progress-0')
+
+
+
+          button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
+            i#button-text-0.material-icons.play play_arrow
         div.mdl-card__actions.mdl-card--border
           a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
 
@@ -30,3 +37,7 @@ block content
 
 
         - })
+
+    block js
+      script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+      script(src="/js/recordings.js")

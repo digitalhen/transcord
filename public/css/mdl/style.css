@@ -100,6 +100,14 @@ a img {
     bottom: 25px;
     z-index: 100; }
 
+.transcript-control-card .mdl-card__supporting-text {
+  position: relative;
+  overflow: visible; }
+  .transcript-control-card .mdl-card__supporting-text .transcript-play-button {
+    position: absolute;
+    right: 25px;
+    bottom: -28px; }
+
 .transcript-grid {
   padding: 0px;
   margin: inherit; }

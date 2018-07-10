@@ -133,6 +133,18 @@ a img {
   }
 }
 
+.transcript-control-card {
+  .mdl-card__supporting-text {
+    position: relative;
+    overflow: visible;
+
+    .transcript-play-button {
+      position: absolute;
+      right: 25px;
+      bottom: -28px;
+    }
+  }
+}
 
 .transcript-grid {
     padding: 0px;

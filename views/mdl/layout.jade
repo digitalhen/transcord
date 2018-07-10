@@ -40,16 +40,16 @@ html
           span.mdl-layout-title
             img(src='/img/logo.png' style='max-height:35px')
           div.mdl-layout-spacer
-          div.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right.mdl-textfield--full-width
+          div.mdl-layout--large-screen-only.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right.mdl-textfield--full-width
             label.mdl-button.mdl-js-button.mdl-button--icon(for="search-field")
               i.material-icons search
             div.mdl-textfield__expandable-holder
               input#search-field.mdl-textfield__input(type="text")
           nav.mdl-navigation
-              a(href='/')
+              a.mdl-layout--large-screen-only(href='/')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white About
             if (user)
-              a(href='/dashboard')
+              a.mdl-layout--large-screen-only(href='/dashboard')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Dashboard
             if (!user)
               a(href='/login')
@@ -60,6 +60,8 @@ html
                     i.material-icons more_vert
 
               ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(data-mdl-for="top-right-menu")
+                a.mdl-layout--small-screen-only(href="/dashboard")
+                  li.mdl-menu__item Dashboard
                 a(href="/settings")
                   li.mdl-menu__item Settings
                 a(href='/logout')
