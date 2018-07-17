@@ -17,14 +17,14 @@
  */
 
  $accent: rgb(255,82,82);
- $primary: rgb(158,158,158);
+ $primary: rgb(158,158,158); 
  $buttonaccent: rgba(255,82,82,0.8);
 
-body {
+body { 
   margin: 0;
-}
+} 
 
-.mdl-button--colored:hover {
+.mdl-button--colored:hover {   
   background-color: $buttonaccent !important;
 }
 
@@ -229,6 +229,7 @@ a img {
   background-color: #f3f3f3;
 
   &.bg-login {
+
     height: 100%;
 
     .login-wrapper {
