@@ -2,16 +2,27 @@ doctype html
 html
   head
   body
-    block content
-      .container
-        div.transcriptContainer
-          table.table
-            thead
-            tbody.messages
-              - transcription.forEach(function(line) {
-                  tr(class=line.side)
-                    td
-                      div.messageContainer.dimmed(time=line.startTime)
-                        div
-                          p.message #{line.transcript}
-              - })
+    include htmlstyle.html
+    table#main-table
+      tbody
+        tr.header-padding
+        tr
+          td
+            div.header-container
+              img.logo(src="https://transcord.app/img/white/logo.png")
+        tr.header-padding
+        tr
+          td
+            table#content-table
+              tbody
+                tr(style='height:5px')
+                tr
+                  td
+                    table(style='background-color:#ffffff;text-align:center;width:500px;margin:0 auto')
+                      - transcription.forEach(function(line) {
+                          tr(class=line.side)
+                            td
+                              div.messageContainer.dimmed(time=line.startTime)
+                                div
+                                  p.message #{line.transcript}
+                      - })
