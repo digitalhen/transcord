@@ -35,7 +35,7 @@ html
                                   div
                                   div(style="background:" + (line.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px")
                                     div(style="width:100%")
-                                      div(style='text-align: ' + line.side + ';padding-' + line.side + ': 20px;')
+                                      div(style='text-align: ' + line.side + ';margin-' + (line.side === 'left' ? 'right' : 'left') + ': 100px;margin-' + line.side + ': 20px;')
                                         h6.transcript-title(style="font-size:12px;margin: 0px;")
                                         p.transcript-text #{line.transcript}
                                         p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
