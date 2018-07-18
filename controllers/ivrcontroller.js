@@ -532,7 +532,7 @@ function sendEmail(user, recording) {
     });
 
     // locals to feed through to template
-    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': recording.transcription};
+    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': JSON.parse(recording.transcription)};
 
     // loop through transcription object and build up the email
     var plaintextTranscript = 'this is a plain text email';
