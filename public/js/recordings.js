@@ -22,6 +22,11 @@ $(document).ready(function(){
       document.getElementById(progressId).style.display = 'none';
     });
 
+    wavesurfer.on('finish', function (percents) {
+      $(buttonTextId).text('play_arrow').removeClass('pause').addClass('play');
+      wavesurfer.seekTo(0);
+    });
+
     $(buttonId).click(function() {
       wavesurfer.playPause();
 
