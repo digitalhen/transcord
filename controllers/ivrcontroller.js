@@ -528,9 +528,12 @@ function sendEmail(user, recording) {
             pass: 'iybfrzmemnvkyzhl' // generated ethereal password
         }*/
         host: 'localhost',
-        port: 25,
+        port: 465,
         secure: false,
-        ignoreTLS: true,
+	ignoreTLS: true,
+	tls: {
+		ciphers: 'SSLv3'
+	}
     });
 
     // locals to feed through to template
