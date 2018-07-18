@@ -535,10 +535,10 @@ function sendEmail(user, recording) {
     var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': JSON.parse(recording.transcription)};
 
     // loop through transcription object and build up the email
-    var plaintextTranscript = 'this is a plain text email';
+    var plaintextTranscript = '';
     var htmlTranscript = jade.renderFile('views/email/emailHtml.jade', locals);
 
-    /*
+    // build plain text
     transcription.forEach(function(line) {
       if(line.side=='left') {
         plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
@@ -547,7 +547,7 @@ function sendEmail(user, recording) {
         plaintextTranscript += 'They said:\n' + line.transcript + "\n\n";
         htmlTranscript += '<b>They said:</b><br/>' + line.transcript + "<br/><br/>";
       }
-    });*/
+    });
 
 
     // setup email data with unicode symbols
