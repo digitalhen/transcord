@@ -9,6 +9,7 @@ const request = require('request');
 const fs      = require('fs');
 const path    = require('path');
 const ffmpeg = require('fluent-ffmpeg');
+const jade = require('jade');
 
 const PROJECT_ID = 'transcord-2018';
 const GOOGLE_KEY = 'credentials/google.json';
@@ -19,7 +20,7 @@ var ivrController = {};
 function reject() {
     const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Welcome to News Record. Your number was not recognized. Please visit news record dot com to register.');
+    voiceResponse.say('Welcome to Transcord. Your number was not recognized. Please visit transcord dot app to register.');
 
     voiceResponse.hangup();
 
@@ -91,22 +92,27 @@ ivrController.privacynotice = function(req, res) {
         .then(function(user) {
             if (user == null) {
                 // TODO: we should never reach here?
+                console.log('No user found during privacy notice');
             } else {
                 const name = user.name;
 
                 const voiceResponse = new VoiceResponse();
 
-                const gather = voiceResponse.gather({
-                    action: '/ivr/privacyconnect',
-                    numDigits: '1',
-                    method: 'POST',
-                });
-
-                gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
-
-                voiceResponse.say("Goodbye.");
-
-                voiceResponse.hangup();
+                // TODO: check user profile to see if they have privacy notice enabled
+                if(user.givePrivacyNotice !== 'undefined' && user.givePrivacyNotice) {
+                    const gather = voiceResponse.gather({
+                        action: '/ivr/privacyconnect',
+                        numDigits: '1',
+                        method: 'POST', 
+                    });
+    
+                    gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
+    
+                    voiceResponse.say("No response received, goodbye.");
+    
+                    voiceResponse.hangup();
+                }
+                
 
                 res.send(voiceResponse.toString());
             }
@@ -134,12 +140,12 @@ ivrController.recording = function(req, res) {
         .then(function(recording) {
             const parentCallSid = recording.callSid;
 
-            // lets look up the parent here (from)...
+            // lets look up the parent call here (who the call is from)...
             twilioClient.calls(parentCallSid)
                 .fetch()
                 .then(function(parentCall) {
-                    // TODO: Look up the user here:
-
+                    
+                    // let's find the user that has that phone number
                     User.findOne({
                             combinedPhoneNumber: parentCall.from
                         })
@@ -150,13 +156,11 @@ ivrController.recording = function(req, res) {
                                 const name = user.name;
                                 const email = user.email;
 
+                                // find the child call that has this parent call
                                 twilioClient.calls.each({
                                     parentCallSid: parentCallSid
                                 }, function(childCall) {
-                                    //sendEmail(name, email, recording.duration, childCall.toFormatted, recordingUrl);
-
-
-                                    // TODO: capture full sprectrum of calls
+                                    // build a recording object
                                     var recordingObject = {
                                         recordingSid: recordingSid,
                                         startTime: parentCall.startTime,
@@ -170,24 +174,10 @@ ivrController.recording = function(req, res) {
                                         recordingUrl: recordingUrl
                                     };
 
-                                    /*
-                                    User.update({
-                                        _id: user._id
-                                    }, {
-                                        recordings: user.recordings
-                                    }, function(err, numberAffected, rawResponse) {
-                                        if (err) {
-                                            console.log('There was an error');
-                                        }
-                                    }); */
-
                                     // call download for this file
                                     processFiles(user, recordingObject);
-                                    // TODO: can i make the email thing plug in to this?
 
-
-
-                                    // TODO, fix for conference calls
+                                    // TODO, fix for conference calls with multiple child calls
                                 });
                             }
                         });
@@ -230,6 +220,8 @@ function redirectWelcome() {
 }
 
 function runTranscription(user, recordingObject) {
+    // process audio through google speech to text, once for the caller audio, once for the receipient audio
+
   console.log("Running transcriptions for recording: " + recordingObject.recordingSid);
 
   var leftResults = [];
@@ -271,37 +263,8 @@ function runTranscription(user, recordingObject) {
   const client = new speech.SpeechClient({projectId: PROJECT_ID,
         keyFilename: GOOGLE_KEY});
 
-    /*
-    client
-      .longRunningRecognize(main)
-      .then(data => {
-        const operation = data[0];
-        // Get a Promise representation of the final result of the job
-        return operation.promise();
-      })
-      .then(data => {
-        console.log(data);
-        const response = data[0];
-        var transcription = '';
-
-        response.results.forEach(result => {
-          transcription = response.results
-            .map(result => result.alternatives[0].transcript)
-            .join('\n');
-        });
-
-        status.main = true;
-
-        recordingObject.transcription = transcription;
-
-        if(status.main && status.left && status.right)
-          pushRecording(user,recordingObject);
-      })
-      .catch(err => {
-        console.error('ERROR:', err);
-      });
-
-  */
+  
+    // make async call to google transcribe and then wait to hear back
   client
     .longRunningRecognize(left)
     .then(data => {
@@ -362,6 +325,7 @@ function runTranscription(user, recordingObject) {
 }
 
 function buildTranscription(leftResults, rightResults) {
+    // this builds the objects to contains the transcriptions
   console.log("Building transcription...");
 
   var combinedTranscript = [];
@@ -443,6 +407,8 @@ function saveToDatabase(user, recordingObject) {
 }
 
 function processFiles(user, recordingObject) {
+    // this downloads files from twilio and puts them in to google cloud
+
   var status = {
     main: false,
     left: false,
@@ -465,6 +431,9 @@ function processFiles(user, recordingObject) {
 
     https.get(recordingObject.recordingUrl, function(res) {
         res.pipe(stream).on('close', function() {
+              // download the dual audio
+              // TODO: swap the sides of the audio, left and right are on the wrong side
+
               var main = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
                   .audioChannels(1)
@@ -489,6 +458,7 @@ function processFiles(user, recordingObject) {
                   })
                   .save(dest + '-main.wav');
 
+              // download the audio for the person who received the call
               var right = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
                   .audioChannels(1)
@@ -513,7 +483,7 @@ function processFiles(user, recordingObject) {
                   })
                   .save(dest + '-right.wav');
 
-
+              // download the audio for the person that made the call
               var left = ffmpeg(dest + '.wav')
                   .inputFormat('wav')
                   .audioChannels(1)
@@ -544,6 +514,8 @@ function processFiles(user, recordingObject) {
 }
 
 function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcription) {
+    // send the email
+
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         /*host: 'smtp.gmail.com',
@@ -559,10 +531,14 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
         ignoreTLS: true,
     });
 
-    // loop through transcription object and build up the email
-    var plaintextTranscript = '';
-    var htmlTranscript = '';
+    // locals to feed through to template
+    var locals = {'transcription': transcription};
 
+    // loop through transcription object and build up the email
+    var plaintextTranscript = 'this is a plain text email';
+    var htmlTranscript = jade.renderFile('views/email/emailHtml.jade', locals);
+
+    /*
     transcription.forEach(function(line) {
       if(line.side=='left') {
         plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
@@ -571,7 +547,7 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
         plaintextTranscript += 'They said:\n' + line.transcript + "\n\n";
         htmlTranscript += '<b>They said:</b><br/>' + line.transcript + "<br/><br/>";
       }
-    });
+    });*/
 
 
     // setup email data with unicode symbols
@@ -582,9 +558,10 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
         text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl +
           plaintextTranscript,
         // plain text body
-        html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
+        /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
             '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a><br/><br/>' +
-            htmlTranscript
+            htmlTranscript */
+        html: htmlTranscript,
         // html body
     };
 

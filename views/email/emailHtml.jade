@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+  body
+    block content
+      .container
+        div.transcriptContainer
+          table.table
+            thead
+            tbody.messages
+              - transcription.forEach(function(line) {
+                  tr(class=line.side)
+                    td
+                      div.messageContainer.dimmed(time=line.startTime)
+                        div
+                          p.message #{line.transcript}
+              - })
