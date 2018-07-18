@@ -23,14 +23,14 @@ html
                         tr(style="height:20px")
                         tr
                           td
-                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call to !{numberCalled}
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call to !{recording.numberCalled}
                             p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Helvetica,Arial')
                               br 
                               | Transcription
                         tr(style="height:20px")
                         tr
                           td
-                            - transcription.forEach(function(line) {
+                            - recording.transcription.forEach(function(line) {
                                 div(style='padding: 0px;margin: inherit;display: flex;')
                                   div
                                   div(style="background:" + (line.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px")
@@ -40,6 +40,17 @@ html
                                         p.transcript-text #{line.transcript}
                                         p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
                             - })
+                        tr
+                          td
+                            table(style="text-align:center;margin:0 auto")
+                              tbody
+                                tr(style="height:20px")
+                                tr
+                                  td(style="width:100px")
+                                  td(style="width:400px")
+                                    a(style="text-decoration:none;color:#4a4a4a" href="https://transcord.app/dashboard/transcript/" target="_blank")
+
+                                  td(style="width:100px")
                     table(style='background-color:#f6f6f6;text-align:center;width:100%;margin:0 auto;')
                       tbody
                         tr

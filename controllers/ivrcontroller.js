@@ -288,8 +288,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
         console.log(transcription);
-        sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
-      }
+        sendEmail(user, recordingObject);      }
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -316,7 +315,7 @@ function runTranscription(user, recordingObject) {
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           console.log(transcription);
-          sendEmail(user.name, user.email, recordingObject.duration, recordingObject.numberCalledFormatted, recordingObject.recordingUrl, transcription);
+          sendEmail(user, recordingObject);
         }
 
       })
@@ -514,7 +513,7 @@ function processFiles(user, recordingObject) {
     });
 }
 
-function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcription) {
+function sendEmail(user, recording) {
     // send the email
 
     // create reusable transporter object using the default SMTP transport
@@ -533,7 +532,7 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
     });
 
     // locals to feed through to template
-    var locals = {'moment': moment, 'name': name, 'numberCalled': numberCalled, 'transcription': transcription};
+    var locals = {'moment': moment, 'user': user, 'recording': recording};
 
     // loop through transcription object and build up the email
     var plaintextTranscript = 'this is a plain text email';
@@ -554,9 +553,9 @@ function sendEmail(name, emailTo, duration, numberCalled, recordingUrl, transcri
     // setup email data with unicode symbols
     let mailOptions = {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
-        to: emailTo, // list of receivers
-        subject: 'Recording of your call to ' + numberCalled, // Subject line
-        text: 'Dear ' + name + ',\n\nHere is your ' + duration + ' second call recording: ' + recordingUrl +
+        to: user.email, // list of receivers
+        subject: 'Recording of your call to ' + recording.numberCalledFormatted, // Subject line
+        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call recording: ' + recording.recordingUrl +
           plaintextTranscript,
         // plain text body
         /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
