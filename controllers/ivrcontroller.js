@@ -10,6 +10,7 @@ const fs      = require('fs');
 const path    = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 const jade = require('jade');
+const moment = require('moment');
 
 const PROJECT_ID = 'transcord-2018';
 const GOOGLE_KEY = 'credentials/google.json';
