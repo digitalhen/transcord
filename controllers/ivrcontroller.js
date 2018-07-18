@@ -544,10 +544,8 @@ function sendEmail(user, recording) {
     transcription.forEach(function(line) {
       if(line.side=='left') {
         plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
-        htmlTranscript += '<b>You said:</b><br/>' + line.transcript + "<br/><br/>";
       } else if(line.side=='right') {
         plaintextTranscript += 'They said:\n' + line.transcript + "\n\n";
-        htmlTranscript += '<b>They said:</b><br/>' + line.transcript + "<br/><br/>";
       }
     });
 
