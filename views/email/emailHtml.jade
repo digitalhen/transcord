@@ -31,14 +31,14 @@ html
                         tr
                           td
                             - transcription.forEach(function(line) {
-                                div.mdl-grid.table-grid.transcript-grid
-                                  div(class=(line.side === 'right' ? 'mdl-layout-spacer' : '' ))
-                                  div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=line.side style="border-radius:5px")
-                                    div.mdl-card__supporting-text
-                                      div.messageContainer.dimmed(time=line.startTime)
-                                        h6.transcript-title(style="font-size:12px") #{line.side === "left" ? Caller : Recipient}
+                                div(style='padding: 0px;margin: inherit;display: flex;')
+                                  div
+                                  div(style="border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;background: white;border-radius:5px")
+                                    div
+                                      div(style='text-align: ' + line.side + ';padding-left: 20px;')
+                                        h6.transcript-title(style="font-size:12px;margin: 0px;")
                                         p.transcript-text #{line.transcript}
-                                        p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
+                                        p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
                             - })
                     table(style='background-color:#f6f6f6;text-align:center;width:600px;margin:0 auto;')
                       tbody
