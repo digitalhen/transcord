@@ -516,6 +516,8 @@ function processFiles(user, recordingObject) {
 function sendEmail(user, recording) {
     // send the email
 
+    var transcription = JSON.parse(recording.transcription);
+
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
         /*host: 'smtp.gmail.com',
@@ -532,7 +534,7 @@ function sendEmail(user, recording) {
     });
 
     // locals to feed through to template
-    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': JSON.parse(recording.transcription)};
+    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription};
 
     // loop through transcription object and build up the email
     var plaintextTranscript = '';
@@ -555,7 +557,7 @@ function sendEmail(user, recording) {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: user.email, // list of receivers
         subject: 'Recording of your call to ' + recording.numberCalledFormatted, // Subject line
-        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call recording: ' + recording.recordingUrl +
+        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n'
           plaintextTranscript,
         // plain text body
         /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
