@@ -3,26 +3,43 @@ html
   head
   body
     include htmlstyle.html
-    table(style='border-spacing: 0;border-collapse: collapse;width: 590px;text-align: center;background-color: #25b9c8;margin: 0 auto;')
+    table(style='border-spacing: 0;border-collapse: collapse;width: 690px;text-align: center;background-color: rgb(244,67,54);margin: 0 auto;')
       tbody
         tr(style='height:40px;')
         tr
           td
-            div(style='color:#ffffff;text-align:center;font-family:Helvetica,Arial;font-weight:lighter;font-size:24px;width:100px;margin:auto;margin-bottom:25px')
-              img(style='display:block;line-height:50%;float:left;border: 0;' src="https://transcord.app/img/white/logo.png")
+            div
+              img(src="https://transcord.app/img/white/logo.png")
         tr(style='height:40px;')
         tr
           td
-            table(style='border-collapse:collapse;background-color:#f1e900;margin:0 auto;')
+            table(style='border-collapse:collapse;background-color:rgb(68,138,255);margin:0 auto;')
               tbody
                 tr(style='height:5px;')
                 tr
                   td
-                    table(style='background-color:#ffffff;text-align:center;width:500px;margin:0 auto;')
-                      - transcription.forEach(function(line) {
-                          tr(class=line.side)
-                            td
-                              div.messageContainer.dimmed(time=line.startTime)
-                                div
-                                  p.message #{line.transcript}
-                      - })
+                    table(style='background-color:#ffffff;text-align:center;width:600px;margin:0 auto;')
+                      tbody
+                        tr(style="height:20px")
+                        tr
+                          td
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call to #(numberCalled)
+                            p
+                              br Transcription
+                        tr(style="height:20px")
+                        tr
+                          td
+                            - transcription.forEach(function(line) {
+                                div.messageContainer.dimmed(time=line.startTime)
+                                  div
+                                    p.message #{line.transcript}
+                            - })
+                    table(style='background-color:#f6f6f6;text-align:center;width:600px;margin:0 auto;')
+                      tbody
+                        tr
+                          td(style="width:40px")
+                          td(style="width:160px")
+                            p(style='text-align:left;color:#666666;font-family:Helvetica,Arial;font-size:11px') Address will go here
+                              br Second line here
+                              br Third line here
+                        tr(style="height:25px")
