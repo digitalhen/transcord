@@ -557,7 +557,7 @@ function sendEmail(user, recording) {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: user.email, // list of receivers
         subject: 'Recording of your call to ' + recording.numberCalledFormatted, // Subject line
-        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n'
+        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
           plaintextTranscript,
         // plain text body
         /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
