@@ -3,22 +3,22 @@ html
   head
   body
     include htmlstyle.html
-    table#main-table
+    table(style='border-spacing: 0;border-collapse: collapse;width: 590px;text-align: center;background-color: #25b9c8;margin: 0 auto;')
       tbody
-        tr.header-padding
+        tr(style='height:40px;')
         tr
           td
-            div.header-container
-              img.logo(src="https://transcord.app/img/white/logo.png")
-        tr.header-padding
+            div(style='color:#ffffff;text-align:center;font-family:Helvetica,Arial;font-weight:lighter;font-size:24px;width:100px;margin:auto;margin-bottom:25px');
+              img(style='display:block;line-height:50%;float:left;border: 0;' src="https://transcord.app/img/white/logo.png")
+        tr(style='height:40px;')
         tr
           td
-            table#content-table
+            table(style='border-collapse:collapse;background-color:#f1e900;margin:0 auto;')
               tbody
-                tr(style='height:5px')
+                tr(style='height:5px;')
                 tr
                   td
-                    table(style='background-color:#ffffff;text-align:center;width:500px;margin:0 auto')
+                    table(style='background-color:#ffffff;text-align:center;width:500px;margin:0 auto;')
                       - transcription.forEach(function(line) {
                           tr(class=line.side)
                             td
