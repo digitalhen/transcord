@@ -36,7 +36,7 @@ html
                                   div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=line.side style="border-radius:5px")
                                     div.mdl-card__supporting-text
                                       div.messageContainer.dimmed(time=line.startTime)
-                                        h6.transcript-title(style="font-size:12px") #{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
+                                        h6.transcript-title(style="font-size:12px") #{line.side === "left" ? Caller : Recipient}
                                         p.transcript-text #{line.transcript}
                                         p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
                             - })
