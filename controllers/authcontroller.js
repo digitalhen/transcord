@@ -23,6 +23,14 @@ userController.settings = function(req, res) {
         return res.redirect('/login');
     }
 
+    if(typeof req.params.action !== 'undefined') {
+        switch(req.params.action) {
+            case 'unsubscribe':
+                // TODO: turn off email notifications
+                break;
+        }
+    };
+
     res.render('settings', {
         user: req.user
     });
@@ -34,6 +42,8 @@ userController.doRegister = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
+        emailNotification: true,
+        privacyNotification: false,
         countryCode: '+1',
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
@@ -67,6 +77,8 @@ userController.doUpdate = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
+        emailNotification: true,
+        privacyNotification: false,
         countryCode: '+1',
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),

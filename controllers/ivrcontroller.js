@@ -100,7 +100,7 @@ ivrController.privacynotice = function(req, res) {
                 const voiceResponse = new VoiceResponse();
 
                 // TODO: check user profile to see if they have privacy notice enabled
-                if(user.givePrivacyNotice !== 'undefined' && user.givePrivacyNotice) {
+                if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
                     const gather = voiceResponse.gather({
                         action: '/ivr/privacyconnect',
                         numDigits: '1',
@@ -288,7 +288,8 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
         console.log(transcription);
-        sendEmail(user, recordingObject);      }
+        sendEmail(user, recordingObject);      
+      }
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -514,7 +515,12 @@ function processFiles(user, recordingObject) {
 }
 
 function sendEmail(user, recording) {
-    // send the email
+    // send the email but check if users wants it first
+    if(user.emailNotification !== 'undefined' && !user.emailNotification) {
+        console.log('User has emails turned off, so not sending: ' + user.email);
+        return; // returns if the have a email notification set to false
+    }
+        
 
     var transcription = JSON.parse(recording.transcription);
 

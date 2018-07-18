@@ -18,8 +18,8 @@ router.get('/register', auth.register);
 // route for register action
 router.post('/register', auth.doRegister);
 
-// route for user profile
-router.get('/settings', auth.settings);
+// route for user profile -- optionally allows action to be specified
+router.get('/settings/:action*?', auth.settings);
 
 // route for profile update
 router.post('/settings', auth.doUpdate);
