@@ -19,6 +19,7 @@ userController.register = function(req, res) {
 // Go to profile page
 userController.settings = function(req, res) {
     if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
         return res.redirect('/login');
     }
 
@@ -54,6 +55,7 @@ userController.doRegister = function(req, res) {
 // User update
 userController.doUpdate = function(req, res) {
     if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
         return res.redirect('/login');
     }
 
@@ -191,8 +193,11 @@ userController.doLogin = function(req, res) {
             if (err) {
                 return console.log(err);
             }
-            //Areturn res.redirect('/users/' + user.username);
-            return res.redirect('/dashboard');
+
+            // check if the user came in to an original url.... if so, go back to it
+            var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/dashboard';
+            delete req.session.redirectTo;
+            return res.redirect(redirectTo);
         });
         //})(req, res, next);
     })(req, res);

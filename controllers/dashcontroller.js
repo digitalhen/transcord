@@ -8,6 +8,7 @@ var dashController = {};
 // Go to registration page
 dashController.dashboard = function(req, res) {
   if (!req.user) {
+      req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
   }
 
@@ -18,6 +19,7 @@ dashController.dashboard = function(req, res) {
 
 dashController.billing = function(req, res) {
   if (!req.user) {
+      req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
   }
 
@@ -28,6 +30,7 @@ dashController.billing = function(req, res) {
 
 dashController.recordings = function(req, res) {
   if (!req.user) {
+      req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
   }
 
@@ -38,6 +41,7 @@ dashController.recordings = function(req, res) {
 
 dashController.transcript = function(req, res) {
   if (!req.user) {
+      req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
   }
 
