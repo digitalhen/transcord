@@ -23,7 +23,7 @@ html
                         tr(style="height:20px")
                         tr
                           td
-                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call to #(numberCalled)
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call to !{numberCalled}
                             p
                               br 
                               | Transcription
@@ -31,9 +31,14 @@ html
                         tr
                           td
                             - transcription.forEach(function(line) {
-                                div.messageContainer.dimmed(time=line.startTime)
-                                  div
-                                    p.message #{line.transcript}
+                                div.mdl-grid.table-grid.transcript-grid
+                                  div(class=(line.side === 'right' ? 'mdl-layout-spacer' : '' ))
+                                  div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=line.side style="border-radius:5px")
+                                    div.mdl-card__supporting-text
+                                      div.messageContainer.dimmed(time=line.startTime)
+                                        h6.transcript-title(style="font-size:12px") #{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
+                                        p.transcript-text #{line.transcript}
+                                        p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
                             - })
                     table(style='background-color:#f6f6f6;text-align:center;width:600px;margin:0 auto;')
                       tbody
@@ -46,3 +51,4 @@ html
                               br 
                               | Third line here
                         tr(style="height:25px")
+        tr(style='height:55px')
