@@ -128,6 +128,13 @@ a img {
   z-index: 100;
 }
 
+.transcript-control-card {
+  height: 100%;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 16px;
+}
+
 .transcript-control-card .mdl-card__supporting-text {
   position: relative;
   overflow: visible;

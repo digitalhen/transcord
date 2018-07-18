@@ -140,6 +140,11 @@ a img {
 }
 
 .transcript-control-card {
+  height: 100%;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 16px;
+
   .mdl-card__supporting-text {
     position: relative;
     overflow: visible;

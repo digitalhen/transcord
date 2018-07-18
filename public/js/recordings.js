@@ -38,11 +38,18 @@ $(document).ready(function(){
       // search for the last message that has been passed by the audio
       $('.messageContainer').each(function(index) {
         var time = parseFloat($(this).attr('time'));
-        console.log("currentTime: " + currentTime + " time: " + time);
         if (time < currentTime) {
           found = $(this);
         } else if (found !== null) {
-          // We've gone too far, so let's set the previous one to be highlighted, and then quit
+          // We've gone too far, so let's set the previous one to be highlighted, scroll to it and then quit
+          //console.log(found.offset().top);
+
+          //$('main').scrollTop(found.offset().top - 50);
+
+          /*
+          $('main').stop().animate({
+              scrollTop: found.offset().top - 50
+          }, 200); */
           found.removeClass('dimmed');
           return false;
         }
