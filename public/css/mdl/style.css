@@ -162,17 +162,21 @@ a img {
   width: 97%;
 }
 
-.transcript-grid .mdl-card .mdl-card__supporting-text .transcript-title {
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer.dimmed {
+  opacity: 0.6;
+}
+
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-title {
   font-size: 12px;
   margin: 0;
 }
 
-.transcript-grid .mdl-card .mdl-card__supporting-text .transcript-text {
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text {
   font-weight: 600;
   line-height: 16px;
 }
 
-.transcript-grid .mdl-card .mdl-card__supporting-text .transcript-time {
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-time {
   text-align: right;
   margin: 0px;
 }

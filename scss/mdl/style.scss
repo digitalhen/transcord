@@ -172,20 +172,29 @@ a img {
         padding: 5px 8px;
         width: 97%;
 
-        .transcript-title {
-          font-size: 12px;
-          margin: 0;
+        .messageContainer {
+
+          &.dimmed {
+            opacity: 0.6;
+          }
+
+          .transcript-title {
+            font-size: 12px; 
+            margin: 0;
+          }
+  
+          .transcript-text {
+            font-weight: 600;
+            line-height: 16px;
+          }
+  
+          .transcript-time {
+            text-align: right;
+            margin: 0px;
+          }
         }
 
-        .transcript-text {
-          font-weight: 600;
-          line-height: 16px;
-        }
-
-        .transcript-time {
-          text-align: right;
-          margin: 0px;
-        }
+        
       }
     }
 }
