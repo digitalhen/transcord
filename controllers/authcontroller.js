@@ -77,8 +77,8 @@ userController.doUpdate = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        emailNotification: true,
-        privacyNotification: false,
+        emailNotification: true, // TODO: feed this from the settings page
+        privacyNotification: false, // TODO: feed this from the settings page
         countryCode: '+1',
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
