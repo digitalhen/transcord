@@ -30,7 +30,7 @@ block content
               div(class=(line.side === 'right' ? 'mdl-layout-spacer' : '' ))
               div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=line.side style="border-radius:5px")
                 div.mdl-card__supporting-text
-                  div.messageContainer(time=line.startTime)
+                  div.messageContainer(data-time=line.startTime data-length=user.recordings[0].length)
                     h6.transcript-title(style="font-size:12px") #{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
                     p.transcript-text #{line.transcript}
                     p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
@@ -38,6 +38,7 @@ block content
 
         - })
 
-    block js
-      script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
-      script(src="/js/recordings.js")
+block js
+  script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+  script(src="/js/recordings.js")
+

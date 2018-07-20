@@ -6,7 +6,6 @@ $(document).ready(function(){
     var buttonId = '#button-' + idNumber;
     var buttonTextId = '#button-text-' + idNumber;
 
-
     var wavesurfer = WaveSurfer.create({
       container: waveformId,
       barWidth: 3,
@@ -31,18 +30,24 @@ $(document).ready(function(){
     wavesurfer.on('audioprocess', function (percents) {
       var currentTime = wavesurfer.getCurrentTime();
       var found = null;
-
+      
       // dim everything first
       $('.messageContainer').addClass('dimmed');
 
       // search for the last message that has been passed by the audio
       $('.messageContainer').each(function(index) {
-        var time = parseFloat($(this).attr('time'));
+
+        var time = parseFloat($(this).attr('data-time'));
+        console.log(currentTime + " vs " + time + ": " + (time<currentTime));
         if (time < currentTime) {
           found = $(this);
+
+          // special handling for the last one, or the only one, so let's highlight that and quit.
+          if($(this) === $('.messageContainer').last()) {
+            found.removeClass('dimmed');
+            return false;
+          }
         } else if (found !== null) {
-          // We've gone too far, so let's set the previous one to be highlighted, scroll to it and then quit
-          //console.log(found.offset().top);
 
           //$('main').scrollTop(found.offset().top - 50);
 

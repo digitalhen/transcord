@@ -595,7 +595,7 @@ function sendEmail(user, recording) {
 
     // loop through transcription object and build up the email
     var plaintextTranscript = '';
-    var htmlTranscript = jade.renderFile('views/email/emailHtml.jade', locals);
+    var htmlTranscript = jade.renderFile('views/email/transcript.jade', locals);
 
     // build plain text
     transcription.forEach(function(line) {

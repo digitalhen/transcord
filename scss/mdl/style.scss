@@ -59,6 +59,10 @@ a img {
   border: 0px;
 }
 
+#topmenu {
+  overflow: visible;
+}
+
 #top-right-menu {
   a {
     text-decoration: none;
@@ -81,7 +85,7 @@ a img {
   color: rgba(0, 0, 0, 0.87);
 }
 
-.android-header .mdl-menu__container {
+.mdl-menu__container {
   z-index: 50;
   margin: 0 !important;
 } */
