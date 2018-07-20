@@ -19,9 +19,11 @@ const UserSchema = new mongoose.Schema({
 	countryCode: String,
 	phoneNumber: String,
 	combinedPhoneNumber: String,
+	incomingPhoneNumber: String,
 	recordings: [
 		{
 			recordingSid: String,
+			direction: Number,
 			startTime: Date,
 			endTime: Date,
 			numberFrom: String,

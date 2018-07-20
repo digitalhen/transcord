@@ -24,6 +24,31 @@ body {
   margin: 0;
 } 
 
+#overlay {
+  position:fixed;
+  z-index:99999;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  background:rgba(255,255,255,0.9);
+  transition: 1s 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    -webkit-animation: Rocking 1s infinite linear;
+  }
+}
+
+// overlay animation
+@-webkit-keyframes Rocking { 
+	from { -webkit-transform: rotate(0deg); } 
+	33% { -webkit-transform: rotate(-5deg); } 
+	66% { -webkit-transform: rotate(0deg); } 
+	to {-webkit-transform: rotate(5deg); } }
+
 .mdl-button--colored:hover {   
   background-color: $buttonaccent !important;
 }
@@ -250,6 +275,16 @@ a img {
       display: flex;
       align-items: center;
       height: 100%;
+
+      @media screen and (max-height: '725px') {
+        margin-top: 20px;
+
+        .mdl-grid {
+          display: block;
+        }
+      }
+
+      
     }
   }
 }
