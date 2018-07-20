@@ -19,6 +19,9 @@ html
     meta(name="apple-mobile-web-app-title" content="Material Design Lite")
     link(rel="apple-touch-icon-precomposed" href="/img/white/ios-desktop.png")
 
+    <!-- Stop highlighting of phone numbers -->
+    <meta name="format-detection" content="telephone=no" />
+
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     meta(name="msapplication-TileImage" content="/img/touch/ms-touch-icon-144x144-precomposed.png")
     meta(name="msapplication-TileColor" content="#3372DF")
@@ -37,8 +40,8 @@ html
     div#overlay
       img(src='/img/white/icon@2x.png')
     div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
-      div.mdl-layout__header.mdl-layout__header--waterfall.is-casting-shadow
-        div.mdl-layout__header-row
+      div#topmenu.mdl-layout__header.mdl-layout__header--waterfall.is-casting-shadow
+        div.mdl-layout__header-row(style='z-index:9999')
           span.mdl-layout-title
             img.mdl-layout--large-screen-only(src='/img/white/logo.png' style='max-height:35px')
             img.mdl-layout--small-screen-only(src='/img/white/icon@2x.png' style='max-height:35px')

@@ -611,7 +611,7 @@ function sendEmail(user, recording) {
     let mailOptions = {
         from: '"Transcord.app" <no-reply@transcord.app>', // sender address
         to: user.email, // list of receivers
-        subject: 'Recording of your call to ' + recording.numberCalledFormatted, // Subject line
+        subject: 'Transcription of your call with ' + recording.numberCalledFormatted, // Subject line
         text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
           plaintextTranscript,
         // plain text body

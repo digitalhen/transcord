@@ -276,14 +276,18 @@ a img {
       align-items: center;
       height: 100%;
 
-      @media screen and (max-height: '725px') {
-        margin-top: 20px;
+      
+    }
+
+    @media screen and (max-height: '725px') {
+
+      .login-wrapper {
+        align-items: normal;
 
         .mdl-grid {
           display: block;
         }
       }
-
       
     }
   }

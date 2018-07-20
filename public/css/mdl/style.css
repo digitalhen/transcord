@@ -269,7 +269,7 @@ a img {
 
 @media screen and (max-height: 725px) {
   .bg.bg-login .login-wrapper {
-    margin-top: 20px;
+    align-items: normal;
   }
   .bg.bg-login .login-wrapper .mdl-grid {
     display: block;

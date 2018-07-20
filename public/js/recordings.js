@@ -1,14 +1,14 @@
 $(document).ready(function(){
   $('.waveform').each(function() {
     var idNumber = $(this).attr('data-id');
-    var warmformId = '#waveform-' + idNumber;
+    var waveformId = '#waveform-' + idNumber;
     var progressId = 'progress-' + idNumber;
     var buttonId = '#button-' + idNumber;
     var buttonTextId = '#button-text-' + idNumber;
 
 
     var wavesurfer = WaveSurfer.create({
-      container: warmformId,
+      container: waveformId,
       barWidth: 3,
     });
 
