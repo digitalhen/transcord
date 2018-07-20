@@ -25,4 +25,7 @@ router.post('/privacyconnect', ivr.privacyconnect);
 // POST: /ivr/recording
 router.post('/recording', ivr.recording);
 
+// POST: /ivr/incomingcall
+router.post('/incomingcall', ivr.incomingcall);
+
 module.exports = router;

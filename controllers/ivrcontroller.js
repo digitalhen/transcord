@@ -29,6 +29,19 @@ function reject() {
 
 }
 
+ivrController.incomingcall = function(req, res) {
+    const numberFrom = req.body.From;
+    const numberTo = req.body.To;
+
+    console.log("Incoming call from: " + numberFrom + " and they are dialing: " + numberTo);
+
+    const voiceResponse = new VoiceResponse();
+
+    voiceResponse.say('This call will be recorded by Transcord.')
+
+    res.send(voiceResponse.toString());
+}
+
 ivrController.welcome = function(req, res) {
 
     const numberFrom = req.body.From;
