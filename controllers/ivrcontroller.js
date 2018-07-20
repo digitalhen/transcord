@@ -144,11 +144,21 @@ ivrController.privacyconnect = function(req, res) {
     res.send(voiceResponse.toString());
 }
 
+// callback from outgoing calls to capture recording
 ivrController.recording = function(req, res) {
-    const recordingUrl = req.body.RecordingUrl;
-    const recordingSid = req.body.RecordingSid;
+    processRecordings(req.body.RecordingSid, 0);
+    res.send('');
+}
 
-    // Look up the recording here....
+// callback from incoming calls to capture recording
+ivrController.incomingrecording = function(req, res) {
+    processRecordings(req.body.RecordingSid, 1);
+    res.send('');
+}
+
+// handles recordings for both directions
+function processRecordings(recordingSid, direction) {
+    // Look up the recording here.... 
     twilioClient.recordings(recordingSid)
         .fetch()
         .then(function(recording) {
@@ -158,43 +168,56 @@ ivrController.recording = function(req, res) {
             twilioClient.calls(parentCallSid)
                 .fetch()
                 .then(function(parentCall) {
-                    
-                    // let's find the user that has that phone number
-                    User.findOne({
-                            combinedPhoneNumber: parentCall.from
-                        })
-                        .then(function(user) {
-                            if (user == null) {
-                                // TODO: we should never reach here?
-                            } else {
-                                const name = user.name;
-                                const email = user.email;
 
-                                // find the child call that has this parent call
-                                twilioClient.calls.each({
-                                    parentCallSid: parentCallSid
-                                }, function(childCall) {
-                                    // build a recording object
-                                    var recordingObject = {
-                                        recordingSid: recordingSid,
-                                        startTime: parentCall.startTime,
-                                        endTime: parentCall.endTime,
-                                        numberFrom: parentCall.from,
-                                        numberFromFormatted: parentCall.fromFormatted,
-                                        bridgeNumber: parentCall.to,
-                                        numberCalled: childCall.to,
-                                        numberCalledFormatted: childCall.toFormatted,
-                                        duration: parseFloat(recording.duration),
-                                        recordingUrl: recordingUrl
-                                    };
+                    // find the child call that has this parent call
+                    twilioClient.calls.each({
+                        parentCallSid: parentCallSid
+                    }, function(childCall) {
+                        // build a recording object
+                        var recordingObject = {
+                            recordingSid: recordingSid,
+                            direction: direction, // 0 means outgoing, 1 means incoming
+                            startTime: parentCall.startTime,
+                            endTime: parentCall.endTime,
+                            numberFrom: parentCall.from,
+                            numberFromFormatted: parentCall.fromFormatted,
+                            bridgeNumber: parentCall.to,
+                            numberCalled: childCall.to,
+                            numberCalledFormatted: childCall.toFormatted,
+                            duration: parseFloat(recording.duration),
+                            recordingUrl: recording.recordingUrl,
+                        };
 
-                                    // call download for this file
+                        // find the user and download the files
+                        if(direction==0) { // this is an outgoing call, so we're looking up their phone number
+                            User.findOne({
+                                combinedPhoneNumber: parentCall.from
+                            })
+                            .then(function(user) {
+                                if (user == null) {
+                                    // TODO: we should never reach here?
+                                } else {
                                     processFiles(user, recordingObject);
+                                }
+                            });
+                        } else if(direction==1) { // this is the incoming number, so we're looking for the number *called*
+                            User.findOne({
+                                incomingPhoneNumber: parentCall.to
+                            })
+                            .then(function(user) {
+                                if (user == null) {
+                                    // TODO: we should never reach here?
+                                } else {
+                                    processFiles(user, recordingObject);
+                                }
+                            });
+                        }
+                        
 
-                                    // TODO, fix for conference calls with multiple child calls
-                                });
-                            }
-                        });
+                        // TODO, fix for conference calls with multiple child calls
+                    });
+                    
+                    
 
 
 
@@ -203,16 +226,6 @@ ivrController.recording = function(req, res) {
                 .done();
         })
         .done();
-
-
-
-
-    res.send('');
-    /*      }
-      })
-      .catch(function(err) {
-          console.log(err);
-      });*/
 }
 
 /**
