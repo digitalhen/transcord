@@ -21,7 +21,7 @@ var ivrController = {};
 function reject() {
     const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Welcome to Transcord. Your number was not recognized. Please visit transcord dot app to register.');
+    voiceResponse.say('Welcome to Transcord. This number is not currently active. Please visit transcord dot app to register.');
 
     voiceResponse.hangup();
 
@@ -168,18 +168,18 @@ ivrController.privacyconnect = function(req, res) {
 
 // callback from outgoing calls to capture recording
 ivrController.recording = function(req, res) {
-    processRecordings(req.body.RecordingSid, 0);
+    processRecordings(req.body.RecordingSid, req.body.RecordingUrl, 0);
     res.send('');
 }
 
 // callback from incoming calls to capture recording
 ivrController.incomingrecording = function(req, res) {
-    processRecordings(req.body.RecordingSid, 1);
+    processRecordings(req.body.RecordingSid, req.body.RecordingUrl, 1);
     res.send('');
 }
 
 // handles recordings for both directions
-function processRecordings(recordingSid, direction) {
+function processRecordings(recordingSid, recordingUrl, direction) {
     // Look up the recording here.... 
     twilioClient.recordings(recordingSid)
         .fetch()
@@ -207,7 +207,7 @@ function processRecordings(recordingSid, direction) {
                             numberCalled: childCall.to,
                             numberCalledFormatted: childCall.toFormatted,
                             duration: parseFloat(recording.duration),
-                            recordingUrl: recording.recordingUrl,
+                            recordingUrl: recordingUrl,
                         };
 
                         // find the user and download the files
