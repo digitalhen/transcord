@@ -35,11 +35,33 @@ ivrController.incomingcall = function(req, res) {
 
     console.log("Incoming call from: " + numberFrom + " and they are dialing: " + numberTo);
 
-    const voiceResponse = new VoiceResponse();
+    User.findOne({
+        incomingPhoneNumber: numberTo
+    })
+    .then(function(user) {
+        if (user == null) {
+            res.send(reject());
+        } else {
+            const name = user.name;
+            const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('This call will be recorded by Transcord.')
+            voiceResponse.say('This call will be recorded by Transcord.')
 
-    res.send(voiceResponse.toString());
+            // TODO: plug in to the database, and check the user is running
+            const dial = voiceResponse.dial({
+                record: 'record-from-ringing-dual',
+                recordingStatusCallback: '/ivr/incomingrecording',
+                method: 'POST'
+            });
+
+            dial.number(user.phoneNumber);
+
+            res.send(voiceResponse.toString());
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 }
 
 ivrController.welcome = function(req, res) {
