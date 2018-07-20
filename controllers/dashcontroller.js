@@ -4,7 +4,6 @@ var User = require("../models/user");
 
 var dashController = {};
 
-
 // Go to registration page
 dashController.dashboard = function(req, res) {
   if (!req.user) {
@@ -47,6 +46,10 @@ dashController.transcript = function(req, res) {
 
   // find the recording we want to display and get its transcription available
   req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.params.recordingSid});
+
+  if(req.user.recordings.length == 0) 
+    res.redirect('/dashboard');
+    
   var transcription = JSON.parse(req.user.recordings[0].transcription);
 
   res.render('transcript', {
