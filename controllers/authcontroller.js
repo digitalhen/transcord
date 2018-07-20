@@ -220,6 +220,22 @@ userController.doLogin = function(req, res) {
       }); */
 };
 
+// Presents the dialog to the user
+userController.reset = function(req, res) {
+    // show the main password reset page
+    res.render('reset');
+}
+
+// Primary function here is to actually send the reset email to the user
+userController.sendReset = function(req, res) {
+
+}
+
+// Handles the incoming link from the users email and processes the reset and collects the new password
+userController.doReset = function(req, res) {
+
+}
+
 // logout
 userController.logout = function(req, res) {
     req.logout();

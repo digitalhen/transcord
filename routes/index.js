@@ -21,6 +21,15 @@ router.post('/register', auth.doRegister);
 // route for user profile -- optionally allows action to be specified
 router.get('/settings/:action*?', auth.settings);
 
+// route to reset password page
+router.get('/reset', auth.reset);
+
+// route to reset password page and check the token (this comes from the user's email)
+router.get('/reset/:token', auth.doReset);
+
+// route to reset password page and send the email
+router.post('/reset', auth.sendReset);
+
 // route for profile update
 router.post('/settings', auth.doUpdate);
 
