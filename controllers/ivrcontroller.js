@@ -581,13 +581,20 @@ function sendEmail(user, recording) {
             user: 'digitalhen@gmail.com', // generated ethereal user
             pass: 'iybfrzmemnvkyzhl' // generated ethereal password
         }*/
+	host: 'smtp.office365.com',
+	port: 587,
+	auth: {
+		user: 'henry@transcord.app',
+		pass: 'D219430b'
+	},
+	/*
         host: 'localhost',
         port: 465,
         secure: false,
 	ignoreTLS: true,
 	tls: {
 		ciphers: 'SSLv3'
-	}
+	}*/
     });
 
     // locals to feed through to template
@@ -609,7 +616,7 @@ function sendEmail(user, recording) {
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"Transcord.app" <no-reply@transcord.app>', // sender address
+        from: '"Transcord" <no-reply@transcord.app>', // sender address
         to: user.email, // list of receivers
         subject: 'Transcription of your call with ' + recording.numberCalledFormatted, // Subject line
         text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
