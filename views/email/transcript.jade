@@ -1,22 +1,6 @@
-doctype html
-html
-  head
-  body
-    table(style='border-spacing: 0;border-collapse: collapse;width: 690px;text-align: center;background-color: rgb(244,67,54);margin: 0 auto;')
-      tbody
-        tr(style='height:40px;')
-        tr
-          td
-            div
-              img(style="width:80%;max-width:250px;" src="https://transcord.app/img/white/logo.png") 
-        tr(style='height:40px;')
-        tr
-          td
-            table(style='border-collapse:collapse;background-color:rgb(68,138,255);margin:auto;')
-              tbody
-                tr(style='height:5px;')
-                tr
-                  td
+extends layout
+
+block content
                     table(style='background-color:#ffffff;text-align:center;width:100%;margin:0 auto;')
                       tbody
                         tr(style="height:20px")
@@ -51,22 +35,4 @@ html
                                       p(style='text-align:center;vertical-align:middle;font-size:14px;font-family:Helvetica,Arial;font-weight:bold') VIEW ONLINE
                                   td(style="width:100px")
                                 tr(style="height:20px")
-                    table(style='background-color:#f6f6f6;text-align:center;width:100%;margin:0 auto;')
-                      tbody
-                        tr
-                          td(style="width:50px")
-                          td(style="width:210px")
-                            p(style='text-align:left;color:#666666;font-family:Helvetica,Arial;font-size:11px') © 2018 Transcord, LLC
-                              br 
-                              | All rights reserved. 
-                          td(style="width:120px")
-                          td(style="width:170px")
-                            p(style='text-align:left;color:#666666;font-family:Helvetica,Arial;font-size:11px;margin-top:0px')
-                              a(href="mailto:support@transcord.app" target="_blank") support@transcord.app
-                              br
-                              a(href="tel:501-444-2720" target="_blank") 501-444-2720
-                              br
-                              a(href="https://transcord.app/settings/unsubscribe") Turn off emails
-                          td(style="width:50px")
-                        tr(style="height:25px")
-        tr(style='height:40px')
+                    
