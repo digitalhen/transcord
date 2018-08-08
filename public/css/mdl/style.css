@@ -87,6 +87,10 @@ a img {
   z-index: 50;
   margin: 0 !important;
 } */
+#form-payment label.mdl-radio {
+  margin-right: 20px;
+}
+
 .mdl-textfield--expandable {
   width: auto;
 }

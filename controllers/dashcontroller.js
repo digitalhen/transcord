@@ -27,6 +27,17 @@ dashController.billing = function(req, res) {
   });
 }
 
+dashController.payment = function(req, res) {
+    if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/login');
+    }
+  
+    res.render('payment', {
+        user: req.user,
+    });
+}
+
 dashController.recordings = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
@@ -41,7 +52,7 @@ dashController.recordings = function(req, res) {
 dashController.transcript = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
-      return res.redirect('/login');
+      return res.redirect('/login');w
   }
 
   // find the recording we want to display and get its transcription available

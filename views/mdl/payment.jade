@@ -1,0 +1,73 @@
+block variables
+  title Payment - Transcord
+
+extends layout
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text Payment
+            div.mdl-card__supporting-text.mdl-grid
+
+              form#form-payment(role='form' method='post' action='/payment')
+                div.mdl-cell.mdl-cell--12-col
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-1')
+                    input#option-1.mdl-radio__button(type='radio' name="options" value="1" checked)
+                    span.mdl-radio__label $5
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-2')
+                    input#option-2.mdl-radio__button(type='radio' name="options" value="2")
+                    span.mdl-radio__label $10
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-2')
+                    input#option-2.mdl-radio__button(type='radio' name="options" value="3")
+                    span.mdl-radio__label $25
+                  span.error.mdl-textfield__error(for="name") Error message goes heres
+
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='name') Name
+                  input#name.mdl-textfield__input(type='text' name='name')
+                  span.error.mdl-textfield__error(for="name") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='email') Email
+                  input.mdl-textfield__input(type='text' name='email')
+                  span.error.mdl-textfield__error(for="email") Error message goes heres
+                
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='addressLine1') Address Line 1
+                  input.mdl-textfield__input(type='text' name='addressLine1')
+                  span.error.mdl-textfield__error(for="addressLine1") Error message goes heres
+                
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='addressLine2') Address Line 2
+                  input.mdl-textfield__input(type='text' name='addressLine2')
+                  span.error.mdl-textfield__error(for="addressLine2") Error message goes heres
+                
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='city') City
+                  input.mdl-textfield__input(type='text' name='city')
+                  span.error.mdl-textfield__error(for="city") Error message goes heres
+                
+
+
+                input#submit-form(type='submit' class='hidden')
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                div.mdl-cell.mdl-cell--12-col
+                  p test
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-register-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Add credit
+              div.mdl-grid
+                div.mdl-cell.mdl-cell--12-col
+                  a(href='/reset' style="float:right")
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Lost Password?
+
+  block js
+    script(src="/js/validation.js")

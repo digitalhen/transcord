@@ -12,6 +12,9 @@ router.get('/', dash.dashboard);
 // show billing
 router.get('/billing', dash.billing);
 
+// show credit card payment screen
+router.get('/payment', dash.payment);
+
 // show recordings list
 router.get('/recordings', dash.recordings)
 
