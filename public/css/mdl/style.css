@@ -59,6 +59,19 @@ a img {
   border: 0px;
 }
 
+.features-section {
+  background-color: white;
+}
+
+.features-section .feature-title h3 {
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.features-section .feature-description p {
+  font-size: 18px;
+}
+
 #topmenu {
   overflow: visible;
 }
@@ -112,25 +125,33 @@ a img {
   position: relative;
   background: url("../../img/7670188256_bbf2e1eaa3_k.jpg") center top no-repeat;
   background-size: cover;
-  height: 700px;
+  height: 100%;
 }
 
-.welcome-display {
+.welcome-section .welcome-display {
   position: absolute;
   bottom: 0;
   width: 100%;
+  height: 100%;
   text-align: center;
-  background-color: rgba(117, 117, 117, 0.95);
+  background-color: rgba(187, 83, 76, 0.8);
 }
 
-.welcome-text {
+.welcome-section .welcome-display .welcome-text {
   max-width: 800px;
   padding: 24px;
   text-align: left;
   color: white;
+  padding-top: 50%;
 }
 
-.welcome-text p {
+.welcome-section .welcome-display .welcome-text .welcome-title {
+  font-size: 100px;
+  font-weight: 500;
+  line-height: 100px;
+}
+
+.welcome-section .welcome-display .welcome-text p {
   padding-top: 8px;
 }
 
