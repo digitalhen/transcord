@@ -39,7 +39,7 @@ block content
                     p(style='font-weight=300,font-size=10px') !{moment(recording.startTimeFormatted).format('MMM DD, YYYY h:mm a')}
                   div.mdl-card.mdl-cell.mdl-cell--8-col
                     div.waveform(id='waveform-' + i data-id=i data-recordingUrl=recording.recordingUrl)
-                      progress.progress.progress-striped(id='progress-' + i)
+                      div(id="progress-" + i class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
               div.mdl-card__actions.mdl-card--border
                 a.mdl-button.mdl-button--acent.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/transcript/' + recording.recordingSid) Transcript
             - i++;

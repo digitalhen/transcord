@@ -12,7 +12,8 @@ block content
         div.mdl-card__supporting-text
           p This is some text, where we could show the sound file & tags
           div.waveform(id='waveform-0' data-id='0' data-recordingUrl=user.recordings[0].recordingUrl)
-            progress.progress.progress-striped(id='progress-0')
+            div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
+
 
 
 
