@@ -110,7 +110,7 @@ a img {
 
 .welcome-section {
   position: relative;
-  background: url("../../img/7670188256_bbf2e1eaa3_k.jpg") center top no-repeat;
+  background: url("https://thumb1.shutterstock.com/display_pic_with_logo/1100450/433289950/stock-photo-old-telephone-retro-vintage-telephone-433289950.jpg") center top no-repeat;
   background-size: cover;
   height: 100%;
 }
@@ -130,6 +130,10 @@ a img {
   text-align: left;
   color: white;
   padding-top: 20%;
+}
+
+.welcome-section .welcome-display .welcome-text .welcome-description {
+  max-width: 300px;
 }
 
 .welcome-section .welcome-display .welcome-text .welcome-title {
