@@ -136,7 +136,7 @@ a img {
       padding: 24px;
       text-align: left;
       color: white;
-      padding-top:50%;
+      padding-top:20%;
 
       .welcome-title {
         font-size:100px;
@@ -156,6 +156,12 @@ a img {
 
 .features-section {
   background-color:white;
+
+  .feature-image {
+    img {
+      width: 100%;
+    }
+  }
 
   .feature-title {
     h3 {

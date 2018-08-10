@@ -12,6 +12,9 @@ const shouldValidate = process.env.NODE_ENV !== 'test';
 // restrict index for logged in user only
 router.get('/', auth.home);
 
+// privacy policy
+router.get('/privacy', auth.privacy);
+
 // route to register page
 router.get('/register', auth.register);
 

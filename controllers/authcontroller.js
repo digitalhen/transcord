@@ -11,6 +11,11 @@ userController.home = function(req, res) {
     });
 };
 
+// Go to privacy page
+userController.privacy = function(req, res) {
+    res.render('privacy');
+}
+
 // Go to registration page
 userController.register = function(req, res) {
     res.render('register');

@@ -129,7 +129,7 @@ a img {
   padding: 24px;
   text-align: left;
   color: white;
-  padding-top: 50%;
+  padding-top: 20%;
 }
 
 .welcome-section .welcome-display .welcome-text .welcome-title {
@@ -148,6 +148,10 @@ a img {
 
 .features-section {
   background-color: white;
+}
+
+.features-section .feature-image img {
+  width: 100%;
 }
 
 .features-section .feature-title h3 {
