@@ -59,23 +59,7 @@ a img {
   border: 0px;
 }
 
-.features-section {
-  background-color:white;
 
-  .feature-title {
-    h3 {
-      font-size:26px;
-      font-weight:400;
-    }
-    
-  }
-  
-  .feature-description {
-    p {
-      font-size: 18px;
-    }
-  }
-}
 
 
 #topmenu {
@@ -158,6 +142,10 @@ a img {
         font-size:100px;
         font-weight:500;
         line-height:100px;
+
+        img {
+          max-width: 90%;
+        }
       }
       p {
         padding-top: 8px;
@@ -166,8 +154,70 @@ a img {
   }
 }
 
+.features-section {
+  background-color:white;
 
+  .feature-title {
+    h3 {
+      font-size:26px;
+      font-weight:400;
+    }
+    
+  }
+  
+  .feature-description {
+    p {
+      font-size: 18px;
+    }
+  }
+}
 
+.information-section {
+  background-color:#484848;
+  
+  .information-grid {
+    padding: 8px 50px;
+
+    @media screen and (max-width: '479px') {
+      padding: 8px;
+    }
+
+    .information-holder {
+      background-color:inherit;
+      min-height:auto;
+
+      .mdl-card__supporting-text {
+        &.information-contact {
+          text-align:right;
+
+          @media screen and (max-width: '479px') {
+            text-align: left;
+          }
+
+          img {
+            max-width: 170px;
+          }
+
+          a {
+            text-decoration:none;
+            color:rgba(255,255,255,0.7)
+          }
+        }
+        
+        color:rgba(255,255,255,0.7);
+
+        
+      }
+    }
+  }
+}
+
+.calltoaction-section {
+  .calltoaction-display {
+    text-align: center;
+    padding: 20px 8px;
+  }
+}
 
 
 .welcome-alt-link {

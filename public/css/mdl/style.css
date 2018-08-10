@@ -59,19 +59,6 @@ a img {
   border: 0px;
 }
 
-.features-section {
-  background-color: white;
-}
-
-.features-section .feature-title h3 {
-  font-size: 26px;
-  font-weight: 400;
-}
-
-.features-section .feature-description p {
-  font-size: 18px;
-}
-
 #topmenu {
   overflow: visible;
 }
@@ -151,8 +138,72 @@ a img {
   line-height: 100px;
 }
 
+.welcome-section .welcome-display .welcome-text .welcome-title img {
+  max-width: 90%;
+}
+
 .welcome-section .welcome-display .welcome-text p {
   padding-top: 8px;
+}
+
+.features-section {
+  background-color: white;
+}
+
+.features-section .feature-title h3 {
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.features-section .feature-description p {
+  font-size: 18px;
+}
+
+.information-section {
+  background-color: #484848;
+}
+
+.information-section .information-grid {
+  padding: 8px 50px;
+}
+
+@media screen and (max-width: 479px) {
+  .information-section .information-grid {
+    padding: 8px;
+  }
+}
+
+.information-section .information-grid .information-holder {
+  background-color: inherit;
+  min-height: auto;
+}
+
+.information-section .information-grid .information-holder .mdl-card__supporting-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact {
+  text-align: right;
+}
+
+@media screen and (max-width: 479px) {
+  .information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact {
+    text-align: left;
+  }
+}
+
+.information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact img {
+  max-width: 170px;
+}
+
+.information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.calltoaction-section .calltoaction-display {
+  text-align: center;
+  padding: 20px 8px;
 }
 
 .welcome-alt-link {
