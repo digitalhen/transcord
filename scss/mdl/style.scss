@@ -134,12 +134,25 @@ a img {
     .welcome-text {
       max-width: 800px;
       padding: 24px;
+      padding-left: 64px;
       text-align: left;
       color: white;
       padding-top:20%;
 
+      @media screen and (max-width: '479px') {
+        padding-left: 24px;
+      }
+
       .welcome-description {
-        max-width: 300px;
+        max-width: 600px;
+        font-size: 45px;
+        line-height: 49px;
+
+        @media screen and (max-width: '479px') {
+          max-width: 300px;
+          font-size: 24px;
+          line-height: 32px;
+        }
       }      
 
       .welcome-title {
@@ -161,25 +174,30 @@ a img {
 .features-section {
   background-color:white;
 
-  .feature-image {
-    img {
-      width: 100%;
+  .features-display {
+
+    .feature-image {
+      img {
+        width: 100%;
+      }
+    }
+  
+    .feature-title {
+      h3 {
+        font-size:26px;
+        font-weight:400;
+      }
+      
+    }
+    
+    .feature-description {
+      p {
+        font-size: 18px;
+      }
     }
   }
 
-  .feature-title {
-    h3 {
-      font-size:26px;
-      font-weight:400;
-    }
-    
-  }
   
-  .feature-description {
-    p {
-      font-size: 18px;
-    }
-  }
 }
 
 .information-section {
@@ -188,7 +206,7 @@ a img {
   .information-grid {
     padding: 8px 50px;
 
-    @media screen and (max-width: '479px') {
+    @media screen and (max-width: '500px') {
       padding: 8px;
     }
 
@@ -200,7 +218,7 @@ a img {
         &.information-contact {
           text-align:right;
 
-          @media screen and (max-width: '479px') {
+          @media screen and (max-width: '500px') {
             text-align: left;
           }
 

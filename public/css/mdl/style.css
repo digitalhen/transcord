@@ -127,13 +127,30 @@ a img {
 .welcome-section .welcome-display .welcome-text {
   max-width: 800px;
   padding: 24px;
+  padding-left: 64px;
   text-align: left;
   color: white;
   padding-top: 20%;
 }
 
+@media screen and (max-width: 479px) {
+  .welcome-section .welcome-display .welcome-text {
+    padding-left: 24px;
+  }
+}
+
 .welcome-section .welcome-display .welcome-text .welcome-description {
-  max-width: 300px;
+  max-width: 600px;
+  font-size: 45px;
+  line-height: 49px;
+}
+
+@media screen and (max-width: 479px) {
+  .welcome-section .welcome-display .welcome-text .welcome-description {
+    max-width: 300px;
+    font-size: 24px;
+    line-height: 32px;
+  }
 }
 
 .welcome-section .welcome-display .welcome-text .welcome-title {
@@ -154,16 +171,16 @@ a img {
   background-color: white;
 }
 
-.features-section .feature-image img {
+.features-section .features-display .feature-image img {
   width: 100%;
 }
 
-.features-section .feature-title h3 {
+.features-section .features-display .feature-title h3 {
   font-size: 26px;
   font-weight: 400;
 }
 
-.features-section .feature-description p {
+.features-section .features-display .feature-description p {
   font-size: 18px;
 }
 
@@ -175,7 +192,7 @@ a img {
   padding: 8px 50px;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 500px) {
   .information-section .information-grid {
     padding: 8px;
   }
@@ -194,7 +211,7 @@ a img {
   text-align: right;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 500px) {
   .information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact {
     text-align: left;
   }
