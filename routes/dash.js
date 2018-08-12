@@ -15,6 +15,9 @@ router.get('/billing', dash.billing);
 // show credit card payment screen
 router.get('/payment', dash.payment);
 
+// process credit card payment
+router.post('/payment', dash.processPayment);
+
 // show recordings list
 router.get('/recordings', dash.recordings)
 

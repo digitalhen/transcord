@@ -1,109 +1,167 @@
-$(document).ready(function() {
-    var cardNonce;
-    var paymentForm = new SqPaymentForm({
-      applicationId: '#{square_application_id}',
-      locationId: '#{square_location_id}',
-      inputClass: 'sq-input',
-      inputStyles: [
-          {
-            fontSize: '14px',
-            padding: '7px 12px',
-            backgroundColor: "transparent"
-          }
-        ],
-      cardNumber: {
-        elementId: 'sq-card-number',
-        placeholder: '0000 0000 0000 0000'    
-      },
-      cvv: {
-        elementId: 'sq-cvv',
-        placeholder: 'CVV'
-      },
-      expirationDate: {
-        elementId: 'sq-expiration-date',
-        placeholder: 'MM/YY'
-      },
-      postalCode: {
-        elementId: 'sq-postal-code',
-        placeholder: '94110'
-      },
 
-      // Initialize Apple Pay placeholder ID
-      applePay: {
-        elementId: 'sq-apple-pay'
-      },
+// Square handling below...
 
-      // Initialize Masterpass placeholder ID
-      masterpass: {
-        elementId: 'sq-masterpass'
-      },
+// Set the application ID
+var applicationId = "sandbox-sq0idp-ZzWQ4YYvNifV2mW9Bhi1TA";
 
-      callbacks: {
-        methodsSupported: function (methods) {
+// Set the location ID
+var locationId = "CBASEModDFqt54HKD_SnQin6Gu0gAQ";
 
-          var applePayBtn = document.getElementById('sq-apple-pay');
-          var applePayLabel = document.getElementById('sq-apple-pay-label');
-          var masterpassBtn = document.getElementById('sq-masterpass');
-          var masterpassLabel = document.getElementById('sq-masterpass-label');
+/*
+ * function: requestCardNonce
+ *
+ * requestCardNonce is triggered when the "Pay with credit card" button is
+ * clicked
+ *
+ * Modifying this function is not required, but can be customized if you
+ * wish to take additional action when the form button is clicked.
+ */
+function requestCardNonce(event) {
 
-          // Only show the button if Apple Pay for Web is enabled
-          // Otherwise, display the wallet not enabled message.
-          if (methods.applePay === true) {
-            applePayBtn.style.display = 'inline-block';
-            applePayLabel.style.display = 'none' ;
-          }
-          // Only show the button if Masterpass is enabled
-          // Otherwise, display the wallet not enabled message.
-          if (methods.masterpass === true) {
-            masterpassBtn.style.display = 'inline-block';
-            masterpassLabel.style.display = 'none';
-          }
-        },
-        cardNonceResponseReceived: function(errors, nonce, cardData) {
-          if (errors){
-            var error_html = ""
-            for (var i =0; i < errors.length; i++){
-              error_html += "<li> " + errors[i].message + " </li>";
-            }
-            document.getElementById("card-errors").innerHTML = error_html;
-            document.getElementById('submit').disabled = false;
-          }else{
-            document.getElementById("card-errors").innerHTML = "";
-            chargeCardWithNonce(nonce);
-          }
-          
-          
-        },
-        unsupportedBrowserDetected: function() {
-          // Alert the buyer
-        },
-        createPaymentRequest: function () {
-          return {
-            requestShippingAddress: false,
-            currencyCode: "USD",
-            countryCode: "US",
+  // Don't submit the form until SqPaymentForm returns with a nonce
+  //event.preventDefault();
 
-            total: {
-              label: "#{square_location_name}",
-              amount: "1.01",
-              pending: false,
-            },
+  // Reset error messages
+  $('span.error').parent('.mdl-textfield').removeClass('is-invalid');
 
-            lineItems: [
-              {
-                label: "Subtotal",
-                amount: "1.00",
-                pending: false,
-              },
-              {
-                label: "Tax",
-                amount: "0.01",
-                pending: false,
-              }
-            ]
-          };
-        },
+  // Request a nonce from the SqPaymentForm object
+  paymentForm.requestCardNonce();
+}
+
+// Create and initialize a payment form object
+var paymentForm = new SqPaymentForm({
+
+  // Initialize the payment form elements
+  applicationId: applicationId,
+  locationId: locationId,
+  inputClass: 'sq-input',
+
+  // Customize the CSS for SqPaymentForm iframe elements
+  inputStyles: [{
+      fontSize: '.9em'
+  }],
+
+  // Initialize the credit card placeholders
+  cardNumber: {
+    elementId: 'sq-card-number'
+  },
+  cvv: {
+    elementId: 'sq-cvv'
+  },
+  expirationDate: {
+    elementId: 'sq-expiration-date'
+  },
+  postalCode: {
+    elementId: 'sq-postal-code'
+  },
+
+  // SqPaymentForm callback functions
+  callbacks: {
+
+    /*
+     * callback function: createPaymentRequest
+     * Triggered when: a digital wallet payment button is clicked.
+     */
+    createPaymentRequest: function () {
+
+      var paymentRequestJson ;
+      /* ADD CODE TO SET/CREATE paymentRequestJson */
+      return paymentRequestJson ;
+    },
+
+    /*
+     * callback function: validateShippingContact
+     * Triggered when: a shipping address is selected/changed in a digital
+     *                 wallet UI that supports address selection.
+     */
+    validateShippingContact: function (contact) {
+
+      var validationErrorObj ;
+      /* ADD CODE TO SET validationErrorObj IF ERRORS ARE FOUND */
+      return validationErrorObj ;
+    },
+
+    /*
+     * callback function: cardNonceResponseReceived
+     * Triggered when: SqPaymentForm completes a card nonce request
+     */
+    cardNonceResponseReceived: function(errors, nonce, cardData, billingContact, shippingContact) {
+      if (errors) {
+        // Log errors from nonce generation to the Javascript console
+        console.log("Encountered errors:");
+        errors.forEach(function(error) {
+          console.log(error);
+
+          var fieldWithError = eval('paymentForm.options.' + error.field + '.elementId');
+
+          $('span.error[for="' + fieldWithError + '"]').text(error.message).parent('.mdl-textfield').addClass('is-invalid');
+
+          console.log();
+
+        });
+
+        return;
       }
-    });
 
-});
+      alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
+
+      // Assign the nonce value to the hidden form field
+      document.getElementById('card-nonce').value = nonce;
+
+      // POST the nonce form to the payment processing page
+      document.getElementById('form-payment').submit();
+
+    },
+
+    /*
+     * callback function: unsupportedBrowserDetected
+     * Triggered when: the page loads and an unsupported browser is detected
+     */
+    unsupportedBrowserDetected: function() {
+      /* PROVIDE FEEDBACK TO SITE VISITORS */
+    },
+
+    /*
+     * callback function: inputEventReceived
+     * Triggered when: visitors interact with SqPaymentForm iframe elements.
+     * This mimicks all the behavior of MDL
+     */
+    inputEventReceived: function(inputEvent) {
+      switch (inputEvent.eventType) {
+        case 'focusClassAdded':
+          // Mimics a click on the text field in MDL
+          console.log(inputEvent);
+          jQuery('#' + inputEvent.elementId).parent('.mdl-textfield').removeClass('is-invalid').addClass('is-focused');
+          /* HANDLE AS DESIRED */
+          break;
+        case 'focusClassRemoved':
+          // Mimics a click off the text field in MDL
+          jQuery('#' + inputEvent.elementId).parent('.mdl-textfield').removeClass('is-focused').addClass('is-dirty');
+          /* HANDLE AS DESIRED */
+          break;
+        case 'errorClassAdded':
+          /* HANDLE AS DESIRED */
+          jQuery('#' + inputEvent.elementId).parent('.mdl-textfield').addClass('is-invalid');
+          break;
+        case 'errorClassRemoved':
+          jQuery('#' + inputEvent.elementId).parent('.mdl-textfield').removeClass('is-invalid');
+          /* HANDLE AS DESIRED */
+          break;
+        case 'cardBrandChanged':
+          /* HANDLE AS DESIRED */
+          break;
+        case 'postalCodeChanged':
+          /* HANDLE AS DESIRED */
+          break;
+      }
+    },
+
+    /*
+     * callback function: paymentFormLoaded
+     * Triggered when: SqPaymentForm is fully loaded
+     */
+    paymentFormLoaded: function() {
+      /* HANDLE AS DESIRED */
+    }
+  }
+}); 
