@@ -52,6 +52,7 @@ userController.doRegister = function(req, res) {
         countryCode: '+1',
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
+        balance: 500,
     }), req.body.password, function(err, user) {
         if (err) {
             res.redirect('/dashboard');

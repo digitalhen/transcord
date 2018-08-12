@@ -94,7 +94,7 @@ var paymentForm = new SqPaymentForm({
 
           var fieldWithError = eval('paymentForm.options.' + error.field + '.elementId');
 
-          $('span.error[for="' + fieldWithError + '"]').text(error.message).parent('.mdl-textfield').addClass('is-invalid');
+          jQuery('span.error[for="' + fieldWithError + '"]').text(error.message).parent('.mdl-textfield').addClass('is-invalid');
 
           console.log();
 
@@ -103,7 +103,7 @@ var paymentForm = new SqPaymentForm({
         return;
       }
 
-      alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
+      //alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
 
       // Assign the nonce value to the hidden form field
       document.getElementById('card-nonce').value = nonce;

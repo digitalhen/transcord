@@ -46,6 +46,8 @@ dashController.processPayment = function(req, res) {
         return res.redirect('/login');
     }
 
+    var user = req.user;
+
     // set up square client
     // TODO: should i move this in to the greater application so we only call it once?
     var squareClient = squareConnect.ApiClient.instance;
@@ -68,14 +70,48 @@ dashController.processPayment = function(req, res) {
 		},
 		idempotency_key: token
     };
-    
-    console.log(transactions_api);
-    
-    transactions_api.charge(process.env.SQUARE_LOCATION, request_body).then(function(data) {
-        console.log(data);
         
+    transactions_api.charge(process.env.SQUARE_LOCATION, request_body).then(function(data) {        
         // TO DO: Payment WAS successful. Update database
+
+        console.log(data.transaction.tenders[0]);
         
+        console.log("Saving payment to database...")
+        var paymentObject = {
+            id: data.transaction.id,
+            transactionId: data.transaction.transaction_id,
+            date: data.transaction.created_at,
+            amount: data.transaction.tenders[0].amount_money.amount,
+            currency: data.transaction.tenders[0].amount_money.currency,
+            cardBrand: data.transaction.tenders[0].card_details.card.card_brand,
+            cardLast4: data.transaction.tenders[0].card_details.card.last_4,
+        };
+
+        user.payments.push(paymentObject);
+
+        // TO DO: Update new balance
+        if(user.balance !== 'undefined' && user.balance) {
+            user.balance = user.balance + data.transaction.tenders[0].amount_money.amount;
+        } else {
+            user.balance = data.transaction.tenders[0].amount_money.amount;
+        }
+        
+
+        // Push it to the user object
+        User.update({
+            _id: user._id
+        }, {
+            payments: user.payments,
+            balance: user.balance
+        }, function(err, numberAffected, rawResponse) {
+            if (err) {
+                console.log('There was an error');
+            }
+        });
+
+        console.log("Balance is now: " + user.balance);
+
+
 		res.render('processPayment', {
             user: req.user,
             payment: {

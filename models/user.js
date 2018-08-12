@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
 	phoneNumber: String,
 	combinedPhoneNumber: String,
 	incomingPhoneNumber: String,
-	recordings: [
+	recordings: [ // this can be deleted by the user
 		{
 			recordingSid: String,
 			direction: Number,
@@ -38,6 +38,30 @@ const UserSchema = new mongoose.Schema({
 			transcription: String,
 			transcriptionLeft: String,
 			transcriptionRight: String,
+		}
+	],
+	balance: Number,
+	rateCode: String,
+	calls: [ // Nothing in this table gets deleted
+		{
+			callSid: String,
+			direction: Number,
+			startTime: Date,
+			endTime: Date,
+			duration: Number,
+			rateCode: String, // capture the rate code at the time of the call
+			cost: Number // we should use the rate code at the time and capture the cost
+		}
+	],
+	payments: [
+		{
+			id: String,
+			transactionId: String,
+			date: Date,
+			amount: Number,
+			currency: String,
+			cardBrand: String,
+			cardLast4: String,
 		}
 	]
 });

@@ -16,11 +16,16 @@ block content
 
       div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
         div.mdl-card__title
-          h2.mdl-card__title-text Profile bit
+          h2.mdl-card__title-text Balance
         div.mdl-card__supporting-text
-          p This is some text
+          - if(user.balance !== 'undefined' && user.balance) {
+          - var balance = (user.balance/100).toFixed(2);
+            $!{balance}
+          - } else {
+            p $0.00
+          - }
         div.mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/payment') Top up your account
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-grid.table-grid
