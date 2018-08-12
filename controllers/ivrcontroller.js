@@ -138,6 +138,8 @@ ivrController.callFinished = function(req, res) {
 
      const numberFrom = req.body.Caller;
 
+     console.log(req.body);
+
      User.findOne({
              combinedPhoneNumber: numberFrom
          })
@@ -146,7 +148,51 @@ ivrController.callFinished = function(req, res) {
                  // TODO: we should never reach here?
                  console.log('No user found during call finished handler');
              } else {
-                var rateCode = typeof user.rateCode !== 'undefined' ? user.rateCode : 'DEFAULT'
+                var rateCode = typeof user.rateCode !== 'undefined' ? user.rateCode : 'DEFAULT';
+
+                Rate.findOne({
+                    "rateCode": rateCode
+                })
+                .then(function(rate) {
+                    // calculate cost
+                    var duration = req.body.RecordingDuration;
+                    var roundedDuration = Math.ceil(duration/rate.unitLength)*60; // rounds up to the nearest unit specified by the block length in the rate (eg. units of 60 seconds);
+                    var numberOfUnits = roundedDuration / rate.unitLength; // how many units of time did we use
+                    var cost = numberOfUnits * costPerUnit;
+
+                    // build object
+                    var call = {
+                        "callSid": req.body.CallSid,
+                        "dialCallSid": req.body.DialCallSid,
+                        "direction": 0, // normal outgoing call
+                        "duration": duration,
+                        "rateCode": rateCode,
+                        "cost": cost
+                    };
+
+                    user.calls.push(call);
+
+                    // recalc balance
+                    user.balance = user.balance - cost;
+
+                    console.log('Call cost: ' + cost + ", new balance: " + user.balance);
+
+                    // Push it to the user object
+                    User.update({
+                        _id: user._id
+                    }, {
+                        calls: user.calls,
+                        balance: user.balance
+                    }, function(err, numberAffected, rawResponse) {
+                        if (err) {
+                            console.log('There was an error');
+                        }
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+
                 console.log("RateCode for this call: " + rateCode);
              }
          })

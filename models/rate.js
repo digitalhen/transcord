@@ -14,8 +14,8 @@ const RateSchema = new mongoose.Schema({
     availabilityExpDate: Date, // when is this no longer available for new signups
     existingExpDate: Date, // when does this terminate for existing customers
     description: String,
-    costPerBlock: Number, // how much to charge per block
-    blockLength: Number, // how long is a block? we should probably call it 60, ie. 60 seconds / 1 minute
+    costPerUnit: Number, // how much to charge per block
+    unitLength: Number, // how long is a block? we should probably call it 60, ie. 60 seconds / 1 minute
 });
 
 //RateSchema.plugin(passportLocalMongoose);
