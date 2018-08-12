@@ -80,7 +80,7 @@ ivrController.welcome = function(req, res) {
             } else {
                 const voiceResponse = new VoiceResponse();
 
-                if(typeof user.balance !== 'undefined' || user.balance<=0) {
+                if(typeof user.balance === 'undefined' || user.balance<=0) {
                     voiceResponse.say("Hello " + user.name + ", your balance is not sufficient to make this call. Please visit transcord dot app to top up your account.");
                     voiceResponse.hangup();
                 } else {
