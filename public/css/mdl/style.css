@@ -100,6 +100,10 @@ a img {
   width: 100%;
 }
 
+.mdl-card {
+  height: 100%;
+}
+
 .table-grid td, .table-grid th {
   width: 100%;
   white-space: nowrap;
@@ -171,16 +175,21 @@ a img {
   background-color: white;
 }
 
-.features-section .features-display .feature-image img {
+.features-section .features-display .features-item {
+  display: flex;
+  align-items: center;
+}
+
+.features-section .features-display .features-item .feature-image img {
   width: 100%;
 }
 
-.features-section .features-display .feature-title h3 {
+.features-section .features-display .features-item .feature-title h3 {
   font-size: 26px;
   font-weight: 400;
 }
 
-.features-section .features-display .feature-description p {
+.features-section .features-display .features-item .feature-description p {
   font-size: 18px;
 }
 

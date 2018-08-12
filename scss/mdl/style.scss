@@ -107,6 +107,12 @@ a img {
     table-layout:auto;
     width:100%;
 }
+
+.mdl-card {
+  height: 100%;
+
+}
+
 .table-grid {
   td, th {
     width: 100%;
@@ -175,24 +181,28 @@ a img {
   background-color:white;
 
   .features-display {
+    .features-item {
+      display: flex;
+      align-items: center;
 
-    .feature-image {
-      img {
-        width: 100%;
+      .feature-image {
+        img {
+          width: 100%;
+        }
       }
-    }
-  
-    .feature-title {
-      h3 {
-        font-size:26px;
-        font-weight:400;
+    
+      .feature-title {
+        h3 {
+          font-size:26px;
+          font-weight:400;
+        }
+        
       }
       
-    }
-    
-    .feature-description {
-      p {
-        font-size: 18px;
+      .feature-description {
+        p {
+          font-size: 18px;
+        }
       }
     }
   }
