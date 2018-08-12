@@ -146,7 +146,8 @@ ivrController.callFinished = function(req, res) {
                  // TODO: we should never reach here?
                  console.log('No user found during call finished handler');
              } else {
-                console.log(user);
+                var rateCode = typeof user.rateCode !== 'undefined' ? user.rateCode : 'DEFAULT'
+                console.log("RateCode for this call: " + rateCode);
              }
          })
          .catch(function(err) {
