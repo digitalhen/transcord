@@ -159,7 +159,7 @@ ivrController.callFinished = function(req, res) {
                     var duration = req.body.RecordingDuration;
                     var roundedDuration = Math.ceil(duration/rate.unitLength)*60; // rounds up to the nearest unit specified by the block length in the rate (eg. units of 60 seconds);
                     var numberOfUnits = roundedDuration / rate.unitLength; // how many units of time did we use
-                    var cost = numberOfUnits * costPerUnit;
+                    var cost = numberOfUnits * rate.costPerUnit;
 
                     // build object
                     var call = {
