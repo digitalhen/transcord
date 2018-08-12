@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
+var Rate = require("../models/rate");
+
 
 var userController = {};
 
@@ -18,7 +20,29 @@ userController.privacy = function(req, res) {
 
 // Go to registration page
 userController.register = function(req, res) {
-    res.render('register');
+    // if rate specified, look that up, else look up default
+    var theRate = {
+        description: '',
+        rateCode: typeof req.params.rateCode !== 'undefined' ? req.params.rateCode : 'DEFAULT'
+    };
+
+    Rate.findOne({
+        "rateCode": theRate.rateCode
+    })
+    .then(function(rate) {
+        if(rate !== null) // if we found a valid rate, let's capture, otherwise we stick with the default.
+            theRate = rate;
+        else {
+            theRate.rateCode = 'DEFAULT';
+        }
+        
+        res.render('register', {
+            rate: theRate
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 };
 
 // Go to profile page
@@ -53,6 +77,7 @@ userController.doRegister = function(req, res) {
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
         balance: 500,
+        rateCode: req.body.rateCode,
     }), req.body.password, function(err, user) {
         if (err) {
             res.redirect('/dashboard');

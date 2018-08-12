@@ -16,7 +16,7 @@ router.get('/', auth.home);
 router.get('/privacy', auth.privacy);
 
 // route to register page
-router.get('/register', auth.register);
+router.get('/register/:rateCode*?', auth.register);
 
 // route for register action
 router.post('/register', auth.doRegister);

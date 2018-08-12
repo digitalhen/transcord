@@ -46,8 +46,6 @@ const UserSchema = new mongoose.Schema({
 		{
 			callSid: String,
 			direction: Number,
-			startTime: Date,
-			endTime: Date,
 			duration: Number,
 			rateCode: String, // capture the rate code at the time of the call
 			cost: Number // we should use the rate code at the time and capture the cost

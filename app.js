@@ -42,7 +42,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views/' + process.env.TEMPLATE));
 app.set('view engine', 'jade');

@@ -12,6 +12,7 @@ block content
             div.mdl-card__title.mdl-color--primary.mdl-color-text--white
               h2.mdl-card__title-text Register
             div.mdl-card__supporting-text.mdl-grid
+              p.mdl-color-text--primary !{rate.description}
 
               form#form-register(role='form' method='post' action='/register')
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
@@ -39,6 +40,8 @@ block content
                   label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') Phone number
                   input.mdl-textfield__input(type='text' name='phoneNumber')
                   span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres
+
+                input(type="hidden" name="rateCode" value=rate.rateCode)
 
                 input#submit-form(type='submit' class='hidden')
 

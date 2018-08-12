@@ -16,6 +16,9 @@ router.post('/welcome', ivr.welcome);
 // POST: /ivr/dialer
 router.post('/dialer', ivr.dialer);
 
+// POST: /ivr/callFinished
+router.post('/callFinished', ivr.callFinished);
+
 // POST: /ivr/privacynotice
 router.post('/privacynotice', ivr.privacynotice);
 

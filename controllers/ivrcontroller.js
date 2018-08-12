@@ -106,6 +106,7 @@ ivrController.dialer = function(req, res) {
     voiceResponse.say("Connecting you now.");
 
     const dial = voiceResponse.dial({
+        action: '/ivr/callFinished',
         record: 'record-from-ringing-dual',
         recordingStatusCallback: '/ivr/recording',
         method: 'POST'
@@ -118,6 +119,42 @@ ivrController.dialer = function(req, res) {
 
     res.send(voiceResponse.toString());
 };
+
+ivrController.callFinished = function(req, res) {
+    /*
+     * DialCallStatus -- completed
+     * DialCallSid
+     * DialCallDuration
+     */
+
+     /*
+      * 1. Get current user & their rateCode
+      * 2. Lookup the rateCode
+      * 3. Create a new calls object, and calculate the cost based on the rateCode
+      * 4. Push a new entry to the user's calls list 
+      * 5. Take their current balance and minus the cost of the call
+      * 6. Push user object back to database
+      */
+
+     const numberFrom = req.body.Caller;
+
+     User.findOne({
+             combinedPhoneNumber: numberFrom
+         })
+         .then(function(user) {
+             if (user == null) {
+                 // TODO: we should never reach here?
+                 console.log('No user found during call finished handler');
+             } else {
+                console.log(user);
+             }
+         })
+         .catch(function(err) {
+             console.log(err);
+         });
+      
+    
+}
 
 ivrController.privacynotice = function(req, res) {
     const numberFrom = req.body.Caller;
