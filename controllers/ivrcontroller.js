@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
+const Rate = require('../models/rate');
 const storage = require('@google-cloud/storage');
 const speech = require('@google-cloud/speech');
 const https   = require('https');
