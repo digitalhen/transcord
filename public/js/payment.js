@@ -132,6 +132,7 @@ var paymentForm = new SqPaymentForm({
           // Mimics a click on the text field in MDL
           console.log(inputEvent);
           jQuery('#' + inputEvent.elementId).parent('.mdl-textfield').removeClass('is-invalid').addClass('is-focused');
+          document.getElementById(inputEvent.elementId).focus();
           /* HANDLE AS DESIRED */
           break;
         case 'focusClassRemoved':
