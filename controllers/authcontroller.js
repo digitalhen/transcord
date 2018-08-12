@@ -80,16 +80,21 @@ userController.doRegister = function(req, res) {
         rateCode: req.body.rateCode,
     }), req.body.password, function(err, user) {
         if (err) {
-            res.redirect('/dashboard');
+            //res.redirect('/dashboard');
+            res.redirect('/');
+            console.log('Error registering user');
+            console.log(err);
             /*
             return res.render('register', {
                 user: user
             }); */
+        } else {
+            
+            passport.authenticate('local')(req, res, function() {
+                res.redirect('/dashboard');
+            });
         }
 
-        passport.authenticate('local')(req, res, function() {
-            res.redirect('/');
-        });
     });
 };
 

@@ -80,14 +80,19 @@ ivrController.welcome = function(req, res) {
             } else {
                 const voiceResponse = new VoiceResponse();
 
-                const gather = voiceResponse.gather({
-                    action: '/ivr/dialer',
-                    finishOnKey: '#',
-                    method: 'POST',
-                });
-
-                gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by the # key.");
-
+                if(typeof user.balance !== 'undefined' || user.balance<=0) {
+                    voiceResponse.say("Hello " + user.name + ", your balance is not sufficient to make this call. Please visit transcord dot app to top up your account.");
+                    voiceResponse.hangup();
+                } else {
+                    const gather = voiceResponse.gather({
+                        action: '/ivr/dialer',
+                        finishOnKey: '#',
+                        method: 'POST',
+                    });
+    
+                    gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by the # key.");    
+                }
+            
                 res.send(voiceResponse.toString());
             }
         })
@@ -200,7 +205,7 @@ ivrController.callFinished = function(req, res) {
              console.log(err);
          });
       
-    
+    res.send('');
 }
 
 ivrController.privacynotice = function(req, res) {

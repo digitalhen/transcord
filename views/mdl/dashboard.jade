@@ -20,9 +20,9 @@ block content
         div.mdl-card__supporting-text
           - if(user.balance !== 'undefined' && user.balance) {
           - var balance = (user.balance/100).toFixed(2);
-            $!{balance}
+              p $!{balance}
           - } else {
-            p $0.00
+              p $0.00
           - }
         div.mdl-card__actions.mdl-card--border
           a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/payment') Top up your account

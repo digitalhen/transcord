@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema({
 	calls: [ // Nothing in this table gets deleted
 		{
 			callSid: String,
+			dialCallSid: String,
 			direction: Number,
 			duration: Number,
 			rateCode: String, // capture the rate code at the time of the call
