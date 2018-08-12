@@ -78,7 +78,6 @@ ivrController.welcome = function(req, res) {
             if (user == null) {
                 res.send(reject());
             } else {
-                const name = user.name;
                 const voiceResponse = new VoiceResponse();
 
                 const gather = voiceResponse.gather({
@@ -87,7 +86,7 @@ ivrController.welcome = function(req, res) {
                     method: 'POST',
                 });
 
-                gather.say("Hello " + name + ", please enter the number you wish to dial, followed by the # key.");
+                gather.say("Hello " + user.name + ", your current balance is $" + user.balance/100 + ". Please enter the number you wish to dial, followed by the # key.");
 
                 res.send(voiceResponse.toString());
             }
