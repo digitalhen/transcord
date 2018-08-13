@@ -93,6 +93,18 @@ a img {
   margin: 0 !important;
 } */
 
+.grouped-cards {
+  .mdl-card {
+    margin:0px;
+    margin-bottom:16px;
+
+    @media screen and (max-width: '839px') {
+      margin: 8px;
+    }
+
+  }
+}
+
 #form-payment {
   label.mdl-radio {
     margin-right: 20px;

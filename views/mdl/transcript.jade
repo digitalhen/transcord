@@ -20,11 +20,17 @@ block content
           button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
             i#button-text-0.material-icons.play play_arrow
         div.mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+          div(style="float:left")
+            a(href='/dashboard/downloadRecording/' + user.recordings[0].recordingSid)
+              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.material-icons save_alt
+            a(href='/dashboard/deleteRecording/' + user.recordings[0].recordingSid)
+              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.material-icons delete
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-          h2.mdl-card__title-text Call to !{user.recordings[0].numberFromFormatted}
+          h2.mdl-card__title-text Call to !{user.recordings[0].numberCalledFormatted}
 
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid

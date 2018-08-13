@@ -14,19 +14,30 @@ block content
         div.mdl-card__actions.mdl-card--border
           a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect TK Button
 
-      div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
-        div.mdl-card__title
-          h2.mdl-card__title-text Balance
-        div.mdl-card__supporting-text
-          - if(user.balance !== 'undefined' && user.balance) {
-          - var balance = (user.balance/100).toFixed(2);
-              p $!{balance}
-          - } else {
-              p $0.00
-          - }
-        div.mdl-card__actions.mdl-card--border
-          a(href='/dashboard/payment' style="float:left")
-            button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Top up your account
+      div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
+        div.grouped-cards.mdl-grid(style="padding:0px")
+          div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
+            div.mdl-card__title
+              h2.mdl-card__title-text Your dial-out number
+            div.mdl-card__supporting-text
+              p (917) 708-8094
+            div.mdl-card__actions.mdl-card--border
+              a(href='/dashboard/payment' style="float:left")
+                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Get a dial-in number
+
+          div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
+            div.mdl-card__title
+              h2.mdl-card__title-text Balance
+            div.mdl-card__supporting-text
+              - if(user.balance !== 'undefined' && user.balance) {
+              - var balance = (user.balance/100).toFixed(2);
+                  p $!{balance}
+              - } else {
+                  p $0.00
+              - }
+            div.mdl-card__actions.mdl-card--border
+              a(href='/dashboard/payment' style="float:left")
+                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Top up your account
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-grid.table-grid
@@ -58,6 +69,7 @@ block content
                         i.material-icons delete
             - i++;
           - })
+          
     //include footer
 
 block js
