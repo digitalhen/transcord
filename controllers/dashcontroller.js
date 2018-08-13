@@ -3,7 +3,6 @@ var passport = require("passport");
 var User = require("../models/user");
 var squareConnect = require('square-connect');
 
-
 var dashController = {};
 
 // Go to registration page
@@ -112,7 +111,7 @@ dashController.processPayment = function(req, res) {
         console.log("Balance is now: " + user.balance);
 
 
-		res.render('processPayment', {
+		res.render('paymentSuccess', {
             user: req.user,
             payment: {
                 'amount': amount/100,
@@ -120,12 +119,12 @@ dashController.processPayment = function(req, res) {
             
 		});
 	}, function(error) {
-		console.log(error.status);
-		res.render('processPayment', {
-			payment: {
-                'title': 'Payment Failure',
-			    'result': "Payment Failed (see console for transaction output)"
-            }
+        console.log(error.status);
+        // TODO: need to handle payment failure
+		res.render('paymentFailure', {
+            user: req.user,
+            error: error,
+            
 		});
 	});
 

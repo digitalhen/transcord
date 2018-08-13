@@ -1,0 +1,21 @@
+block variables
+  title Payment - Transcord
+
+extends layout
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text Payment Failed
+            div.mdl-card__supporting-text.mdl-grid
+              p Your payment failed, because: !{error.detail}
+              
+
+            div.mdl-card__actions.mdl-card--border
+                div.mdl-grid
+                  a(href='/dashboard/payment')
+                    button#form-payment-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Try again

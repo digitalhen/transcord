@@ -1,0 +1,48 @@
+block variables
+  title Profile - Transcord
+
+extends layout
+
+block content
+  main.mdl-layout__content.bg
+    div.mdl-grid(style="max-width:900px")
+      div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
+        div.mdl-card__title
+          h2.mdl-card__title-text !{user.name}
+        div.mdl-card__supporting-text
+          p This is some text
+        div.mdl-card__actions.mdl-card--border
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+
+      div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
+        div.mdl-card__title
+          h2.mdl-card__title-text Balance
+        div.mdl-card__supporting-text
+          - if(user.balance !== 'undefined' && user.balance) {
+          - var balance = (user.balance/100).toFixed(2);
+              p $!{balance}
+          - } else {
+              p $0.00
+          - }
+        div.mdl-card__actions.mdl-card--border
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/payment') Top up your account
+
+      div.mdl-card.mdl-cell.mdl-cell--8-col
+        div.mdl-grid
+            table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp.full-width
+                thead
+                    tr
+                        th.full-width(style="text-align:left") Date
+                        th.full-width Amount
+                        th.full-width Payment
+                tbody 
+                    - user.payments.forEach(function(payment) { 
+                        tr
+                            td(style="text-align:left") !{moment(payment.date).format('MMM DD, YYYY h:mm a')}
+                            td $!{(payment.amount/100).toFixed(2)}
+                            td !{payment.cardBrand} *!{payment.cardLast4}
+                    - });
+            
+          
+
+block js
