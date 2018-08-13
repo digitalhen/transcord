@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
 var Rate = require("../models/rate");
+const moment = require('moment');
 
 
 var userController = {};
@@ -71,6 +72,7 @@ userController.doRegister = function(req, res) {
     // TODO:
     // pull in the rate here and get the free balance
     // need to put in an entry in the ledger appropriately
+    // reduce availability of the rate code by 1
 
     Rate.findOne({
         "rateCode": req.body.rateCode
@@ -90,6 +92,13 @@ userController.doRegister = function(req, res) {
             combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
             balance: initialBalance,
             rateCode: rate.rateCode,
+            payments: [
+                {
+                    id: "Initial",
+                    date: moment(),
+                    amount: initialBalance,
+                }
+            ]
         }), req.body.password, function(err, user) {
             if (err) {
                 //res.redirect('/dashboard');
@@ -107,6 +116,19 @@ userController.doRegister = function(req, res) {
                 });
             }
     
+        });
+
+        // update the rate to count the use
+        rate.useCount = rate.useCount + 1;
+
+        Rate.update({
+            _id: rate._id
+        }, {
+            useCount: rate.useCount,
+        }, function(err, numberAffected, rawResponse) {
+            if (err) {
+                console.log('There was an error');
+            }
         });
     })
     .catch(function(err) {
