@@ -32,6 +32,7 @@ userController.register = function(req, res) {
     .then(function(rate) {
         if(rate !== null) // if we found a valid rate, let's capture, otherwise we stick with the default.
             theRate = rate;
+        // TODO: else if the rate has expired or been used too many times... then set the error message
         else {
             theRate.rateCode = 'DEFAULT';
         }
@@ -67,35 +68,52 @@ userController.settings = function(req, res) {
 
 // Post registration
 userController.doRegister = function(req, res) {
-    User.register(new User({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        emailNotification: true,
-        privacyNotification: false,
-        countryCode: '+1',
-        phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
-        combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
-        balance: 500,
-        rateCode: req.body.rateCode,
-    }), req.body.password, function(err, user) {
-        if (err) {
-            //res.redirect('/dashboard');
-            res.redirect('/');
-            console.log('Error registering user');
-            console.log(err);
-            /*
-            return res.render('register', {
-                user: user
-            }); */
-        } else {
-            
-            passport.authenticate('local')(req, res, function() {
-                res.redirect('/dashboard');
-            });
-        }
+    // TODO:
+    // pull in the rate here and get the free balance
+    // need to put in an entry in the ledger appropriately
 
+    Rate.findOne({
+        "rateCode": req.body.rateCode
+    })
+    .then(function(rate) {
+        // calculate how much free balance to give
+        var initialBalance = rate.costPerUnit * rate.freeUnits;
+
+        User.register(new User({
+            username: req.body.username,
+            name: req.body.name,
+            email: req.body.email,
+            emailNotification: true,
+            privacyNotification: false,
+            countryCode: '+1',
+            phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
+            combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
+            balance: initialBalance,
+            rateCode: rate.rateCode,
+        }), req.body.password, function(err, user) {
+            if (err) {
+                //res.redirect('/dashboard');
+                res.redirect('/');
+                console.log('Error registering user');
+                console.log(err);
+                /*
+                return res.render('register', {
+                    user: user
+                }); */
+            } else {
+                
+                passport.authenticate('local')(req, res, function() {
+                    res.redirect('/dashboard');
+                });
+            }
+    
+        });
+    })
+    .catch(function(err) {
+        console.log(err);
     });
+
+    
 };
 
 // User update
