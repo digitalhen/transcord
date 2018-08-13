@@ -16,6 +16,9 @@ const RateSchema = new mongoose.Schema({
     description: String,
     costPerUnit: Number, // how much to charge per block
     unitLength: Number, // how long is a block? we should probably call it 60, ie. 60 seconds / 1 minute
+    freeUnits: Number, // how much time is free?
+    useCount: Number, // how many times has this rate been used
+    useLimit: Number // what's the limit of this rate?
 });
 
 //RateSchema.plugin(passportLocalMongoose);
