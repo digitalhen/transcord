@@ -3,6 +3,8 @@ var passport = require("passport");
 var User = require("../models/user");
 var Rate = require("../models/rate");
 const moment = require('moment');
+const jade = require('jade');
+const emailHelper = require("../helpers/emailHelper");
 
 
 var userController = {};
@@ -110,10 +112,21 @@ userController.doRegister = function(req, res) {
                     user: user
                 }); */
             } else {
-                
+                // locals to feed through to template
+                var locals = {'moment': moment, 'user': user};
+
+                var plaintextEmail = "Hello " + user.name;
+                var htmlEmail = jade.renderFile('views/email/welcome.jade', locals);
+                var subject = "Welcome to Transcord!";
+
+                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+
+                // send the new user to their dashboard
                 passport.authenticate('local')(req, res, function() {
                     res.redirect('/dashboard');
                 });
+
+
             }
     
         });

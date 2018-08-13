@@ -1,4 +1,3 @@
-const nodemailer = require('nodemailer');
 const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
@@ -12,6 +11,7 @@ const path    = require('path');
 const ffmpeg = require('fluent-ffmpeg');
 const jade = require('jade');
 const moment = require('moment');
+const emailHelper = require('../helpers/emailHelper');
 
 const PROJECT_ID = 'transcord-2018';
 const GOOGLE_KEY = 'credentials/google.json';
@@ -425,7 +425,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
         console.log(transcription);
-        sendEmail(user, recordingObject);      
+        generateEmail(user, recordingObject);      
       }
     })
     .catch(err => {
@@ -453,7 +453,7 @@ function runTranscription(user, recordingObject) {
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           console.log(transcription);
-          sendEmail(user, recordingObject);
+          generateEmail(user, recordingObject);
         }
 
       })
@@ -651,40 +651,8 @@ function processFiles(user, recordingObject) {
     });
 }
 
-function sendEmail(user, recording) {
-    // send the email but check if users wants it first
-    if(user.emailNotification !== 'undefined' && !user.emailNotification) {
-        console.log('User has emails turned off, so not sending: ' + user.email);
-        return; // returns if the have a email notification set to false
-    }
-        
-
+function generateEmail(user, recording) {
     var transcription = JSON.parse(recording.transcription);
-
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        /*host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: 'digitalhen@gmail.com', // generated ethereal user
-            pass: 'iybfrzmemnvkyzhl' // generated ethereal password
-        }*/
-	host: 'smtp.office365.com',
-	port: 587,
-	auth: {
-		user: 'henry@transcord.app',
-		pass: 'D219430b'
-	},
-	/*
-        host: 'localhost',
-        port: 465,
-        secure: false,
-	ignoreTLS: true,
-	tls: {
-		ciphers: 'SSLv3'
-	}*/
-    });
 
     // locals to feed through to template
     var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription};
@@ -702,31 +670,15 @@ function sendEmail(user, recording) {
       }
     });
 
+    // generate the final bits
+    var plaintextEmail = 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
+    plaintextTranscript;
+    var htmlEmail = htmlTranscript;
+    var subject = 'Transcription of your call with ' + recording.numberCalledFormatted;
 
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"Transcord" <no-reply@transcord.app>', // sender address
-        to: user.email, // list of receivers
-        subject: 'Transcription of your call with ' + recording.numberCalledFormatted, // Subject line
-        text: 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
-          plaintextTranscript,
-        // plain text body
-        /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +
-            '<a href="' + recordingUrl + '">Click here to listen to your ' + duration + ' second call.</a><br/><br/>' +
-            htmlTranscript */
-        html: htmlTranscript,
-        // html body
-    };
+    // send the email
+    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    });
 }
 
 module.exports = ivrController;

@@ -3,6 +3,9 @@ var passport = require("passport");
 var User = require("../models/user");
 var squareConnect = require('square-connect');
 const https   = require('https');
+const moment = require('moment');
+const jade = require('jade');
+const emailHelper = require("../helpers/emailHelper");
 
 var dashController = {};
 
@@ -111,20 +114,29 @@ dashController.processPayment = function(req, res) {
 
         console.log("Balance is now: " + user.balance);
 
+        // send email to user
+        // locals to feed through to template
+        var locals = {'moment': moment, 'user': user, 'payment': paymentObject};
+
+        var plaintextEmail = "Hello " + user.name;
+        var htmlEmail = jade.renderFile('views/email/payment.jade', locals);
+        var subject = "Your payment to Transcord!";
+
+        emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+
+
 
 		res.render('paymentSuccess', {
-            user: req.user,
-            payment: {
-                'amount': amount/100,
-            },
+            'user': user,
+            'payment': paymentObject
             
 		});
 	}, function(error) {
         console.log(error.status);
         // TODO: need to handle payment failure
 		res.render('paymentFailure', {
-            user: req.user,
-            error: error,
+            'user': user,
+            'error': error,
             
 		});
 	});
