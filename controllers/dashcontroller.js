@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
 var squareConnect = require('square-connect');
+const https   = require('https');
 
 var dashController = {};
 
@@ -165,6 +166,47 @@ dashController.transcript = function(req, res) {
       transcription: transcription
       //recording: recording
   });
+}
+
+dashController.deleteRecording = function(req, res) {
+    if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/login');
+    }
+
+    User.update({
+        _id: req.user._id
+    }, {
+        $pull: {"recordings": {"recordingSid": req.params.recordingSid }}
+    }, function(err, numberAffected, rawResponse) {
+        if (err) {
+            console.log('There was an error');
+        }
+
+        res.redirect('/dashboard');  
+    });
+
+}
+
+// pull the file from google and stream it to the person with the right file name
+dashController.downloadRecording = function(req, res) {
+    if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/login');w
+    }
+
+    // find the recording we want to download
+    req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.params.recordingSid});
+
+    if(req.user.recordings.length == 0) 
+      res.redirect('/dashboard');  
+
+    res.setHeader('Content-disposition', 'attachment; filename=Transcord between ' + req.user.recordings[0].numberFromFormatted + ' and ' + req.user.recordings[0].numberCalledFormatted + '.wav');
+
+    https.get(req.user.recordings[0].recordingUrl, function(file) {
+        file.pipe(res);
+    });
+    
 }
 
 /*

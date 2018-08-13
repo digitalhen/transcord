@@ -21,7 +21,13 @@ router.post('/payment', dash.processPayment);
 // show recordings list
 router.get('/recordings', dash.recordings)
 
-// ajax for getting a transcriptions
+//  for getting a recording
+router.get('/downloadRecording/:recordingSid', dash.downloadRecording);
+
+// for deleting a recording
+router.get('/deleteRecording/:recordingSid', dash.deleteRecording);
+
+//  for getting a transcriptions
 router.get('/transcript/:recordingSid', dash.transcript);
 
 module.exports = router;

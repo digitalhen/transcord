@@ -1,5 +1,5 @@
 block variables
-  title Profile - Transcord
+  title Dashboard - Transcord
 
 extends layout
 
@@ -12,7 +12,7 @@ block content
         div.mdl-card__supporting-text
           p This is some text
         div.mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect Get Started
+          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect TK Button
 
       div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col
         div.mdl-card__title
@@ -25,7 +25,8 @@ block content
               p $0.00
           - }
         div.mdl-card__actions.mdl-card--border
-          a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/payment') Top up your account
+          a(href='/dashboard/payment' style="float:left")
+            button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Top up your account
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-grid.table-grid
@@ -46,7 +47,15 @@ block content
                     div.waveform(id='waveform-' + i data-id=i data-recordingUrl=recording.recordingUrl)
                       div(id="progress-" + i class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
               div.mdl-card__actions.mdl-card--border
-                a.mdl-button.mdl-button--acent.mdl-js-button.mdl-js-ripple-effect(href='/dashboard/transcript/' + recording.recordingSid) Transcript
+                a(href='/dashboard/transcript/' + recording.recordingSid style="float:left")
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Transcript
+                div(style="float:right")
+                    a(href='/dashboard/downloadRecording/' + recording.recordingSid)
+                      button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                        i.material-icons save_alt
+                    a(href='/dashboard/deleteRecording/' + recording.recordingSid)
+                      button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                        i.material-icons delete
             - i++;
           - })
     //include footer
