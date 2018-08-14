@@ -80,8 +80,8 @@ ivrController.welcome = function(req, res) {
             } else {
                 const voiceResponse = new VoiceResponse();
 
-                if(typeof user.balance === 'undefined' || user.balance<=0) {
-                    voiceResponse.say("Hello " + user.name + ", you have a balance due of $" + (user.balance/100).toFixed(2) + ". Please visit transcord dot app to top up your account.");
+                if(typeof user.balance === 'undefined' || user.balance<0) {
+                    voiceResponse.say("Hello " + user.name + ", you have a balance due of $" + ((user.balance/100)*-1).toFixed(2) + ". Please visit transcord dot app to top up your account.");
                     voiceResponse.hangup();
                 } else {
                     const gather = voiceResponse.gather({
