@@ -196,7 +196,14 @@ a img {
   align-items: center;
 }
 
+.features-section .features-display .features-item .feature-image {
+  display: flex;
+  align-items: center;
+}
+
 .features-section .features-display .features-item .feature-image img {
+  max-height: 150px;
+  max-width: 150px;
   width: 100%;
 }
 

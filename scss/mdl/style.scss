@@ -203,7 +203,12 @@ a img {
       align-items: center;
 
       .feature-image {
+        display:flex;
+        align-items:center;
+
         img {
+          max-height:150px;
+          max-width:150px;
           width: 100%;
         }
       }
