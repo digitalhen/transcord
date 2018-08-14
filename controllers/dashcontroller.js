@@ -16,6 +16,11 @@ dashController.dashboard = function(req, res) {
       return res.redirect('/login');
   }
 
+  // check for a negative balance and force payment
+  if(req.user.balance<0) {
+      return res.redirect('/dashboard/payment');
+  }
+
   res.render('dashboard', {
       user: req.user,
   });
@@ -25,6 +30,11 @@ dashController.billing = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
+  }
+
+  // check for a negative balance and force payment
+  if(req.user.balance<0) {
+    return res.redirect('/dashboard/payment');
   }
 
   res.render('billing', {
@@ -154,6 +164,11 @@ dashController.recordings = function(req, res) {
       return res.redirect('/login');
   }
 
+  // check for a negative balance and force payment
+  if(req.user.balance<0) {
+    return res.redirect('/dashboard/payment');
+  }
+
   res.render('recordings', {
       user: req.user,
   });
@@ -163,6 +178,11 @@ dashController.transcript = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');w
+  }
+
+  // check for a negative balance and force payment
+  if(req.user.balance<0) {
+    return res.redirect('/dashboard/payment');
   }
 
   // find the recording we want to display and get its transcription available
@@ -186,6 +206,11 @@ dashController.deleteRecording = function(req, res) {
         return res.redirect('/login');
     }
 
+    // check for a negative balance and force payment
+    if(req.user.balance<0) {
+        return res.redirect('/dashboard/payment');
+    }
+
     User.update({
         _id: req.user._id
     }, {
@@ -205,6 +230,11 @@ dashController.downloadRecording = function(req, res) {
     if (!req.user) {
         req.session.redirectTo = req.originalUrl;
         return res.redirect('/login');w
+    }
+
+    // check for a negative balance and force payment
+    if(req.user.balance<0) {
+        return res.redirect('/dashboard/payment');
     }
 
     // find the recording we want to download

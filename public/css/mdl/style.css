@@ -100,6 +100,7 @@ a img {
 
 #form-payment label.mdl-radio {
   margin-right: 20px;
+  height: 30px;
 }
 
 .mdl-textfield--expandable {

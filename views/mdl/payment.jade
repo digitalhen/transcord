@@ -12,18 +12,25 @@ block content
             div.mdl-card__title.mdl-color--primary.mdl-color-text--white
               h2.mdl-card__title-text Payment
             div.mdl-card__supporting-text.mdl-grid
-
+              - if(user.balance<0) {
+              p You have a balance due of $!{((user.balance/100)*-1).toFixed(2)}, please pay before continuing.
+              - }
               form#form-payment(novalidate role='form' method='post' action='/dashboard/payment')
                 div.mdl-cell.mdl-cell--12-col
                   label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-1')
-                    input#option-1.mdl-radio__button(type='radio' name="amount" value=500 checked)
+                    input#option-1.mdl-radio__button(type='radio' disabled=user.balance<-500 ? "disabled" : false name="amount" value=500 checked=user.balance<0 ? false : "checked")
                     span.mdl-radio__label $5
                   label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-2')
-                    input#option-2.mdl-radio__button(type='radio' name="amount" value=1000)
+                    input#option-2.mdl-radio__button(type='radio' disabled=user.balance<-1000 ? "disabled" : false name="amount" value=1000)
                     span.mdl-radio__label $10
                   label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-3')
-                    input#option-3.mdl-radio__button(type='radio' name="amount" value=2500)
+                    input#option-3.mdl-radio__button(type='radio' disabled=user.balance<-2500 ? "disabled" : false name="amount" value=2500)
                     span.mdl-radio__label $25
+                  - if(user.balance<0) {
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-4')
+                    input#option-4.mdl-radio__button(type='radio' name="amount" value=user.balance*-1 checked)
+                    span.mdl-radio__label Balance of $!{((user.balance/100)*-1).toFixed(2)}
+                  - }
                   span.error.mdl-textfield__error(for="amount") Error message goes heres
 
 
