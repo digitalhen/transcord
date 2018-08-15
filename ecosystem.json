@@ -19,9 +19,7 @@
     "merge_logs"  : true,
     "cwd"         : "/home/henry/code/callhandler",
     "env": {
-      "NODE_ENV": "production",
-      "TWILIO_ACCOUNT_SID": "AC49d2769efd6385b71033a141d04b16ca",
-      "TWILIO_AUTH_TOKEN": "7d922456626f90fbf6ea4a8ef8fa21a8"
+      "NODE_ENV": "production"
     }
   }]
 }

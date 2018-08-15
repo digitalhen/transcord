@@ -7,7 +7,7 @@ const dash = require('../controllers/dashcontroller');
 const ivrRouter = require('./ivr');
 const dashRouter = require('./dash');
 
-const shouldValidate = process.env.NODE_ENV !== 'test';
+const shouldValidate = false; //TODO: put this in -- process.env.NODE_ENV !== 'test';
 
 
 // restrict index for logged in user only
