@@ -15,7 +15,7 @@ block content
               - if(user.balance<0) {
               p You have a balance due of $!{((user.balance/100)*-1).toFixed(2)}, please pay before continuing.
               - }
-              form#form-payment(novalidate role='form' method='post' action='/dashboard/payment')
+              form#form-payment(novalidate role='form' method='post' data-square_application_id=square.application_id data-square_location=square.location action='/dashboard/payment')
                 div.mdl-cell.mdl-cell--12-col
                   label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-1')
                     input#option-1.mdl-radio__button(type='radio' disabled=user.balance<-500 ? "disabled" : false name="amount" value=500 checked=user.balance<0 ? false : "checked")

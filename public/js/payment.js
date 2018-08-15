@@ -2,10 +2,10 @@
 // Square handling below...
 
 // Set the application ID
-var applicationId = "sandbox-sq0idp-ZzWQ4YYvNifV2mW9Bhi1TA";
+var applicationId = document.getElementById('form-payment').getAttribute('data-square_application_id');
 
 // Set the location ID
-var locationId = "CBASEModDFqt54HKD_SnQin6Gu0gAQ";
+var locationId = document.getElementById('form-payment').getAttribute('data-location');
 
 /*
  * function: requestCardNonce

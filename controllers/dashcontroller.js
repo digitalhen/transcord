@@ -51,6 +51,10 @@ dashController.payment = function(req, res) {
   
     res.render('payment', {
         user: req.user,
+        square: {
+            application_id: config.square_application_id,
+            location: config.square_location
+        }
     });
 }
 
@@ -143,11 +147,13 @@ dashController.processPayment = function(req, res) {
             
 		});
 	}, function(error) {
-        console.log(error.status);
+        // Parse the object sent back by square, and display it to the user
+        var errorsObject = JSON.parse(error.response.res.text);
+        console.log("Payment failed: " + error.response.res.text);
         // TODO: need to handle payment failure
 		res.render('paymentFailure', {
             'user': user,
-            'error': error,
+            'error': errorsObject.errors[0],
             
 		});
 	});
