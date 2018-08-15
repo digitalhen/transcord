@@ -13,7 +13,7 @@ block content
               h2.mdl-card__title-text Change password
             div.mdl-card__supporting-text.mdl-grid
 
-              form#form-login(method='post' action='/reset/complete')
+              form#form-reset(method='post' action='/reset/complete')
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
                   label.mdl-textfield__label.mdl-color-text--grey(for='password') Password
                   input#token.mdl-textfield__input(type='text' name='token' style='display:none' value=token) 
