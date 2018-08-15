@@ -6,6 +6,7 @@ var Rate = require("../models/rate");
 const moment = require('moment');
 const jade = require('jade');
 const emailHelper = require("../helpers/emailHelper");
+const uuidv1 = require('uuid/v1');
 
 var userController = {};
 
@@ -61,6 +62,7 @@ userController.settings = function(req, res) {
             case 'unsubscribe':
                 // TODO: turn off email notifications
                 break;
+
         }
     };
 
@@ -317,13 +319,167 @@ userController.reset = function(req, res) {
 
 // Primary function here is to actually send the reset email to the user
 userController.sendReset = function(req, res) {
+    var email = req.body.email;
 
+    User.findOne({
+        email: email,
+    })
+    .then(function(user) {
+        if (user == null) {
+            console.log("Password reset requested for invalid user: " + email);
+            // No user found so do nothing
+        } else {
+            var uuid = uuidv1();
+
+            var passwordReset = {
+                "token": uuid,
+                "date": moment(),
+                "used": 0,
+            };
+
+            user.passwordResets.push(passwordReset);
+
+            console.log(user.passwordResets);
+
+            User.update({
+                _id: user._id
+            }, {
+                "passwordResets": user.passwordResets
+            }, function(err, numberAffected, rawResponse) {
+                if (err) {
+                    console.log('There was an error');
+                }
+        
+                var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset};
+
+                var plaintextEmail = "Hello " + user.name;
+                var htmlEmail = jade.renderFile('views/email/reset.jade', locals);
+                var subject = "Password reset";
+
+                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+            });
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+
+    res.render('resetSuccess');
 }
 
 // Handles the incoming link from the users email and processes the reset and collects the new password
-userController.doReset = function(req, res) {
+userController.checkReset = function(req, res) {
+    // if somehow we've got no token let's go back to home
+    if(typeof req.params.token === 'undefined') {
+        res.redirect('/');
+    }
+
+    var token = req.params.token;
+
+    User.findOne({
+        passwordResets: {
+            $all: [{
+                "$elemMatch": {
+                    "token": token,
+                }
+            }]
+        }
+    })
+    .then(function(user) {
+        if (user == null) {
+            console.log("Password reset page loaded for invalid token: " + token);
+            res.redirect('/');
+            // No match found so do nothing
+        } else {
+            // find the password reset
+            user.passwordResets = user.passwordResets.filter(function(x){return x.token==token});
+
+            if(moment().diff(moment(user.passwordResets[0].date).add(config.password_reset_timeout, 'minutes')) < 0) { // if the password reset is less than 15 minutes
+                console.log("Allowing reset password for: " + user.email);
+            
+                res.render('resetAction', {
+                    'token': token,
+                });
+            } else {
+                console.log("Reset was too old for: " + user.email);
+                res.redirect('/reset');
+            }
+
+            
+            
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+    
+    //? req.params.rateCode : 'DEFAULT'
 
 }
+
+userController.doReset = function(req,res) {
+    if(typeof req.body.token === 'undefined' || typeof req.body.password === 'undefined') {
+        console.log("")
+        res.redirect('/');
+    }
+
+    var token = req.body.token;
+
+    // refresh the user object
+    User.findOne({
+        passwordResets: {
+            $all: [{
+                "$elemMatch": {
+                    "token": token,
+                }
+            }]
+        }
+    })
+    .then(function(user) {
+        if (user == null) {
+            console.log("Tried to reset a password but couldn't find the user")
+            res.redirect('/');
+            // TODO: we should never reach here?
+        } else {
+            if (req.body.password !== "") {
+                user.setPassword(req.body.password, function() {
+                    user.save();
+                    console.log("Password saved");
+                });
+
+                User.update({
+                    _id: user._id
+                }, {
+                    "passwordResets": {}
+                }, function(err, numberAffected, rawResponse) {
+                    if (err) {
+                        console.log('There was an error');
+                    }
+            
+                    // send email
+                    var locals = {'moment': moment, 'user': user};
+
+                    var plaintextEmail = "Hello " + user.name;
+                    var htmlEmail = jade.renderFile('views/email/resetDone.jade', locals);
+                    var subject = "Password changed";
+
+                    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+
+                    console.log("Password reset for: " + user.email);
+                    res.redirect('/login'); // TODO: should sent a note to the screen
+
+                });
+
+
+            } else {
+                res.redirect('/reset/token/' + token); // let's try again // TODO: this should have an error message?
+            }
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+};
 
 // logout
 userController.logout = function(req, res) {

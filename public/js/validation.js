@@ -12,6 +12,10 @@ $(document).ready(function() {
       $('#form-settings').submit();
   });
 
+  $('#form-reset-button').click(function() {
+    $('#form-reset').submit();
+  });
+
   // Autoformatting on phone numbers
   $('input[name="phoneNumber"]').mask('(000) 000-0000');
 
@@ -29,6 +33,26 @@ $(document).ready(function() {
     return this.optional(element) || value != param;
     // TODO: the form still needs to be valid
   });
+
+  var resetValidator = $('#form-reset').validate({
+    errorPlacement: function(error, element) {
+      $(element).parent('.mdl-textfield').addClass('is-invalid');
+      $(element).siblings('.error').text(error.text());
+    },
+    rules: {
+      email: {
+        required: true,
+        email: true,
+        //notEqual: $('#form-profile input[name="email"]').attr('original'),
+      },
+      password: "required"
+    },
+    messages: {
+      email: {
+        required: "Please enter an email address.",
+      },
+    }
+});
 
   var loginValidator = $('#form-login').validate({
     errorPlacement: function(error, element) {

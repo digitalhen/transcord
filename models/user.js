@@ -62,6 +62,13 @@ const UserSchema = new mongoose.Schema({
 			cardBrand: String,
 			cardLast4: String,
 		}
+	],
+	passwordResets: [ // tracks password requests 
+		{
+			token: String,
+			date: Date, // date of request
+			used: Number, // 1 == used, 0 == not used
+		}
 	]
 });
 
