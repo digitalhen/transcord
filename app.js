@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const router = require('./routes/index');
 const app = express();
+var session = require('express-session');
+var MemoryStore = require('memorystore')(session);
 
 // storage root of project
 global.__basedir = __dirname;
@@ -27,8 +29,11 @@ module.exports = server;
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-app.use(require('express-session')({
+app.use(session({
     secret: config.mongo_secret,
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
     resave: false,
     saveUninitialized: false
 }));
