@@ -103,6 +103,10 @@ a img {
   height: 30px;
 }
 
+#form-reset {
+  width: 100%;
+}
+
 .mdl-textfield--expandable {
   width: auto;
 }
