@@ -1,3 +1,4 @@
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
@@ -5,7 +6,6 @@ var Rate = require("../models/rate");
 const moment = require('moment');
 const jade = require('jade');
 const emailHelper = require("../helpers/emailHelper");
-
 
 var userController = {};
 

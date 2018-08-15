@@ -1,4 +1,5 @@
-const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
+const twilioClient = require('twilio')(config.twilio_account_sid, config.twilio_auth_token);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
 const Rate = require('../models/rate');
@@ -13,8 +14,8 @@ const jade = require('jade');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
 
-const PROJECT_ID = 'transcord-2018';
-const GOOGLE_KEY = 'credentials/google.json';
+const PROJECT_ID = config.google_project_id;
+const GOOGLE_KEY = config.google_key;
 
 var ivrController = {};
 
@@ -344,18 +345,6 @@ function processRecordings(recordingSid, recordingUrl, direction) {
  */
 
 
-function redirectWelcome() {
-    const twiml = new VoiceResponse();
-
-    twiml.say('Returning to the main menu', {
-        voice: 'alice',
-        language: 'en-GB',
-    });
-
-    twiml.redirect('/welcome');
-
-    return twiml.toString();
-}
 
 function runTranscription(user, recordingObject) {
     // process audio through google speech to text, once for the caller audio, once for the receipient audio

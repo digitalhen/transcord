@@ -1,3 +1,4 @@
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
@@ -65,7 +66,7 @@ dashController.processPayment = function(req, res) {
     // TODO: should i move this in to the greater application so we only call it once?
     var squareClient = squareConnect.ApiClient.instance;
     var oauth2 = squareClient.authentications['oauth2'];
-    oauth2.accessToken = process.env.SQUARE_ACCESS_TOKEN;
+    oauth2.accessToken = config.square_access_token;
 
     // get the variables
     var amount = parseInt(req.body.amount); // the amount to load, in dollars
@@ -84,7 +85,7 @@ dashController.processPayment = function(req, res) {
 		idempotency_key: token
     };
         
-    transactions_api.charge(process.env.SQUARE_LOCATION, request_body).then(function(data) {        
+    transactions_api.charge(config.square_location, request_body).then(function(data) {        
         // TO DO: Payment WAS successful. Update database
 
         console.log(data.transaction.tenders[0]);

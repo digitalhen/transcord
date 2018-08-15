@@ -1,3 +1,4 @@
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
 const twilio = require('twilio');
 const express = require('express');
 const router = express.Router();
@@ -5,9 +6,9 @@ const auth = require('../controllers/authcontroller');
 const dash = require('../controllers/dashcontroller');
 const ivrRouter = require('./ivr');
 const dashRouter = require('./dash');
-require('dotenv').config();
 
 const shouldValidate = process.env.NODE_ENV !== 'test';
+
 
 // restrict index for logged in user only
 router.get('/', auth.home);

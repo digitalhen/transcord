@@ -1,3 +1,4 @@
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
 const Router = require('express').Router;
 const User = require('../models/user');
 const dash = require('../controllers/dashcontroller');

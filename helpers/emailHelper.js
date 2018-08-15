@@ -1,3 +1,4 @@
+let config = require('../env.json')[process.env.NODE_ENV || "development"];
 const nodemailer = require('nodemailer');
 
 var emailHelper = {};
@@ -11,18 +12,18 @@ emailHelper.sendEmail = function(user, subject, plaintext, html) {
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
+        host: config.email_host,
+        port: config.email_port,
         auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
+            user: config.email_user,
+            pass: config.email_pass
         },
     });
 
 
     // setup email data with unicode symbols
     let mailOptions = {
-        from: '"' + process.env.EMAIL_FROM_NAME + '" <' + process.env.EMAIL_FROM + '>', // sender address
+        from: '"' + config.email_from_name + '" <' + config.email_from + '>', // sender address
         to: user.email, // list of receivers
         subject: subject, // Subject line
         text: plaintext,
