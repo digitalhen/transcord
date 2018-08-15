@@ -1,5 +1,5 @@
 let config = require('../env.json')[process.env.NODE_ENV || "development"];
-const twilioClient = require('twilio')(config.twilio_account_sid, config.twilio_auth_token);
+const twilioClient = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
 const Rate = require('../models/rate');
