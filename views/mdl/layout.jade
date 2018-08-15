@@ -47,8 +47,9 @@ html
       div#topmenu.mdl-layout__header.mdl-layout__header--waterfall.is-casting-shadow
         div.mdl-layout__header-row(style='z-index:9999')
           span.mdl-layout-title
-            img.mdl-layout--large-screen-only(src='/img/white/logo.png' style='max-height:35px')
-            img.mdl-layout--small-screen-only(src='/img/white/icon@2x.png' style='max-height:35px')
+            a(href="/")
+              img.mdl-layout--large-screen-only(src='/img/white/logo.png' style='max-height:35px')
+              img.mdl-layout--small-screen-only(src='/img/white/icon@2x.png' style='max-height:35px')
           div.mdl-layout-spacer
           div.mdl-layout--large-screen-only.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right.mdl-textfield--full-width
             label.mdl-button.mdl-js-button.mdl-button--icon(for="search-field")
@@ -56,7 +57,7 @@ html
             div.mdl-textfield__expandable-holder
               input#search-field.mdl-textfield__input(type="text")
           nav.mdl-navigation
-              a.mdl-layout--large-screen-only(href='/')
+              a.mdl-layout--large-screen-only(href='/#about')
                 button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white About
             if (user)
               a.mdl-layout--large-screen-only(href='/dashboard')
