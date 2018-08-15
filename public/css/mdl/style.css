@@ -154,9 +154,13 @@ a img {
   position: absolute;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 639px) {
   .welcome-section .welcome-display .welcome-text {
-    padding-left: 24px;
+    margin: 20px 10px;
+    padding: 0px 20px;
+    left: 0px;
+    bottom: 0px;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -166,7 +170,7 @@ a img {
   line-height: 49px;
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 639px) {
   .welcome-section .welcome-display .welcome-text .welcome-description {
     max-width: 300px;
     font-size: 24px;

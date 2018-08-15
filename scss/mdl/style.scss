@@ -163,8 +163,12 @@ a img {
       bottom: 35%;
       position: absolute;
 
-      @media screen and (max-width: '479px') {
-        padding-left: 24px;
+      @media screen and (max-width: '639px') {
+        margin: 20px 10px;
+        padding: 0px 20px;
+        left: 0px;
+        bottom: 0px;
+        background-color: rgba(255,255,255,0.1);
       }
 
       .welcome-description {
@@ -172,7 +176,7 @@ a img {
         font-size: 45px;
         line-height: 49px;
 
-        @media screen and (max-width: '479px') {
+        @media screen and (max-width: '639px') {
           max-width: 300px;
           font-size: 24px;
           line-height: 32px;
