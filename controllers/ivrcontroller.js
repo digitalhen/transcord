@@ -1,4 +1,6 @@
 let config = require('../env.json')[process.env.NODE_ENV || "development"];
+process.env.TWILIO_ACCOUNT_SID = config.twilio_account_sid; // Pass account to environment as required by api
+process.env.TWILIO_AUTH_TOKEN = config.twilio_auth_token; // Pass token to environment as required by api
 const twilioClient = require('twilio')(config.twilio_account_sid, config.twilio_auth_token);
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const User = require('../models/user');
