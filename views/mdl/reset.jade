@@ -1,5 +1,5 @@
 block variables
-  title Reset password - Transcord
+  title !{tim(strings.reset.title)} - Transcord
 
 extends layout
 
@@ -10,20 +10,23 @@ block content
         div.mdl-cell.mdl-cell--6-col
           div.mdl-card.mdl-shadow--6dp
             div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-              h2.mdl-card__title-text Reset password
+              h2.mdl-card__title-text !{tim(strings.reset.dialogTitle)}
             div.mdl-card__supporting-text.mdl-grid
 
               form#form-reset(method='post' action='/reset')
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
-                  label.mdl-textfield__label.mdl-color-text--grey(for='email') Email address
+                  label.mdl-textfield__label.mdl-color-text--grey(for='email') !{tim(strings.reset.emailTitle)}
                   input#email.mdl-textfield__input(type='text' name='email')
                   span.error.mdl-textfield__error(for="email") Error message goes heres
 
                 input#submit-form(type='submit' class='hidden')
 
+              if (status)
+                b !{status.message}
+
             div.mdl-card__actions.mdl-card--border
               div.mdl-grid
-                button#form-reset-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') Reset
+                button#form-reset-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') !{tim(strings.reset.button)}
               
 block js
   script(src="/js/validation.js")

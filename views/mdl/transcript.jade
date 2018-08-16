@@ -1,5 +1,5 @@
 block variables
-  title Transcript of call with #{user.recordings[0].numberCalledFormatted} - Transcord
+  title !{tim(strings.transcript.title, {detail: user.recordings[0].numberCalledFormatted })} - Transcord
 
 extends layout
 
@@ -30,7 +30,7 @@ block content
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-          h2.mdl-card__title-text Call to !{user.recordings[0].numberCalledFormatted}
+          h2.mdl-card__title-text !{tim(strings.transcript.transcriptPrefix)} !{user.recordings[0].numberCalledFormatted}
 
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid

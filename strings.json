@@ -1,0 +1,154 @@
+{
+    "shared": {
+        "title": "AI Call Recording and Transcription",
+        "description": "Transcord allows you to automatically record and transcribe your incoming and outgoing calls instantly, using artificial intelligence. Edit the text and listen to the audio simultaneously. Perfect for journalists, lawyers, and anyone else that needs to track their calls.",
+        "keywords": "ai, artificial intelligence, transcribe, transcript, calls, records, interview, recording, automatic,",
+        "aboutButton": "About",
+        "loginButton": "Login",
+        "dashboardButton": "Dashboard",
+        "billingButton": "Billing",
+        "settingsButton": "Settings",
+        "logoutButton": "Log out",
+        "copyright": "© 2018 Transcord, LLC",
+        "rights": "All rights reserved.",
+        "supportEmail": "support@transcord.app",
+        "supportNumber": "415-483-0085",
+        "dateFormat": "MMM DD, YYYY h:mm a"
+    },
+    "homepage": {
+        "logoUrl": "img/white/logo.png",
+        "logoAltText": "Transcord",
+        "welcome": "Automatically record & transcribe all of your calls.",
+        "welcomeButton": "Try it for free",
+        "features": [
+            {
+                "imgUrl": "img/microphone-icon.png",
+                "imgAltText": "Microphone",
+                "hed": "High quality, dual-channel call recording",
+                "dek": "We use sophisticated technologies to independently record both sides of the conversation in crystal-clear high quality."
+            },{
+                "imgUrl": "img/cog-icon.png",
+                "imgAltText": "Cog",
+                "hed": "AI-driven transcriptions",
+                "dek": "Our AI-powered algorithms delivers near instantaneous transcriptions, and synchronize the output with the call audio."
+            },{
+                "imgUrl": "img/email-icon.png",
+                "imgAltText": "Email",
+                "hed": "Instant email summarization",
+                "dek": "The transcriptions of your calls are emailed to you seconds after hanging up, and you can explore the call through our website, seeing the conversation in its natural form."
+            },{
+                "imgUrl": "img/padlock-icon.png",
+                "imgAltText": "Padlock",
+                "hed": "Secure data",
+                "dek": "Everything is done on our secure servers, and your call audio and transcriptions are stored in the cloud. No humans involved!"
+            }
+        ],
+        "calltoaction": "Instant call recording and transcription",
+        "calltoactionButton": "Get $5 free credit"
+    },
+    "login": {
+        "title": "User login",
+        "dialogTitle": "User login",
+        "usernameTitle": "Username",
+        "passwordTitle": "Password",
+        "button":"Sign in",
+        "register": "Register",
+        "lostPassword": "Lost password?"
+    },
+    "register": {
+        "title": "Register",
+        "dialogTitle": "Register",
+        "nameTitle": "Name",
+        "usernameTitle": "Username",
+        "passwordTitle": "Password",
+        "emailTitle": "Email",
+        "phoneNumberTitle": "Phone number",
+        "button":"Register",
+        "lostPassword": "Lost password?"
+    },
+    "billing": {
+        "title": "Billing",
+        "tableDateTitle": "Date",
+        "tableAmountTitle": "Amount",
+        "tablePaymentTitle": "Payment",
+        "balanceTitle": "Balance",
+        "button": "Top up your account"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "dialOutTitle": "Dial-out number",
+        "dialOutAction": "Get a dial-in number",
+        "balanceTitle": "Balance",
+        "balanceAction": "Top up your account",
+        "transcriptButton": "Transcript",
+        "transcriptPrefix": "Call to"
+    },
+    "payment": {
+        "title": "Payment",
+        "dialogTitle": "Payment",
+        "balanceDue": "You have a balance due of ${{due_amount}}, please pay before continuing.",
+        "amounts": [
+            {
+                "name": "$5",
+                "amount": 500
+            },{
+                "name": "$10",
+                "amount": 1000
+            },{
+                "name": "$25",
+                "amount": 2500
+            }
+        ],
+        "dueAmount": "Balance of ${{due_amount}}",
+        "cardNumberTitle": "Card Number",
+        "cvvTitle": "CVV",
+        "expDateTitle": "Expiration Date",
+        "zipTitle": "Zip",
+        "button": "Add credit"
+    },
+    "paymentFailure": {
+        "title": "Payment",
+        "dailogTitle": "Payment failed",
+        "paymentFailed": "Sorry, your payment failed with this error: {{detail}}",
+        "button": "Try again"
+    },
+    "paymentSuccess": {
+        "title": "Payment",
+        "dailogTitle": "Payment successful",
+        "paymentSuccess": "Your payment of ${{detail}} was successfully completed.",
+        "button": "Dashboard"
+    },
+    "reset": {
+        "title": "Reset password",
+        "dailogTitle": "Reset password",
+        "emailTitle": "Email",
+        "button": "Reset"
+    },
+    "resetAction": {
+        "title": "Change password",
+        "dailogTitle": "Change password",
+        "passwordTitle": "Password",
+        "button": "Change password"
+    },
+    "resetSuccess": {
+        "title": "Reset password",
+        "dailogTitle": "Reset password",
+        "dialogDek": "If an account exists with that email address, you will receive an email with instructions shortly.",
+        "button": "Home"
+    },
+    "settings": {
+        "title": "Settings",
+        "dialogTitle": "Settings",
+        "nameTitle": "Name",
+        "usernameTitle": "Username",
+        "passwordTitle": "Password",
+        "emailTitle": "Email",
+        "phoneNumberTitle": "Phone number",
+        "button":"Update"
+    },
+    "transcript": {
+        "title": "Transcript of call with {{detail}}",
+        "dialogTitle": "Transcript",
+        "transcriptPrefix": "Call to"
+    }
+}

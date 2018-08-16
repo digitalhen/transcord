@@ -4,15 +4,15 @@ div.information-section
           div.mdl-grid
             div.information-holder.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-mobile
               div.information-company.mdl-card__supporting-text
-                | © 2018 Transcord, LLC
+                | !{tim(strings.shared.copyright)}
                 br
-                | All rights reserved.
+                | !{tim(strings.shared.rights)}
             div.mdl-layout-spacer
             div.information-holder.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-mobile
               div.information-contact.mdl-card__supporting-text
                 div
                   img(src='img/white/logo.png')
                 br
-                a(href='mailto:support@transcord.app') support@transcord.app
+                a(href='mailto:' + strings.shared.copyright) !{tim(strings.shared.supportEmail)}
                 br
-                a(href='call:415-483-0085') 415-483-0085
+                a(href='callto: ' + strings.shared.supportNumber) !{tim(strings.shared.supportNumber)}

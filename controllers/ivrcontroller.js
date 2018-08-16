@@ -15,6 +15,8 @@ const ffmpeg = require('fluent-ffmpeg');
 const jade = require('jade');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
+const tim = require('tinytim').tim;
+const strings = require('../strings.json');
 
 const PROJECT_ID = config.google_project_id;
 const GOOGLE_KEY = config.google_key;
@@ -552,7 +554,7 @@ function processFiles(user, recordingObject) {
         keyFilename: GOOGLE_KEY
     });
 
-    let bucket = gcs.bucket('transcord.app');
+    let bucket = gcs.bucket(config.google_bucket);
 
     var filename = path.basename(recordingObject.recordingUrl);
     var dest = __basedir + '/downloads/' + filename;

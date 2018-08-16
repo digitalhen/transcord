@@ -7,6 +7,8 @@ const https   = require('https');
 const moment = require('moment');
 const jade = require('jade');
 const emailHelper = require("../helpers/emailHelper");
+const tim = require('tinytim').tim;
+const strings = require('../strings.json');
 
 var dashController = {};
 
@@ -24,6 +26,8 @@ dashController.dashboard = function(req, res) {
 
   res.render('dashboard', {
       user: req.user,
+      tim: tim,
+      strings: strings,
   });
 };
 
@@ -40,6 +44,8 @@ dashController.billing = function(req, res) {
 
   res.render('billing', {
       user: req.user,
+      tim: tim,
+      strings: strings,
   });
 }
 
@@ -54,7 +60,9 @@ dashController.payment = function(req, res) {
         square: {
             application_id: config.square_application_id,
             location: config.square_location
-        }
+        },
+        tim: tim,
+        strings: strings,
     });
 }
 
@@ -143,7 +151,9 @@ dashController.processPayment = function(req, res) {
 
 		res.render('paymentSuccess', {
             'user': user,
-            'payment': paymentObject
+            'payment': paymentObject,
+            tim: tim,
+            strings: strings,
             
 		});
 	}, function(error) {
@@ -154,6 +164,8 @@ dashController.processPayment = function(req, res) {
 		res.render('paymentFailure', {
             'user': user,
             'error': errorsObject.errors[0],
+            tim: tim,
+            strings: strings,
             
 		});
 	});
@@ -178,6 +190,8 @@ dashController.recordings = function(req, res) {
 
   res.render('recordings', {
       user: req.user,
+      tim: tim,
+      strings: strings,
   });
 }
 
@@ -202,7 +216,9 @@ dashController.transcript = function(req, res) {
 
   res.render('transcript', {
       user: req.user,
-      transcription: transcription
+      transcription: transcription,
+      tim: tim,
+      strings: strings,
       //recording: recording
   });
 }

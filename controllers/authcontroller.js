@@ -7,19 +7,26 @@ const moment = require('moment');
 const jade = require('jade');
 const emailHelper = require("../helpers/emailHelper");
 const uuidv1 = require('uuid/v1');
+const tim = require('tinytim').tim;
+const strings = require('../strings.json');
 
 var userController = {};
 
 // Restrict access to root page
 userController.home = function(req, res) {
     res.render('index', {
-        user: req.user
+        user: req.user,
+        tim: tim,
+        strings: strings,
     });
 };
 
 // Go to privacy page
 userController.privacy = function(req, res) {
-    res.render('privacy');
+    res.render('privacy', {          
+        tim: tim,
+        strings: strings,
+    });
 }
 
 // Go to registration page
@@ -42,7 +49,9 @@ userController.register = function(req, res) {
         }
         
         res.render('register', {
-            rate: theRate
+            rate: theRate,            
+            tim: tim,
+            strings: strings,
         });
     })
     .catch(function(err) {
@@ -67,7 +76,9 @@ userController.settings = function(req, res) {
     };
 
     res.render('settings', {
-        user: req.user
+        user: req.user,            
+        tim: tim,
+        strings: strings,
     });
 };
 
@@ -199,7 +210,9 @@ userController.doUpdate = function(req, res) {
                         user: user,
                         status: {
                             message: "Updated"
-                        }
+                        },            
+                        tim: tim,
+                        strings: strings,
                     });
                 }
             })
@@ -280,7 +293,10 @@ userController.validate = function(req, res) {
 
 // Go to login page
 userController.login = function(req, res) {
-    res.render('login');
+    res.render('login', {
+        tim: tim,
+        strings: strings,
+    });
 };
 
 // Post login
@@ -314,7 +330,10 @@ userController.doLogin = function(req, res) {
 // Presents the dialog to the user
 userController.reset = function(req, res) {
     // show the main password reset page
-    res.render('reset');
+    res.render('reset',{
+        tim: tim,
+        strings: strings,
+    });
 }
 
 // Primary function here is to actually send the reset email to the user
@@ -364,7 +383,10 @@ userController.sendReset = function(req, res) {
         console.log(err);
     });
 
-    res.render('resetSuccess');
+    res.render('resetSuccess', {           
+        tim: tim,
+        strings: strings,
+    });
 }
 
 // Handles the incoming link from the users email and processes the reset and collects the new password
@@ -398,7 +420,9 @@ userController.checkReset = function(req, res) {
                 console.log("Allowing reset password for: " + user.email);
             
                 res.render('resetAction', {
-                    'token': token,
+                    'token': token,            
+                    tim: tim,
+                    strings: strings,
                 });
             } else {
                 console.log("Reset was too old for: " + user.email);
@@ -455,6 +479,7 @@ userController.doReset = function(req,res) {
                     if (err) {
                         console.log('There was an error');
                     }
+
             
                     // send email
                     var locals = {'moment': moment, 'user': user};

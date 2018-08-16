@@ -1,5 +1,5 @@
 block variables
-  title Dashboard - Transcord
+  title !{tim(strings.dashboard.title)} - Transcord
 
 extends layout
 
@@ -18,16 +18,16 @@ block content
         div.grouped-cards.mdl-grid(style="padding:0px")
           div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
             div.mdl-card__title
-              h2.mdl-card__title-text Dial-out number
+              h2.mdl-card__title-text !{tim(strings.dashboard.dialOutTitle)}
             div.mdl-card__supporting-text
               p (917) 708-8094
             div.mdl-card__actions.mdl-card--border
               a(href='/dashboard/payment' style="float:left")
-                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Get a dial-in number
+                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.dialOutAction)}
 
           div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
             div.mdl-card__title
-              h2.mdl-card__title-text Balance
+              h2.mdl-card__title-text !{tim(strings.dashboard.balanceTitle)}
             div.mdl-card__supporting-text
               - if(user.balance !== 'undefined' && user.balance) {
               - var balance = (user.balance/100).toFixed(2);
@@ -37,7 +37,7 @@ block content
               - }
             div.mdl-card__actions.mdl-card--border
               a(href='/dashboard/payment' style="float:left")
-                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Top up your account
+                button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.balanceAction)}
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-grid.table-grid
@@ -45,7 +45,7 @@ block content
           - user.recordings.forEach(function(recording) {
             div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col
               div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-                h2.mdl-card__title-text Call to !{recording.numberCalledFormatted}
+                h2.mdl-card__title-text !{tim(strings.dashboard.transcriptPrefix)} !{recording.numberCalledFormatted}
               div.mdl-card__supporting-text
                 button.recording-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored(id='button-' + i)
                   i.material-icons.play(id='button-text-' + i) play_arrow
@@ -59,7 +59,7 @@ block content
                       div(id="progress-" + i class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
               div.mdl-card__actions.mdl-card--border
                 a(href='/dashboard/transcript/' + recording.recordingSid style="float:left")
-                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Transcript
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.transcriptButton)}
                 div(style="float:right")
                     a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                       button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary

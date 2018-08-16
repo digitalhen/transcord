@@ -3,11 +3,11 @@ html
   head
     script(src='https://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
 
-    - var title = title || "AI Call Recording and Transcription - Transcord"
+    - var title = title || tim(strings.shared.title) + " - Transcord"
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
-    meta(name="Description" content="Transcord allows you to automatically record and transcribe your incoming and outgoing calls instantly, using artificial intelligence. Edit the text and listen to the audio simultaneously. Perfect for journalists, lawyers, and anyone else that needs to track their calls.")
-    meta(name="Keywords" content="ai, artificial intelligence, transcribe, transcript, calls, records, interview, recording, automatic,")
+    meta(name="Description" content=tim(strings.shared.description))
+    meta(name="Keywords" content=tim(strings.shared.keywords))
 
     meta(name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0")
     block variables
@@ -61,13 +61,13 @@ html
               input#search-field.mdl-textfield__input(type="text")
           nav.mdl-navigation
               a.mdl-layout--large-screen-only(href='/#about')
-                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white About
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.aboutButton)}
             if (user)
               a.mdl-layout--large-screen-only(href='/dashboard')
-                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Dashboard
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.dashboardButton)}
             if (!user)
               a(href='/login')
-                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Login
+                button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.loginButton)}
 
             if(user)
               button#top-right-menu.mdl-button.mdl-js-button.mdl-button--icon
@@ -75,13 +75,13 @@ html
 
               ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(data-mdl-for="top-right-menu")
                 a.mdl-layout--small-screen-only(href="/dashboard")
-                  li.mdl-menu__item Dashboard
+                  li.mdl-menu__item !{tim(strings.shared.dashboardButton)}
                 a(href="/dashboard/billing")
-                  li.mdl-menu__item Billing
+                  li.mdl-menu__item !{tim(strings.shared.billingButton)}
                 a(href="/settings")
-                  li.mdl-menu__item Settings
+                  li.mdl-menu__item !{tim(strings.shared.settingsButton)}
                 a(href='/logout')
-                  li.mdl-menu__item Log out
+                  li.mdl-menu__item !{tim(strings.shared.logoutButton)}
 
       div.mdl-layout__content
         div.mdl-layout.mdl-js-layout
