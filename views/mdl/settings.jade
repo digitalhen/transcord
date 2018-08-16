@@ -22,7 +22,8 @@ block content
 
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
                   label.mdl-textfield__label.mdl-color-text--grey(for='username') Username
-                  input#username.mdl-textfield__input(type='text' name='username' value=user.username disabled)
+                  input#username.mdl-textfield__input(type='text' name='username' value=user.username style="display:none")
+                  input#username.mdl-textfield__input(type='text' name='username' disabled value=user.username)
                   span.error.mdl-textfield__error(for="username") Error message goes heres
 
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
