@@ -380,14 +380,14 @@ function runTranscription(user, recordingObject) {
   const left = {
     config: config,
     audio: {
-      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-left.wav'
+      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
     }
   };
 
   const right = {
     config: config,
     audio: {
-      uri: 'gs://transcord.app/' + recordingObject.recordingSid + '-right.wav'
+      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
     }
   };
 
