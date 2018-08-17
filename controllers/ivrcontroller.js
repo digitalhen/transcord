@@ -17,9 +17,6 @@ const emailHelper = require('../helpers/emailHelper');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 
-const PROJECT_ID = config.google_project_id;
-const GOOGLE_KEY = config.google_key;
-
 var ivrController = {};
 
 
@@ -369,7 +366,7 @@ function runTranscription(user, recordingObject) {
   const languageCode = 'en-US';
   const enableWordTimeOffsets = true;
 
-  const config = {
+  const transcriptionconfig = {
     encoding: encoding,
     sampleRateHertz: sampleRateHertz,
     languageCode: languageCode,
@@ -385,23 +382,22 @@ function runTranscription(user, recordingObject) {
   }; */
 
   const left = {
-    config: config,
+    config: transcriptionconfig,
     audio: {
       uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
     }
   };
 
   const right = {
-    config: config,
+    config: transcriptionconfig,
     audio: {
       uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
     }
   };
 
-  const client = new speech.SpeechClient({projectId: PROJECT_ID,
-        keyFilename: GOOGLE_KEY});
-
-  
+  const client = new speech.SpeechClient({projectId: config.google_project_id,
+        keyFilename: config.google_key});
+        
     // make async call to google transcribe and then wait to hear back
   client
     .longRunningRecognize(left)
@@ -557,8 +553,8 @@ function processFiles(user, recordingObject) {
 
 
     var gcs = storage({
-        projectId: PROJECT_ID,
-        keyFilename: GOOGLE_KEY
+        projectId: config.google_project_id,
+        keyFilename: config.google_bucket
     });
 
     let bucket = gcs.bucket(config.google_bucket);
