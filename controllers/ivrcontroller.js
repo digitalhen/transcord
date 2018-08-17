@@ -367,7 +367,7 @@ function runTranscription(user, recordingObject) {
   const encoding = 'LINEAR16';//'Eencoding of the audio file, e.g. LINEAR16';
   const sampleRateHertz = 8000;
   const languageCode = 'en-US';
-  const enableWordTimeOffsets = true,
+  const enableWordTimeOffsets = true;
 
   const config = {
     encoding: encoding,
