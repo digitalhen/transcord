@@ -363,9 +363,17 @@ function runTranscription(user, recordingObject) {
     right: false
   }
 
+  const gcsUri = 'gs://transcord/RE5a4bf350a5277bca3af23bb7d42a3ddb-main.wav';
+  const encoding = 'LINEAR16';//'Eencoding of the audio file, e.g. LINEAR16';
+  const sampleRateHertz = 8000;
+  const languageCode = 'en-US';
+  const enableWordTimeOffsets = true,
+
   const config = {
-    enableWordTimeOffsets: true,
-    languageCode: 'en-US',  
+    encoding: encoding,
+    sampleRateHertz: sampleRateHertz,
+    languageCode: languageCode,
+    enableWordTimeOffsets: enableWordTimeOffsets,
   };
 
   /*
@@ -379,14 +387,14 @@ function runTranscription(user, recordingObject) {
   const left = {
     config: config,
     audio: {
-      content: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
+      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
     }
   };
 
   const right = {
     config: config,
     audio: {
-      content: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
+      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
     }
   };
 
