@@ -8,7 +8,7 @@ const ivr = require('../controllers/ivrcontroller');
 const router = new Router();
 
 router.get('*', (req, res) => {
-  res.redirect('/');
+  res.redirect('https://transcord.app/');
 });
 
 // POST: /ivr/welcome
