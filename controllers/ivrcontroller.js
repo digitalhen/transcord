@@ -559,11 +559,11 @@ function processFiles(user, recordingObject) {
     var dest = __basedir + '/downloads/' + filename;
     var stream = fs.createWriteStream(dest + '.wav');
 
-    request
-        .get(recordingObject.recordingUrl)
-        .on('response', function(res) {
+    var r = request(recordingObject.recordingUrl);
+    r.pause();
+    r.on('response', function(res) {
             if(res.statusCode=="200" && res.headers['content-type'] == 'audio/x-wav') {
-                res.pipe(stream).on('close', function() {
+                r.pipe(stream).on('close', function() {
                     // download the dual audio
                     // TODO: swap the sides of the audio, left and right are on the wrong side
       
@@ -641,6 +641,8 @@ function processFiles(user, recordingObject) {
                         })
                         .save(dest + '-left.wav');
               });
+
+                r.resume();
 
                 console.log("File successfully written to: " + dest);
             } else {
