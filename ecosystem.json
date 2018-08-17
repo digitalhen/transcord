@@ -1,6 +1,6 @@
 {
   "apps" : [{
-    "name"        : "Transcord.app Development",
+    "name"        : "transcord-dev",
     "script"      : "app.js",
     "args"        : [],
     "watch"       : true,
@@ -11,7 +11,7 @@
       "NODE_ENV": "development"
     }
   },{
-    "name"        : "Transcord.app Production",
+    "name"        : "transcord-production",
     "script"      : "app.js",
     "args"        : [],
     "watch"       : true,
@@ -20,6 +20,16 @@
     "cwd"         : "/home/henry/code/callhandler",
     "env": {
       "NODE_ENV": "production"
+    },{
+    "name"        : "transcord-production-ivr",
+    "script"      : "app.js",
+    "args"        : [],
+    "watch"       : true,
+    "node_args"   : "",
+    "merge_logs"  : true,
+    "cwd"         : "/home/henry/code/callhandler",
+    "env": {
+      "NODE_ENV": "ivr"
     }
   }]
 }
