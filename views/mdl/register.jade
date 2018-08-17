@@ -12,7 +12,10 @@ block content
             div.mdl-card__title.mdl-color--primary.mdl-color-text--white
               h2.mdl-card__title-text !{tim(strings.register.dialogTitle)}
             div.mdl-card__supporting-text.mdl-grid
-              p.mdl-color-text--primary !{rate.description}
+              
+              if(rate.description)
+                div.rate-offer-container
+                  p.mdl-color-text--primary !{rate.description}
 
               form#form-register(role='form' method='post' action='/register')
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col

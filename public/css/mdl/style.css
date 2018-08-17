@@ -107,6 +107,17 @@ a img {
   width: 100%;
 }
 
+.rate-offer-container {
+  background-color: #fbfbfb;
+  border: 1px solid black;
+  padding: 2px 6px;
+}
+
+.rate-offer-container p {
+  color: black !important;
+  margin: 0px;
+}
+
 .mdl-textfield--expandable {
   width: auto;
 }
