@@ -7,7 +7,6 @@ const User = require('../models/user');
 const Rate = require('../models/rate');
 const storage = require('@google-cloud/storage');
 const speech = require('@google-cloud/speech');
-const https   = require('https');
 const request = require('request');
 const fs      = require('fs');
 const path    = require('path');
@@ -560,88 +559,96 @@ function processFiles(user, recordingObject) {
     var dest = __basedir + '/downloads/' + filename;
     var stream = fs.createWriteStream(dest + '.wav');
 
-    https.get(recordingObject.recordingUrl, function(res) {
-        res.pipe(stream).on('close', function() {
-              // download the dual audio
-              // TODO: swap the sides of the audio, left and right are on the wrong side
-
-              var main = ffmpeg(dest + '.wav')
-                  .inputFormat('wav')
-                  .audioChannels(1)
-                  .audioBitrate('64k')
-                  .on('end', function() {
-                      bucket.upload(dest + '-main.wav', (err, file) => {
-                          fs.unlink(dest + '.wav', (err, file) => {});
-                          fs.unlink(dest + '-main.wav', (err, file) => {
-                            bucket.file(filename + '-main.wav').getSignedUrl({
-                                action: 'read',
-                                expires: '03-09-2491'
-                            }).then(signedUrls => {
-                                recordingObject.recordingUrl = signedUrls[0];
-
-                                status.main = true;
-
-                                if(status.main && status.left && status.right)
-                                  runTranscription(user, recordingObject);
+    request
+        .get(recordingObject.recordingUrl)
+        .on('response', function(res) {
+            if(res.statusCode=="200" && res.headers['content-type'] == 'audio/x-wav') {
+                res.pipe(stream).on('close', function() {
+                    // download the dual audio
+                    // TODO: swap the sides of the audio, left and right are on the wrong side
+      
+                    var main = ffmpeg(dest + '.wav')
+                        .inputFormat('wav')
+                        .audioChannels(1)
+                        .audioBitrate('64k')
+                        .on('end', function() {
+                            bucket.upload(dest + '-main.wav', (err, file) => {
+                                fs.unlink(dest + '.wav', (err, file) => {});
+                                fs.unlink(dest + '-main.wav', (err, file) => {
+                                  bucket.file(filename + '-main.wav').getSignedUrl({
+                                      action: 'read',
+                                      expires: '03-09-2491'
+                                  }).then(signedUrls => {
+                                      recordingObject.recordingUrl = signedUrls[0];
+      
+                                      status.main = true;
+      
+                                      if(status.main && status.left && status.right)
+                                        runTranscription(user, recordingObject);
+                                  });
+                                });
                             });
-                          });
-                      });
-                  })
-                  .save(dest + '-main.wav');
-
-              // download the audio for the person who received the call
-              var right = ffmpeg(dest + '.wav')
-                  .inputFormat('wav')
-                  .audioChannels(1)
-                  .audioBitrate('64k')
-                  .outputOptions('-map_channel 0.0.1')
-                  .on('end', function() {
-                      bucket.upload(dest + '-right.wav', (err, file) => {
-                          fs.unlink(dest + '-right.wav', (err, file) => {
-                            bucket.file(filename + '-right.wav').getSignedUrl({
-                                action: 'read',
-                                expires: '03-09-2491'
-                            }).then(signedUrls => {
-                                recordingObject.recordingUrlRight = signedUrls[0];
-
-                                status.right = true;
-
-                                if(status.main && status.left && status.right)
-                                  runTranscription(user, recordingObject);
+                        })
+                        .save(dest + '-main.wav');
+      
+                    // download the audio for the person who received the call
+                    var right = ffmpeg(dest + '.wav')
+                        .inputFormat('wav')
+                        .audioChannels(1)
+                        .audioBitrate('64k')
+                        .outputOptions('-map_channel 0.0.1')
+                        .on('end', function() {
+                            bucket.upload(dest + '-right.wav', (err, file) => {
+                                fs.unlink(dest + '-right.wav', (err, file) => {
+                                  bucket.file(filename + '-right.wav').getSignedUrl({
+                                      action: 'read',
+                                      expires: '03-09-2491'
+                                  }).then(signedUrls => {
+                                      recordingObject.recordingUrlRight = signedUrls[0];
+      
+                                      status.right = true;
+      
+                                      if(status.main && status.left && status.right)
+                                        runTranscription(user, recordingObject);
+                                  });
+                                });
                             });
-                          });
-                      });
-                  })
-                  .save(dest + '-right.wav');
+                        })
+                        .save(dest + '-right.wav');
+      
+                    // download the audio for the person that made the call
+                    var left = ffmpeg(dest + '.wav')
+                        .inputFormat('wav')
+                        .audioChannels(1)
+                        .audioBitrate('64k')
+                        .outputOptions('-map_channel 0.0.0')
+                        .on('end', function() {
+                            bucket.upload(dest + '-left.wav', (err, file) => {
+                                fs.unlink(dest + '-left.wav', (err, file) => {
+                                    bucket.file(filename + '-left.wav').getSignedUrl({
+                                        action: 'read',
+                                        expires: '03-09-2491'
+                                    }).then(signedUrls => {
+                                        recordingObject.recordingUrlLeft = signedUrls[0];
+      
+                                        status.left = true;
+      
+                                        if(status.main && status.left && status.right)
+                                          runTranscription(user, recordingObject);
+                                    });
+                                });
+                            });
+                        })
+                        .save(dest + '-left.wav');
+              });
 
-              // download the audio for the person that made the call
-              var left = ffmpeg(dest + '.wav')
-                  .inputFormat('wav')
-                  .audioChannels(1)
-                  .audioBitrate('64k')
-                  .outputOptions('-map_channel 0.0.0')
-                  .on('end', function() {
-                      bucket.upload(dest + '-left.wav', (err, file) => {
-                          fs.unlink(dest + '-left.wav', (err, file) => {
-                              bucket.file(filename + '-left.wav').getSignedUrl({
-                                  action: 'read',
-                                  expires: '03-09-2491'
-                              }).then(signedUrls => {
-                                  recordingObject.recordingUrlLeft = signedUrls[0];
-
-                                  status.left = true;
-
-                                  if(status.main && status.left && status.right)
-                                    runTranscription(user, recordingObject);
-                              });
-                          });
-                      });
-                  })
-                  .save(dest + '-left.wav');
+                console.log("File successfully written to: " + dest);
+            } else {
+                console.log("There was an error, received status code: " + res.statusCode + " and content-type: " + res.headers['content-type'] + " for: " + recordingObject.recordingUrl);
+            }
         });
-    }).on('error', function(e) {
-        response.send("error connecting" + e.message);
-    });
+
+    
 }
 
 function generateEmail(user, recording) {
