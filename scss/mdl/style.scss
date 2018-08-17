@@ -131,6 +131,8 @@ a img {
 }
 
 .table-grid {
+  width: calc(100% - 16px);
+  
   td, th {
     width: 100%;
     white-space: nowrap;
