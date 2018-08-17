@@ -1,18 +1,17 @@
 {
-  "name": "news-recorder",
+  "name": "transcord",
   "version": "1.0.0",
   "scripts": {
     "build-css": "node-sass --include-path scss scss/main.scss   public/css/main.css"
   },
-  "description": "Create an IVR phone tree with Node and Twilio.",
+  "description": "Record and transcribe your calls automatically.",
   "author": {
-    "name": "Omar Ahmed",
-    "email": "neb.trx@gmail.com"
+    "name": "Henry Williams",
+    "email": "henry@transcord.app"
   },
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TwilioDevEd/ivr-phone-tree-node"
+    "url": "https://bitbucket.org/newsrecord/callhandler"
   },
   "keywords": [
     "node",
@@ -62,5 +61,9 @@
     "eslint-config-google": "^0.7.1",
     "jest": "^19.0.2",
     "nodemon": "^1.18.3"
+  },
+  "scripts": {
+	"start": "NODE_ENV=production node app.js",
+	"dev": "NODE_ENV=development node app.js"
   }
 }
