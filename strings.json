@@ -1,10 +1,11 @@
 {
     "shared": {
-        "title": "AI Call Recording and Transcription",
+        "title": "Automatic Call Recording and Transcription",
         "description": "Transcord allows you to automatically record and transcribe your incoming and outgoing calls instantly, using artificial intelligence. Edit the text and listen to the audio simultaneously. Perfect for journalists, lawyers, and anyone else that needs to track their calls.",
         "keywords": "ai, artificial intelligence, transcribe, transcript, calls, records, interview, recording, automatic,",
         "aboutButton": "About",
         "loginButton": "Login",
+        "pricingButton": "Pricing",
         "dashboardButton": "Dashboard",
         "billingButton": "Billing",
         "settingsButton": "Settings",
@@ -108,31 +109,31 @@
     },
     "paymentFailure": {
         "title": "Payment",
-        "dailogTitle": "Payment failed",
+        "dialogTitle": "Payment failed",
         "paymentFailed": "Sorry, your payment failed with this error: {{detail}}",
         "button": "Try again"
     },
     "paymentSuccess": {
         "title": "Payment",
-        "dailogTitle": "Payment successful",
+        "dialogTitle": "Payment successful",
         "paymentSuccess": "Your payment of ${{detail}} was successfully completed.",
         "button": "Dashboard"
     },
     "reset": {
         "title": "Reset password",
-        "dailogTitle": "Reset password",
+        "dialogTitle": "Reset password",
         "emailTitle": "Email",
         "button": "Reset"
     },
     "resetAction": {
         "title": "Change password",
-        "dailogTitle": "Change password",
+        "dialogTitle": "Change password",
         "passwordTitle": "Password",
         "button": "Change password"
     },
     "resetSuccess": {
         "title": "Reset password",
-        "dailogTitle": "Reset password",
+        "dialogTitle": "Reset password",
         "dialogDek": "If an account exists with that email address, you will receive an email with instructions shortly.",
         "button": "Home"
     },

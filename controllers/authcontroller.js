@@ -205,13 +205,10 @@ userController.doUpdate = function(req, res) {
                         });
                     }
 
-
                     res.render('settings', {
                         user: user,
-                        status: {
-                            message: "Updated"
-                        },            
                         tim: tim,
+                        status: 'Updated',
                         strings: strings,
                     });
                 }
@@ -293,8 +290,12 @@ userController.validate = function(req, res) {
 
 // Go to login page
 userController.login = function(req, res) {
+    var status = req.session['status'];
+    req.session['status'] = null; // wipe out the status now we've seen it
+
     res.render('login', {
         tim: tim,
+        status: status,
         strings: strings,
     });
 };
@@ -306,6 +307,7 @@ userController.doLogin = function(req, res) {
             return console.log(err);
         }
         if (!user) {
+            req.session['status'] = 'Username or password not recognized.';
             return res.redirect('/login');
         }
         req.logIn(user, function(err) {
@@ -329,11 +331,19 @@ userController.doLogin = function(req, res) {
 
 // Presents the dialog to the user
 userController.reset = function(req, res) {
+
+    console.log("status: " + req.session['status']);
+    var status = req.session['status'];
+    req.session['status'] = null; // wipe out the status now we've seen it
+
     // show the main password reset page
     res.render('reset',{
         tim: tim,
+        status: status,
         strings: strings,
     });
+
+    
 }
 
 // Primary function here is to actually send the reset email to the user
@@ -385,6 +395,7 @@ userController.sendReset = function(req, res) {
 
     res.render('resetSuccess', {           
         tim: tim,
+        status: "Password reset successful",
         strings: strings,
     });
 }
@@ -410,6 +421,8 @@ userController.checkReset = function(req, res) {
     .then(function(user) {
         if (user == null) {
             console.log("Password reset page loaded for invalid token: " + token);
+
+            req.session['status'] = 'This password reset link was not found.';
             res.redirect('/');
             // No match found so do nothing
         } else {
@@ -426,6 +439,7 @@ userController.checkReset = function(req, res) {
                 });
             } else {
                 console.log("Reset was too old for: " + user.email);
+                req.session['status'] = "This password reset link has expired.";
                 res.redirect('/reset');
             }
 
@@ -491,12 +505,14 @@ userController.doReset = function(req,res) {
                     emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
 
                     console.log("Password reset for: " + user.email);
+                    req.session['status'] = "Password reset.";
                     res.redirect('/login'); // TODO: should sent a note to the screen
 
                 });
 
 
             } else {
+                req.session['status'] = "Please provide a password.";
                 res.redirect('/reset/token/' + token); // let's try again // TODO: this should have an error message?
             }
         }

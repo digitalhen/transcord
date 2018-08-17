@@ -21,7 +21,7 @@
     "cwd"         : "/home/henry/code/callhandler",
     "env": {
       "NODE_ENV": "production"
-    },
+    }
  },{
     "name"        : "transcord-production-ivr",
     "script"      : "app.js",
