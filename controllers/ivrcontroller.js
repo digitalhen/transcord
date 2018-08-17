@@ -365,7 +365,7 @@ function runTranscription(user, recordingObject) {
 
   const config = {
     enableWordTimeOffsets: true,
-    languageCode: 'en-US'
+    languageCode: 'en-US',  
   };
 
   /*
@@ -379,14 +379,14 @@ function runTranscription(user, recordingObject) {
   const left = {
     config: config,
     audio: {
-      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
+      content: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-left.wav'
     }
   };
 
   const right = {
     config: config,
     audio: {
-      uri: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
+      content: 'gs://' + config.google_bucket + '/' + recordingObject.recordingSid + '-right.wav'
     }
   };
 
@@ -570,7 +570,8 @@ function processFiles(user, recordingObject) {
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
                         .audioChannels(1)
-                        .audioBitrate('64k')
+                        .audioBitrate('16k')
+                        .audioCodec('pcm_s16le')
                         .on('end', function() {
                             bucket.upload(dest + '-main.wav', (err, file) => {
                                 fs.unlink(dest + '.wav', (err, file) => {});
@@ -595,7 +596,8 @@ function processFiles(user, recordingObject) {
                     var right = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
                         .audioChannels(1)
-                        .audioBitrate('64k')
+                        .audioBitrate('16k')
+                        .audioCodec('pcm_s16le')
                         .outputOptions('-map_channel 0.0.1')
                         .on('end', function() {
                             bucket.upload(dest + '-right.wav', (err, file) => {
@@ -620,7 +622,8 @@ function processFiles(user, recordingObject) {
                     var left = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
                         .audioChannels(1)
-                        .audioBitrate('64k')
+                        .audioBitrate('16k')
+                        .audioCodec('pcm_s16le')
                         .outputOptions('-map_channel 0.0.0')
                         .on('end', function() {
                             bucket.upload(dest + '-left.wav', (err, file) => {
