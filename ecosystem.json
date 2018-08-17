@@ -10,7 +10,8 @@
     "env": {
       "NODE_ENV": "development"
     }
-  },{
+  },
+  {
     "name"        : "transcord-production",
     "script"      : "app.js",
     "args"        : [],
@@ -20,7 +21,8 @@
     "cwd"         : "/home/henry/code/callhandler",
     "env": {
       "NODE_ENV": "production"
-    },{
+    },
+ },{
     "name"        : "transcord-production-ivr",
     "script"      : "app.js",
     "args"        : [],
@@ -31,5 +33,6 @@
     "env": {
       "NODE_ENV": "ivr"
     }
+
   }]
 }
