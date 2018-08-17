@@ -397,7 +397,7 @@ function runTranscription(user, recordingObject) {
 
   const client = new speech.SpeechClient({projectId: config.google_project_id,
         keyFilename: config.google_key});
-        
+
     // make async call to google transcribe and then wait to hear back
   client
     .longRunningRecognize(left)
@@ -554,7 +554,7 @@ function processFiles(user, recordingObject) {
 
     var gcs = storage({
         projectId: config.google_project_id,
-        keyFilename: config.google_bucket
+        keyFilename: config.google_key
     });
 
     let bucket = gcs.bucket(config.google_bucket);
