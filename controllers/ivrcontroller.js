@@ -11,7 +11,7 @@ const request = require('request');
 const fs      = require('fs');
 const path    = require('path');
 const ffmpeg = require('fluent-ffmpeg');
-const jade = require('jade');
+const pug = require('pug');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
 const tim = require('tinytim').tim;
@@ -668,7 +668,7 @@ function generateEmail(user, recording) {
 
     // loop through transcription object and build up the email
     var plaintextTranscript = '';
-    var htmlTranscript = jade.renderFile('views/email/transcript.jade', locals);
+    var htmlTranscript = pug.renderFile('views/email/transcript.pug', locals);
 
     // build plain text
     transcription.forEach(function(line) {

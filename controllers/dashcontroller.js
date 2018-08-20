@@ -5,15 +5,16 @@ var User = require("../models/user");
 var squareConnect = require('square-connect');
 const https   = require('https');
 const moment = require('moment');
-const jade = require('jade');
+const pug = require('pug');
 const emailHelper = require("../helpers/emailHelper");
+const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 
 var dashController = {};
 
 // Go to registration page
-dashController.dashboard = function(req, res) {
+dashController.calls = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
       return res.redirect('/login');
@@ -24,8 +25,13 @@ dashController.dashboard = function(req, res) {
       return res.redirect('/dashboard/payment');
   }
 
+  // see if we have a starting index, try to parse, and in both cases set it to 0
+  var startingIndex = typeof req.params.index !== 'undefined' ? req.params.index : 0
+  startingIndex = numberHelper.tryParseInt(startingIndex, 0);
+
   res.render('dashboard', {
       user: req.user,
+      startingIndex: startingIndex,
       tim: tim,
       strings: strings,
   });
@@ -142,7 +148,7 @@ dashController.processPayment = function(req, res) {
         var locals = {'moment': moment, 'user': user, 'payment': paymentObject};
 
         var plaintextEmail = "Hello " + user.name;
-        var htmlEmail = jade.renderFile('views/email/payment.jade', locals);
+        var htmlEmail = pug.renderFile('views/email/payment.pug', locals);
         var subject = "Your payment to Transcord!";
 
         emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);

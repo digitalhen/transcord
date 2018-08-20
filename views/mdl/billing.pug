@@ -1,0 +1,37 @@
+extends layout
+
+block variables
+  title !{tim(strings.billing.title)} - Transcord
+
+block content
+  main.mdl-layout__content.bg
+    div.mdl-grid(style="max-width:900px")
+      include sidebar
+
+      div.mdl-card.mdl-cell.mdl-cell--8-col
+        div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+          h2.mdl-card__title-text !{tim(strings.billing.dialogTitle)}
+        div.mdl-grid
+            table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp.full-width
+                thead
+                    tr
+                        th.full-width(style="text-align:left") 
+                          div.cell !{tim(strings.billing.tableDateTitle)}
+                        th.full-width 
+                          div.cell !{tim(strings.billing.tableAmountTitle)}
+                        th.full-width 
+                          div.cell.collapsible !{tim(strings.billing.tablePaymentTitle)}
+                tbody 
+                    - user.payments.forEach(function(payment) { 
+                        tr
+                            td(style="text-align:left") 
+                              div.cell !{moment(payment.date).format(strings.shared.dateFormat)}
+                            td
+                              div.cell $!{(payment.amount/100).toFixed(2)}
+                            td
+                              div.cell.collapsible !{payment.cardBrand} *!{payment.cardLast4}
+                    - });
+            
+          
+
+block js

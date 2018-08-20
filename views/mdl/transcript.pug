@@ -1,0 +1,51 @@
+extends layout
+
+block variables
+  title !{tim(strings.transcript.title, {detail: user.recordings[0].numberCalledFormatted })} - Transcord
+
+block content
+  main.mdl-layout__content.bg
+    div.mdl-grid(style="max-width:900px")
+      div.transcript-control-card.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
+        div.mdl-card__title
+          h2.mdl-card__title-text Transcript
+        div.mdl-card__supporting-text
+          p This is some text, where we could show the sound file & tags
+          div.waveform(id='waveform-0' data-id='0' data-recordingUrl=user.recordings[0].recordingUrl)
+            div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
+
+
+
+
+          button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
+            i#button-text-0.material-icons.play play_arrow
+        div.mdl-card__actions.mdl-card--border
+          div(style="float:left")
+            a(href='/dashboard/downloadRecording/' + user.recordings[0].recordingSid)
+              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.material-icons save_alt
+            a(href='/dashboard/deleteRecording/' + user.recordings[0].recordingSid)
+              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.material-icons delete
+
+      div.mdl-card.mdl-cell.mdl-cell--8-col
+        div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+          h2.mdl-card__title-text !{tim(strings.transcript.transcriptPrefix)} !{user.recordings[0].numberCalledFormatted}
+
+        - transcription.forEach(function(line) {
+          div.mdl-grid.table-grid.transcript-grid
+              div(class=(line.side === 'right' ? 'mdl-layout-spacer' : '' ))
+              div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=line.side style="border-radius:5px")
+                div.mdl-card__supporting-text
+                  div.messageContainer(data-time=line.startTime data-length=user.recordings[0].length)
+                    h6.transcript-title(style="font-size:12px") #{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
+                    p.transcript-text #{line.transcript}
+                    p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
+
+
+        - })
+
+block js
+  script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+  script(src="/js/recordings.js")
+

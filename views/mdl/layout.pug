@@ -1,0 +1,105 @@
+doctype html
+html
+	head
+		script(src='https://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
+
+		- var title = title || tim(strings.shared.title) + " - Transcord"
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="Description" content=tim(strings.shared.description))
+		meta(name="Keywords" content=tim(strings.shared.keywords))
+
+		meta(name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0")
+		block variables
+		title #{title}
+
+		<!-- Add to homescreen for Chrome on Android -->
+		meta(name="mobile-web-app-capable" content="yes")
+		//link(rel="icon" sizes="192x192" href="/img/white/android-desktop.png")
+
+		<!-- Add to homescreen for Safari on iOS -->
+		meta(name="apple-mobile-web-app-capable" content="yes")
+		meta(name="apple-mobile-web-app-status-bar-style" content="black")
+		meta(name="apple-mobile-web-app-title" content="Material Design Lite")
+		//link(rel="apple-touch-icon-precomposed" href="/img/white/ios-desktop.png")
+
+		<!-- Stop highlighting of phone numbers -->
+		meta(name="format-detection" content="telephone=no")
+
+		<!-- Google verification -->
+		meta(name="google-site-verification" content="0qB8UXGBn2DhUewIoLRG7XSiehxZn1nr7Az7U7KJ4sI")
+
+		<!-- Tile icon for Win8 (144x144 + tile color) -->
+		meta(name="msapplication-TileImage" content="/img/touch/ms-touch-icon-144x144-precomposed.png")
+		meta(name="msapplication-TileColor" content="#3372DF")
+
+		link(rel="shortcut icon" href="/img/favicon.ico")
+
+		<!-- CSS -->
+		link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en")
+		link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
+		<!-- link(rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css") -->
+		link(rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-blue.min.css")
+		<!-- link(rel="stylesheet" href="/css/mdl/mdlextra.css") -->
+		link(rel="stylesheet" href="/css/mdl/style.css")
+		link(rel="stylesheet" href="https://cdn.plyr.io/3.4.3/plyr.css")
+
+	body
+		div#overlay
+			img(src='/img/white/icon@2x.png')
+		div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+			div#topmenu.mdl-layout__header.mdl-layout__header--waterfall.is-casting-shadow
+				div.mdl-layout__header-row(style='z-index:9999')
+					span.mdl-layout-title
+						a(href="/")
+							img.mdl-layout--large-screen-only(src='/img/white/logo.png' style='max-height:35px')
+							img.mdl-layout--small-screen-only(src='/img/white/icon@2x.png' style='max-height:35px')
+					div.mdl-layout-spacer
+					div.mdl-layout--large-screen-only.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable.mdl-textfield--floating-label.mdl-textfield--align-right.mdl-textfield--full-width
+						label.mdl-button.mdl-js-button.mdl-button--icon(for="search-field")
+							i.material-icons search
+						div.mdl-textfield__expandable-holder
+							input#search-field.mdl-textfield__input(type="text")
+					nav.mdl-navigation
+							a.mdl-layout--large-screen-only(href='/#about')
+								button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.aboutButton)}
+						
+					if (user)
+							a.mdl-layout--large-screen-only(href='/dashboard')
+								button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.dashboardButton)}
+					if (!user)
+							a.mdl-layout--large-screen-only(href='/#pricing')
+								button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.pricingButton)}
+							a(href='/login')
+								button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.shared.loginButton)}
+
+					if(user)
+							button#top-right-menu.mdl-button.mdl-js-button.mdl-button--icon
+										i.material-icons more_vert
+
+							ul.mdl-menu.mdl-menu--bottom-right.mdl-js-menu.mdl-js-ripple-effect(data-mdl-for="top-right-menu")
+								a.mdl-layout--small-screen-only(href="/dashboard")
+									li.mdl-menu__item !{tim(strings.shared.dashboardButton)}
+								a(href="/dashboard/billing")
+									li.mdl-menu__item !{tim(strings.shared.billingButton)}
+								a.mdl-layout--small-screen-only(href="/dashboard/payment")
+									li.mdl-menu__item !{tim(strings.shared.topupButton)}
+								a(href="/settings")
+									li.mdl-menu__item !{tim(strings.shared.settingsButton)}
+								a(href='/logout')
+									li.mdl-menu__item !{tim(strings.shared.logoutButton)}
+
+			div.mdl-layout__content
+				div.mdl-layout.mdl-js-layout
+					block content
+
+
+		script(src="https://code.getmdl.io/1.3.0/material.min.js")
+		script(src='/js/libs/jquery.mask.js')
+		script(src='/js/libs/jquery.validate.min.js')
+		script(src='/js/libs/additional-methods.js')
+		script(src='/js/libs/jquery.tablesorter.js')
+
+		block js
+
+		script(src="/js/app.js")

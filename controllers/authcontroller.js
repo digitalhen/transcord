@@ -4,7 +4,7 @@ var passport = require("passport");
 var User = require("../models/user");
 var Rate = require("../models/rate");
 const moment = require('moment');
-const jade = require('jade');
+const pug = require('pug');
 const emailHelper = require("../helpers/emailHelper");
 const uuidv1 = require('uuid/v1');
 const tim = require('tinytim').tim;
@@ -129,7 +129,7 @@ userController.doRegister = function(req, res) {
                 var locals = {'moment': moment, 'user': user};
 
                 var plaintextEmail = "Hello " + user.name;
-                var htmlEmail = jade.renderFile('views/email/welcome.jade', locals);
+                var htmlEmail = pug.renderFile('views/email/welcome.pug', locals);
                 var subject = "Welcome to Transcord!";
 
                 emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
@@ -382,7 +382,7 @@ userController.sendReset = function(req, res) {
                 var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset};
 
                 var plaintextEmail = "Hello " + user.name;
-                var htmlEmail = jade.renderFile('views/email/reset.jade', locals);
+                var htmlEmail = pug.renderFile('views/email/reset.pug', locals);
                 var subject = "Password reset";
 
                 emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
@@ -499,7 +499,7 @@ userController.doReset = function(req,res) {
                     var locals = {'moment': moment, 'user': user};
 
                     var plaintextEmail = "Hello " + user.name;
-                    var htmlEmail = jade.renderFile('views/email/resetDone.jade', locals);
+                    var htmlEmail = pug.renderFile('views/email/resetDone.pug', locals);
                     var subject = "Password changed";
 
                     emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);

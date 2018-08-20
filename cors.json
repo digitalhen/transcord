@@ -1,5 +1,5 @@
 [{
-	"origin": ["https://transcord.app", "https://fiddle.jshell.net", "http://localhost:8080", "http://localhost:8081", "https://www.transcord.app", "https://dev.transcord.app", "http://192.168.2.37:8080"],
+	"origin": ["https://transcord.app", "https://fiddle.jshell.net", "http://localhost:8080", "http://localhost:8081", "https://www.transcord.app", "https://dev.transcord.app", "http://192.168.2.37:8080", "http://192.168.2.37:8081"],
 	"responseHeader": ["Content-Type"],
 	"method": ["GET"],
 	"maxAgeSeconds": 3600

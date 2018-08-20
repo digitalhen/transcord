@@ -1,0 +1,71 @@
+extends layout
+
+block variables
+  title !{tim(strings.payment.title)} - Transcord
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text !{tim(strings.payment.dialogTitle)}
+            div.mdl-card__supporting-text.mdl-grid
+              - if(user.balance<0) {
+              p !{tim(strings.payment.balanceDue, {due_amount: ((user.balance/100)*-1).toFixed(2) })}
+              - }
+              form#form-payment(novalidate role='form' method='post' data-square_application_id=square.application_id data-square_location=square.location action='/dashboard/payment')
+                div.mdl-cell.mdl-cell--12-col
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-1')
+                    input#option-1.mdl-radio__button(type='radio' disabled=user.balance<-strings.payment.amounts[0].amount ? "disabled" : false name="amount" value=strings.payment.amounts[0].amount checked=user.balance<0 ? false : "checked")
+                    span.mdl-radio__label !{tim(strings.payment.amounts[0].name)}
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-2')
+                    input#option-2.mdl-radio__button(type='radio' disabled=user.balance<-strings.payment.amounts[1].amount ? "disabled" : false name="amount" value=strings.payment.amounts[1].amount)
+                    span.mdl-radio__label !{tim(strings.payment.amounts[1].name)}
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-3')
+                    input#option-3.mdl-radio__button(type='radio' disabled=user.balance<-strings.payment.amounts[2].amount ? "disabled" : false name="amount" value=strings.payment.amounts[2].amount)
+                    span.mdl-radio__label !{tim(strings.payment.amounts[2].name)}
+                  - if(user.balance<0) {
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-4')
+                    input#option-4.mdl-radio__button(type
+                    ='radio' name="amount" value=user.balance*-1 checked)
+                    span.mdl-radio__label !{tim(strings.payment.dueAmount, {due_amount: ((user.balance/100)*-1).toFixed(2)})}
+                  - }
+                  span.error.mdl-textfield__error(for="amount") Error message goes heres
+
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='sq-card-number') !{tim(strings.payment.cardNumberTitle)}
+                  input#sq-card-number.mdl-textfield__input(type='text' name='sq-card-number')
+                  span.error.mdl-textfield__error(for="sq-card-number") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--6-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='sq-cvv') !{tim(strings.payment.cvvTitle)}
+                  input#sq-cvv.mdl-textfield__input(type='text' name='sq-cvv')
+                  span.error.mdl-textfield__error(for="sq-cvv") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--6-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='sq-expiration-date') !{tim(strings.payment.expDateTitle)}
+                  input#sq-expiration-date.mdl-textfield__input(type='text' name='sq-expiration-date')
+                  span.error.mdl-textfield__error(for="sq-expiration-date") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='sq-postal-code') !{tim(strings.payment.zipTitle)}
+                  input#sq-postal-code.mdl-textfield__input(type='text' name='sq-postal-code')
+                  span.error.mdl-textfield__error(for="sq-postal-code") Error message goes heres
+
+                input#card-nonce(type="hidden" name="nonce")
+
+
+
+                input#submit-form(type='submit' class='hidden')
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-payment-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form' onclick="requestCardNonce(event)") !{tim(strings.payment.button)}
+
+  block js
+    script(type="text/javascript" src="https://js.squareup.com/v2/paymentform")
+    script(src="/js/payment.js")
+    //script(src="/js/validation.js")

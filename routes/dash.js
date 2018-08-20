@@ -8,7 +8,13 @@ const dash = require('../controllers/dashcontroller');
 const router = new Router();
 
 // restrict index for logged in user only
-router.get('/', dash.dashboard);
+router.get('/', (req, res) => {
+    res.redirect('/dashboard/calls');
+  });
+
+// show list of calls
+router.get('/calls/:index*?', dash.calls);
+  
 
 // show billing
 router.get('/billing', dash.billing);

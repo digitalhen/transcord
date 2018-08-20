@@ -8,6 +8,7 @@
         "pricingButton": "Pricing",
         "dashboardButton": "Dashboard",
         "billingButton": "Billing",
+        "topupButton": "Top up",
         "settingsButton": "Settings",
         "logoutButton": "Log out",
         "copyright": "© 2018 Transcord, LLC",
@@ -67,20 +68,29 @@
         "button":"Register",
         "lostPassword": "Lost password?"
     },
+    "sidebar": {
+        "emailLabel": "Email",
+        "numberLabel": "Number",
+        "userAction": "Settings",
+        "numberTitle": "Numbers",
+        "dialOutLabel": "Dial-out",
+        "dialInLabel": "Dail-in",
+        "numberAction": "Get a dial-in number",
+        "balanceTitle": "Balance",
+        "balanceLabel": "Balance",
+        "balanceActionTopUp": "Top up",
+        "balanceActionBilling": "Transactions"
+
+    },
     "billing": {
         "title": "Billing",
+        "dialogTitle": "Transactions",
         "tableDateTitle": "Date",
         "tableAmountTitle": "Amount",
-        "tablePaymentTitle": "Payment",
-        "balanceTitle": "Balance",
-        "button": "Top up your account"
+        "tablePaymentTitle": "Payment"
     },
     "dashboard": {
         "title": "Dashboard",
-        "dialOutTitle": "Dial-out number",
-        "dialOutAction": "Get a dial-in number",
-        "balanceTitle": "Balance",
-        "balanceAction": "Top up your account",
         "transcriptButton": "Transcript",
         "transcriptPrefix": "Call to"
     },

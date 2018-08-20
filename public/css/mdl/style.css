@@ -73,6 +73,12 @@ a img {
   }
 }
 
+@media screen and (max-width: 439px) {
+  .cell.collapsible {
+    display: none;
+  }
+}
+
 /*
 ::-moz-selection, ::selection {
   background-color: #6ab344;
@@ -299,6 +305,10 @@ a img {
 .welcome-alt-link .material-icons {
   position: relative;
   top: 6px;
+}
+
+.recording-card {
+  min-height: auto;
 }
 
 .recording-card .mdl-card {

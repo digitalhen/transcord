@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    a(name="top")
+    div.welcome-section
+      div.welcome-display
+        div.welcome-text
+          div.welcome-title.mdl-typography--display-2 
+            img(src=tim(strings.homepage.logoUrl) alt=tim(strings.homepage.logoAltText) )
+          p.welcome-description.mdl-typography--headline.mdl-typography--font-thin !{tim(strings.homepage.welcome)}
+          p
+            a(href='/register')
+              button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.homepage.welcomeButton)}
+    div#about.features-section
+      div.features-display
+        div.mdl-grid
+          div.mdl-layout-spacer
+          div.mdl-cell.mdl-cell--7-col(style="max-width:900px;padding-top:20px;padding-bottom:20px;")
+            div.mdl-grid
+              div.mdl-cell.mdl-cell--12-col
+                div.mdl-grid.features-item
+                  div.feature-image.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    img(src=tim(strings.homepage.features[0].imgUrl) alt=tim(strings.homepage.features[0].imgAltText))
+                  div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    div.mdl-card__title.feature-title
+                      h3.mdl-card__title-text !{tim(strings.homepage.features[0].hed)}
+                    div.mdl-card__supporting-text.feature-description
+                      p !{tim(strings.homepage.features[0].dek)}
+            div.mdl-grid
+              div.mdl-cell.mdl-cell--12-col
+                div.mdl-grid.features-item
+                  div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    div.mdl-card__title.feature-title
+                      h3.mdl-card__title-text !{tim(strings.homepage.features[1].hed)}
+                    div.mdl-card__supporting-text.feature-description
+                      p !{tim(strings.homepage.features[1].dek)}
+                  div.feature-image.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    img(src=tim(strings.homepage.features[1].imgUrl) alt=tim(strings.homepage.features[1].imgAltText))
+            div.mdl-grid
+              div.mdl-cell.mdl-cell--12-col
+                div.mdl-grid.features-item
+                  div.feature-image.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    img(src=tim(strings.homepage.features[2].imgUrl) alt=tim(strings.homepage.features[2].imgAltText))
+                  div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    div.mdl-card__title.feature-title
+                      h3.mdl-card__title-text !{tim(strings.homepage.features[2].hed)}
+                    div.mdl-card__supporting-text.feature-description
+                      p !{tim(strings.homepage.features[2].dek)}
+            div.mdl-grid
+              div.mdl-cell.mdl-cell--12-col
+                div.mdl-grid.features-item
+                  div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    div.mdl-card__title.feature-title
+                      h3.mdl-card__title-text !{tim(strings.homepage.features[3].hed)}
+                    div.mdl-card__supporting-text.feature-description
+                      p !{tim(strings.homepage.features[3].dek)}
+                  div.feature-image.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--6-col.mdl-cell--12-col-tablet
+                    img(src=tim(strings.homepage.features[3].imgUrl) alt=tim(strings.homepage.features[3].imgAltText))     
+          div.mdl-layout-spacer
+    //div#pricing.pricing-section(style="background-color:rgba(187,83,76,0.8);min-height:300px")
+      div.pricing-display
+        div.pricing-text
+          | Pricing content TK
+    div.calltoaction-section
+      div.calltoaction-display
+        div.calltoaction-text
+          p.mdl-typography--headline.mdl-typography--font-thin !{tim(strings.homepage.calltoaction)}
+          p
+            a(href='/register')
+              button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.homepage.calltoactionButton)}
+    include footer

@@ -19,6 +19,7 @@
  $accent: rgb(255,82,82);
  $primary: rgb(158,158,158); 
  $buttonaccent: rgba(255,82,82,0.8);
+ $washedoutaccent: rgba(187,83,76,0.8);
 
 body { 
   margin: 0;
@@ -75,6 +76,12 @@ a img {
 .mdl-layout__header-row {
   @media screen and (max-width: '1024px') {
     padding: 0 16px 0 22px;
+  }
+}
+
+.cell.collapsible {
+  @media screen and (max-width: '439px') {
+    display: none;
   }
 }
 
@@ -169,7 +176,7 @@ a img {
     width: 100%;
     height: 100%;
     text-align: center;
-    background-color: rgba(187,83,76,0.8);
+    background-color: $washedoutaccent;
 
     .welcome-text {
       max-width: 800px;
@@ -315,6 +322,8 @@ a img {
 }
 
 .recording-card {
+  min-height: auto;
+
   .mdl-card {
     min-height: inherit;
   }

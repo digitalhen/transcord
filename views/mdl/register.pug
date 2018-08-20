@@ -1,0 +1,65 @@
+extends layout 
+
+block variables
+  title !{tim(strings.register.title)} - Transcord
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text !{tim(strings.register.dialogTitle)}
+            div.mdl-card__supporting-text.mdl-grid
+              
+              if(rate.description)
+                div.rate-offer-container
+                  p.mdl-color-text--primary !{rate.description}
+
+              form#form-register(role='form' method='post' action='/register')
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='name') !{tim(strings.register.nameTitle)}
+                  input.mdl-textfield__input(type='text' name='name')
+                  span.error.mdl-textfield__error(for="name") Error message goes heres
+
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='username') !{tim(strings.register.usernameTitle)}
+                  input#username.mdl-textfield__input(type='text' name='username')
+                  span.error.mdl-textfield__error(for="username") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='password') !{tim(strings.register.passwordTitle)}
+                  input#password.mdl-textfield__input(type='password' name='password')
+                  span.error.mdl-textfield__error(for="password") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='email') !{tim(strings.register.emailTitle)}
+                  input.mdl-textfield__input(type='text' name='email')
+                  span.error.mdl-textfield__error(for="email") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') !{tim(strings.register.phoneNumberTitle)}
+                  input.mdl-textfield__input(type='text' name='phoneNumber')
+                  span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres
+
+                input(type="hidden" name="rateCode" value=rate.rateCode)
+
+                input#submit-form(type='submit' class='hidden')
+
+            //div.mdl-card__actions.mdl-card--border
+              //div.mdl-grid
+                //div.mdl-cell.mdl-cell--12-col
+                  //p test
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-register-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form') !{tim(strings.register.button)}
+              div.mdl-grid
+                div.mdl-cell.mdl-cell--12-col
+                  a(href='/reset' style="float:right")
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.register.lostPassword)}
+
+  block js
+    script(src="/js/validation.js")

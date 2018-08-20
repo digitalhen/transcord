@@ -1,4 +1,11 @@
 $(document).ready(function(){
+  $('.audio').each(function() {
+    var idNumber = $(this).attr('data-id');
+    var audioId = '#audio-' + idNumber;
+
+    const player = new Plyr(audioId, {});
+  });
+
   $('.waveform').each(function() {
     var idNumber = $(this).attr('data-id');
     var waveformId = '#waveform-' + idNumber;
