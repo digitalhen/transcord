@@ -314,7 +314,7 @@ function processRecordings(recordingSid, recordingUrl, direction) {
                             });
                         } else if(direction==1) { // this is the incoming number, so we're looking for the number *called*
                             User.findOne({
-                                incomingPhoneNumber: parentCall.to
+                                incomingCombinedPhoneNumber: parentCall.to
                             })
                             .then(function(user) {
                                 if (user == null) {
