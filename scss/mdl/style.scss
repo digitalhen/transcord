@@ -61,6 +61,60 @@ a img {
 }
 
 
+// Pagination
+
+.pagination-container {
+  
+  text-align: right;
+  margin-top: 0px;
+  font-size: 12px;
+  min-height: auto;
+
+  .pagination {
+
+    li {
+      display: inline-block;
+      border-radius: 2px;
+      text-align: center;
+      vertical-align: top;
+      height: 30px;
+
+      font-family: "Roboto","Helvetica","Arial",sans-serif;
+      font-size: 1.2em;
+  
+      a {
+        color: #444;
+        display: inline-block;
+        padding: 0 10px;
+        line-height: 30px;
+        text-decoration: none;
+      }
+  
+      &.active a { color: #fff; }
+  
+      &.active { 
+        background-color: $accent;
+      }
+  
+      &.disabled i {
+        cursor: default;
+        color: #999;
+      }
+  
+      i {
+        font-size: 1.2em;
+        line-height: 1.5;
+      }
+    }
+  
+  
+    li.pages ul li {
+      display: inline-block;
+      float: none;
+    }
+  }
+
+}
 
 
 #topmenu {
