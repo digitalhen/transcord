@@ -1,7 +1,11 @@
 extends layout
 
 block variables
-  title !{tim(strings.transcript.title, {detail: user.recordings[0].numberCalledFormatted })} - Transcord
+  if user.recordings[0].direction == 0
+    title !{tim(strings.transcript.title, {detail: user.recordings[0].numberCalledFormatted })} - Transcord
+  else if user.recordings[0].direction == 1
+    title !{tim(strings.transcript.title, {detail: user.recordings[0].numberFromFormatted })} - Transcord
+
 
 block content
   main.mdl-layout__content.bg
@@ -30,7 +34,11 @@ block content
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-          h2.mdl-card__title-text !{tim(strings.transcript.transcriptPrefix)} !{user.recordings[0].numberCalledFormatted}
+          h2.mdl-card__title-text
+            if user.recordings[0].direction == 0
+              !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberCalledFormatted}
+            else if user.recordings[0].direction == 1
+              !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberFromFormatted}
 
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid
@@ -48,4 +56,3 @@ block content
 block js
   script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
   script(src="/js/recordings.js")
-
