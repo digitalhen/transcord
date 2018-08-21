@@ -16,7 +16,7 @@ const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
- 
+
 var ivrController = {};
 
 
@@ -683,7 +683,13 @@ function generateEmail(user, recording) {
     var plaintextEmail = 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
     plaintextTranscript;
     var htmlEmail = htmlTranscript;
-    var subject = 'Transcription of your call with ' + recording.numberCalledFormatted;
+    
+    var subject = 'Transcription of your call ';
+    if(recording.direction==0) {
+      subject = subject + 'with ' + recording.numberCalledFormatted;
+    } else if (recording.direction==1) {
+      subject = subject + 'with ' + recording.numberFromFormatted;
+    }
 
     // send the email
     emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
