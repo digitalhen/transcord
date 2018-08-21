@@ -1,6 +1,6 @@
 - function formatUsPhone(phone){var phoneTest=new RegExp(/^((\+1)|1)? ?\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})( ?(ext\.? ?|x)(\d*))?$/);phone=phone.trim();var results=phoneTest.exec(phone);if(results!==null&&results.length>8){return"("+results[3]+") "+results[4]+"-"+results[5]+(typeof results[8]!=="undefined"?" x"+results[8]:"")}else{return phone}};
 
-div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet    
+div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
     div.grouped-cards.mdl-grid(style="padding:0px")
         div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col
             div.mdl-card__title
@@ -8,7 +8,7 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.mdl-card__supporting-text
                 p <b>!{tim(strings.sidebar.emailLabel)}:</b> !{user.email}
                 p <b>!{tim(strings.sidebar.numberLabel)}:</b> !{formatUsPhone(user.phoneNumber)}
-                p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialOutLabel)}:</b> 
+                p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialOutLabel)}: </b>
                     a.phoneNumber(href="tel:+19177088094") (917) 708-8094
                 - if(user.balance !== 'undefined' && user.balance) {
                 - var balance = (user.balance/100).toFixed(2);
@@ -25,7 +25,7 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.mdl-card__title
                 h2.mdl-card__title-text !{tim(strings.sidebar.numberTitle)}
             div.mdl-card__supporting-text
-                p <b>!{tim(strings.sidebar.dialOutLabel)}:</b>
+                p <b>!{tim(strings.sidebar.dialOutLabel)}: </b>
                     a.phoneNumber(href="tel:+19177088094") (917) 708-8094
             div.mdl-card__actions.mdl-card--border
                 a(href='/dashboard/payment' style="float:left")
