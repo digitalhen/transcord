@@ -128,26 +128,25 @@ ivrController.dialer = function(req, res) {
 };
 
 ivrController.incomingCallFinished = function(req, res) {
-    // TODO: fix This
-    console.log(req.body); 
-    const userNumber = req.body.Caller;
+  const userLookup = {
+          incomingCombinedPhoneNumber: req.body.Called
+      };
 
-    billCall(userNumber, req);
+  billCall(userLookup, req);
 }
 
 ivrController.callFinished = function(req, res) {
-     const userNumber = req.body.Caller;
+     const userLookup = {
+             combinedPhoneNumber: req.body.Caller
+         };
 
-     billCall(userNumber, req);
+     billCall(userLookup, req);
 }
 
-function billCall(userNumber, req) {
+function billCall(userLookupObject, req) {
 
-     console.log(req.body);
 
-     User.findOne({
-             combinedPhoneNumber: numberFrom
-         })
+     User.findOne(userLookupObject)
          .then(function(user) {
              if (user == null) {
                  // TODO: we should never reach here?
