@@ -132,7 +132,7 @@ ivrController.incomingCallFinished = function(req, res) {
           incomingCombinedPhoneNumber: req.body.Called
       };
 
-  billCall(userLookup, req);
+  billCall(userLookup, req, 1);
 
   res.send('');
 }
@@ -142,15 +142,15 @@ ivrController.callFinished = function(req, res) {
              combinedPhoneNumber: req.body.Caller
          };
 
-     billCall(userLookup, req);
+     billCall(userLookup, req, 0);
 
      res.send('');
 }
 
-function billCall(userLookupObject, req) {
+function billCall(userLookupObject, req, direction) {
 
     console.log("Looking up user");
-    console.log(userLookupObject); 
+    console.log(userLookupObject);
 
 
      User.findOne(userLookupObject)
@@ -175,7 +175,7 @@ function billCall(userLookupObject, req) {
                     var call = {
                         "callSid": req.body.CallSid,
                         "dialCallSid": req.body.DialCallSid,
-                        "direction": 0, // normal outgoing call
+                        "direction": direction, // normal outgoing call
                         "duration": duration,
                         "rateCode": rateCode,
                         "cost": cost
