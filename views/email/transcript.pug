@@ -6,8 +6,12 @@ block content
                         tr(style="height:20px")
                         tr
                           td
-                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Helvetica,Arial') Your call with !{recording.numberCalledFormatted}
-                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Helvetica,Arial')
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') 
+                              if recording.direction == 0
+                                | Call from !{recording.numberFromFormatted}
+                              else if recording.direction == 1
+                                | Call to !{recording.numberCalledFormatted}
+                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif')
                               br 
                               | Transcription
                         tr(style="height:20px")
@@ -16,7 +20,7 @@ block content
                             - transcription.forEach(function(line) {
                                 div(style='padding: 0px;margin: inherit;display: flex;')
                                   div
-                                  div(style="background:" + (line.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px")
+                                  div(style="background:" + (line.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
                                     div(style="width:100%")
                                       div(style='text-align: ' + line.side + ';margin-' + (line.side === 'left' ? 'right' : 'left') + ':10%;margin-' + line.side + ': 20px;')
                                         h6.transcript-title(style="font-size:12px;margin: 0px;")
@@ -32,7 +36,7 @@ block content
                                   td(style="width:100px")
                                   td(style="width:400px;text-align: center;height: 40px;background-color:rgb(68,138,255);")
                                     a(style="text-decoration:none;color:white" href="https://transcord.app/dashboard/transcript/" + recording.recordingSid target="_blank")
-                                      p(style='text-align:center;vertical-align:middle;font-size:14px;font-family:Helvetica,Arial;font-weight:bold') VIEW ONLINE
+                                      p(style='text-align:center;vertical-align:middle;font-size:14px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif;font-weight:bold') VIEW ONLINE
                                   td(style="width:100px")
                                 tr(style="height:20px")
                     
