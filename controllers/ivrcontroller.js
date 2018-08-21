@@ -149,6 +149,9 @@ ivrController.callFinished = function(req, res) {
 
 function billCall(userLookupObject, req) {
 
+    console.log("Looking up user");
+    console.log(userLookupObject); 
+
 
      User.findOne(userLookupObject)
          .then(function(user) {
