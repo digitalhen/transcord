@@ -137,7 +137,7 @@ userController.doRegister = function(req, res) {
 
                 emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
 
-                
+                console.log("switch: " + req.body.incomingPhoneNumber);
 
                 // register a new number for them now -- TODO move redirect below here
                 if(req.body.incomingPhoneNumber) {
@@ -148,32 +148,43 @@ userController.doRegister = function(req, res) {
                         })
                         .then(data => {
                             var number = data[0];
-                            var success = twilio.incomingPhoneNumber.create({
-                                friendlyName: "Incoming number for user: " + user.username,
-                                phoneNumber: number.phoneNumber,
-                                voiceUrl: 'https://transcord.app/ivr/incomingcall'
+
+                            console.log(number);
+
+                            passport.authenticate('local')(req, res, function() {
+                                res.redirect('/dashboard');
                             });
 
-                            console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username)
+                            var success = twilio.incomingPhoneNumber
+                                .create({
+                                    friendlyName: "Incoming number for user: " + user.username,
+                                    phoneNumber: number.phoneNumber,
+                                    voiceUrl: 'https://transcord.app/ivr/incomingcall'
+                                })
+                                .then(function(result) {
+                                    console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username);
 
-                            User.update({
-                                _id: req.user._id
-                            }, {
-                                incomingCountryCode: '+1',
-                                incomingPhoneNumber: number.phoneNumber.split('+1')[1],
-                                incomingCombinedPhoneNumber: number.phoneNumber,
-                                incomingPhoneNumberExpiration: moment().add(1, 'months'),
-                            }, function(err, numberAffected, rawResponse) {
-                                if (err) {
-                                    console.log('There was an error');
-                                }
+                                    User.update({
+                                        _id: req.user._id
+                                    }, {
+                                        incomingCountryCode: '+1',
+                                        incomingPhoneNumber: number.phoneNumber.split('+1')[1],
+                                        incomingCombinedPhoneNumber: number.phoneNumber,
+                                        incomingPhoneNumberExpiration: moment().add(1, 'months'),
+                                    }, function(err, numberAffected, rawResponse) {
+                                        if (err) {
+                                            console.log('There was an error');
+                                        }
 
-                                // send the new user to their dashboard
-                                passport.authenticate('local')(req, res, function() {
-                                    res.redirect('/dashboard');
-                                });
-                            });
-                        })
+                                        console.log('User updated with incoming phone number');
+
+                                        // send the new user to their dashboard
+                                        passport.authenticate('local')(req, res, function() {
+                                            res.redirect('/dashboard');
+                                        });
+                                    });
+                                }).done();
+                        });
                 } else {
                     // send the new user to their dashboard
                     passport.authenticate('local')(req, res, function() {

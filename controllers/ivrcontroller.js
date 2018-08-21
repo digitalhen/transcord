@@ -38,7 +38,7 @@ ivrController.incomingcall = function(req, res) {
     console.log("Incoming call from: " + numberFrom + " and they are dialing: " + numberTo);
 
     User.findOne({
-        incomingPhoneNumber: numberTo
+        incomingCombinedPhoneNumber: numberTo
     })
     .then(function(user) {
         if (user == null) {
