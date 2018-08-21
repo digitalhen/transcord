@@ -133,6 +133,8 @@ ivrController.incomingCallFinished = function(req, res) {
       };
 
   billCall(userLookup, req);
+
+  res.send('');
 }
 
 ivrController.callFinished = function(req, res) {
@@ -141,6 +143,8 @@ ivrController.callFinished = function(req, res) {
          };
 
      billCall(userLookup, req);
+
+     res.send('');
 }
 
 function billCall(userLookupObject, req) {
@@ -203,8 +207,6 @@ function billCall(userLookupObject, req) {
          .catch(function(err) {
              console.log(err);
          });
-
-    res.send('');
 }
 
 ivrController.privacynotice = function(req, res) {
