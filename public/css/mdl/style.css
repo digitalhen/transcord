@@ -146,6 +146,11 @@ a img {
   margin-bottom: 16px;
 }
 
+.grouped-cards .mdl-card a.phoneNumber {
+  text-decoration: none;
+  color: inherit;
+}
+
 @media screen and (max-width: 839px) {
   .grouped-cards .mdl-card {
     margin: 8px;
@@ -371,6 +376,15 @@ a img {
   padding: 0px;
   width: 97%;
   padding: 5px 8px;
+}
+
+.recording-card .mdl-card__supporting-text .direction-icon {
+  font-size: 13px;
+  margin: 4px;
+  padding: 1px;
+  font-weight: 400;
+  color: white;
+  background-color: #ff5252;
 }
 
 .recording-card .mdl-card__supporting-text .recording-play-button {

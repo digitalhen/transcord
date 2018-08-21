@@ -8,7 +8,8 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.mdl-card__supporting-text
                 p <b>!{tim(strings.sidebar.emailLabel)}:</b> !{user.email}
                 p <b>!{tim(strings.sidebar.numberLabel)}:</b> !{formatUsPhone(user.phoneNumber)}
-                p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialOutLabel)}:</b> (917) 708-8094
+                p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialOutLabel)}:</b> 
+                    a.phoneNumber(href="tel:+19177088094") (917) 708-8094
                 - if(user.balance !== 'undefined' && user.balance) {
                 - var balance = (user.balance/100).toFixed(2);
                     p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.balanceLabel)}:</b> $!{balance}
@@ -24,7 +25,8 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.mdl-card__title
                 h2.mdl-card__title-text !{tim(strings.sidebar.numberTitle)}
             div.mdl-card__supporting-text
-                p <b>!{tim(strings.sidebar.dialOutLabel)}:</b> (917) 708-8094
+                p <b>!{tim(strings.sidebar.dialOutLabel)}:</b>
+                    a.phoneNumber(href="tel:+19177088094") (917) 708-8094
             div.mdl-card__actions.mdl-card--border
                 a(href='/dashboard/payment' style="float:left")
                     button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.sidebar.numberAction)}

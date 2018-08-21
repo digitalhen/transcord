@@ -159,6 +159,11 @@ a img {
     margin:0px;
     margin-bottom:16px;
 
+    a.phoneNumber {
+      text-decoration:none;
+      color:inherit;
+    }
+
     @media screen and (max-width: '839px') {
       margin: 8px;
     }
@@ -390,6 +395,16 @@ a img {
     padding: 0px;
     width: 97%;
     padding: 5px 8px;
+
+    .direction-icon {
+      font-size: 13px;
+      margin: 4px;
+      padding: 1px;
+      font-weight: 400;
+      color: white;
+      background-color: $accent;
+    }
+    
 
     .recording-play-button {
       position: absolute;
