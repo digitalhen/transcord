@@ -683,12 +683,12 @@ function generateEmail(user, recording) {
     var plaintextEmail = 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
     plaintextTranscript;
     var htmlEmail = htmlTranscript;
-    
+
     var subject = 'Transcription of your call ';
     if(recording.direction==0) {
-      subject = subject + 'with ' + recording.numberCalledFormatted;
+      subject = subject + 'to ' + recording.numberCalledFormatted;
     } else if (recording.direction==1) {
-      subject = subject + 'with ' + recording.numberFromFormatted;
+      subject = subject + 'from ' + recording.numberFromFormatted;
     }
 
     // send the email
