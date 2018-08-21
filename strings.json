@@ -91,9 +91,7 @@
     },
     "dashboard": {
         "title": "Dashboard",
-        "transcriptButton": "Transcript",
-        "transcriptPrefixTo": "Call to",
-        "transcriptPrefixFrom": "Call from" 
+        "transcriptButton": "Transcript"
     },
     "payment": {
         "title": "Payment",
@@ -162,6 +160,7 @@
     "transcript": {
         "title": "Transcript of call with {{detail}}",
         "dialogTitle": "Transcript",
-        "transcriptPrefix": "Call to"
+        "transcriptPrefixTo": "Call to",
+        "transcriptPrefixFrom": "Call from"
     }
 }

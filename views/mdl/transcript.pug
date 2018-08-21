@@ -36,9 +36,9 @@ block content
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
           h2.mdl-card__title-text
             if user.recordings[0].direction == 0
-              !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberCalledFormatted}
+              | !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberCalledFormatted}
             else if user.recordings[0].direction == 1
-              !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberFromFormatted}
+              | !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberFromFormatted}
 
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid
