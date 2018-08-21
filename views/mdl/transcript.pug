@@ -8,7 +8,6 @@ block variables
 
 
 block content
-  - console.log(user.recordings[0].direction);
   main.mdl-layout__content.bg
     div.mdl-grid(style="max-width:900px")
       div.transcript-control-card.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
@@ -39,7 +38,7 @@ block content
             if user.recordings[0].direction == 0
               | !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberCalledFormatted}
             else if user.recordings[0].direction == 1
-              | !{tim(strings.transcript.transcriptPrefixTo)} !{user.recordings[0].numberFromFormatted}
+              | !{tim(strings.transcript.transcriptPrefixFrom)} !{user.recordings[0].numberFromFormatted}
 
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid
