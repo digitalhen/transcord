@@ -16,7 +16,7 @@ block content
           - var i=startingIndex;
           - var paginationCount=10;
           - var pageNumber=Math.ceil(user.recordings.length/paginationCount); // how many pages 
-          - user.recordings.slice(i,i+paginationCount).forEach(function(recording) {
+          - user.recordings.reverse().slice(i,i+paginationCount).forEach(function(recording) {
             div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col
               //div.mdl-card__title.mdl-color--primary.mdl-color-text--white
                 //h2.mdl-card__title-text !{tim(strings.dashboard.transcriptPrefix)} !{recording.numberCalledFormatted}
