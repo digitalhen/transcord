@@ -92,7 +92,8 @@
     "dashboard": {
         "title": "Dashboard",
         "transcriptButton": "Transcript",
-        "transcriptPrefix": "Call to"
+        "transcriptPrefixTo": "Call to",
+        "transcriptPrefixFrom": "Call from" 
     },
     "payment": {
         "title": "Payment",
