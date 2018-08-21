@@ -16,7 +16,7 @@ const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
-
+ 
 var ivrController = {};
 
 
@@ -90,10 +90,10 @@ ivrController.welcome = function(req, res) {
                         finishOnKey: '#',
                         method: 'POST',
                     });
-    
-                    gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by the # key.");    
+
+                    gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by the # key.");
                 }
-            
+
                 res.send(voiceResponse.toString());
             }
         })
@@ -137,7 +137,7 @@ ivrController.callFinished = function(req, res) {
       * 1. Get current user & their rateCode
       * 2. Lookup the rateCode
       * 3. Create a new calls object, and calculate the cost based on the rateCode
-      * 4. Push a new entry to the user's calls list 
+      * 4. Push a new entry to the user's calls list
       * 5. Take their current balance and minus the cost of the call
       * 6. Push user object back to database
       */
@@ -205,7 +205,7 @@ ivrController.callFinished = function(req, res) {
          .catch(function(err) {
              console.log(err);
          });
-      
+
     res.send('');
 }
 
@@ -229,16 +229,16 @@ ivrController.privacynotice = function(req, res) {
                     const gather = voiceResponse.gather({
                         action: '/ivr/privacyconnect',
                         numDigits: '1',
-                        method: 'POST', 
+                        method: 'POST',
                     });
-    
+
                     gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
-    
+
                     voiceResponse.say("No response received, goodbye.");
-    
+
                     voiceResponse.hangup();
                 }
-                
+
 
                 res.send(voiceResponse.toString());
             }
@@ -270,7 +270,7 @@ ivrController.incomingrecording = function(req, res) {
 
 // handles recordings for both directions
 function processRecordings(recordingSid, recordingUrl, direction) {
-    // Look up the recording here.... 
+    // Look up the recording here....
     twilioClient.recordings(recordingSid)
         .fetch()
         .then(function(recording) {
@@ -324,12 +324,12 @@ function processRecordings(recordingSid, recordingUrl, direction) {
                                 }
                             });
                         }
-                        
+
 
                         // TODO, fix for conference calls with multiple child calls
                     });
-                    
-                    
+
+
 
 
 
@@ -421,7 +421,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
         console.log(transcription);
-        generateEmail(user, recordingObject);      
+        generateEmail(user, recordingObject);
       }
     })
     .catch(err => {
@@ -570,7 +570,7 @@ function processFiles(user, recordingObject) {
                 r.pipe(stream).on('close', function() {
                     // download the dual audio
                     // TODO: swap the sides of the audio, left and right are on the wrong side
-      
+
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
                         .audioChannels(1)
@@ -585,9 +585,9 @@ function processFiles(user, recordingObject) {
                                       expires: '03-09-2491'
                                   }).then(signedUrls => {
                                       recordingObject.recordingUrl = signedUrls[0];
-      
+
                                       status.main = true;
-      
+
                                       if(status.main && status.left && status.right)
                                         runTranscription(user, recordingObject);
                                   });
@@ -595,7 +595,7 @@ function processFiles(user, recordingObject) {
                             });
                         })
                         .save(dest + '-main.wav');
-      
+
                     // download the audio for the person who received the call
                     var right = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
@@ -611,9 +611,9 @@ function processFiles(user, recordingObject) {
                                       expires: '03-09-2491'
                                   }).then(signedUrls => {
                                       recordingObject.recordingUrlRight = signedUrls[0];
-      
+
                                       status.right = true;
-      
+
                                       if(status.main && status.left && status.right)
                                         runTranscription(user, recordingObject);
                                   });
@@ -621,7 +621,7 @@ function processFiles(user, recordingObject) {
                             });
                         })
                         .save(dest + '-right.wav');
-      
+
                     // download the audio for the person that made the call
                     var left = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
@@ -637,9 +637,9 @@ function processFiles(user, recordingObject) {
                                         expires: '03-09-2491'
                                     }).then(signedUrls => {
                                         recordingObject.recordingUrlLeft = signedUrls[0];
-      
+
                                         status.left = true;
-      
+
                                         if(status.main && status.left && status.right)
                                           runTranscription(user, recordingObject);
                                     });
@@ -657,7 +657,7 @@ function processFiles(user, recordingObject) {
             }
         });
 
-    
+
 }
 
 function generateEmail(user, recording) {
