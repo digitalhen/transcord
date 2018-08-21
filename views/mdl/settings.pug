@@ -41,6 +41,11 @@ block content
                   input.mdl-textfield__input(type='text' name='phoneNumber' value=user.phoneNumber original=user.phoneNumber)
                   span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres
 
+                div.mdl-switch.mdl-js-switch.mdl-cell.mdl-cell--12-col
+                  label.mdl-switch__label.mdl-color-text--grey(for='incomingPhoneNumber') !{tim(strings.settings.incomingPhoneNumberTitle)}
+                  input.mdl-switch__input(type='checkbox' name='incomingPhoneNumber')
+                  span.error.mdl-textfield__error(for="incomingPhoneNumber") Error message goes heres
+
               if (status)
                 b !{status}
 

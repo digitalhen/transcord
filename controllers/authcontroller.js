@@ -1,4 +1,7 @@
 let config = require('../env.json')[process.env.NODE_ENV || "development"];
+process.env.TWILIO_ACCOUNT_SID = config.twilio_account_sid; // Pass account to environment as required by api
+process.env.TWILIO_AUTH_TOKEN = config.twilio_auth_token; // Pass token to environment as required by api
+const twilioClient = require('twilio')(config.twilio_account_sid, config.twilio_auth_token);
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
@@ -134,12 +137,49 @@ userController.doRegister = function(req, res) {
 
                 emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
 
-                // send the new user to their dashboard
-                passport.authenticate('local')(req, res, function() {
-                    res.redirect('/dashboard');
-                });
+                
 
+                // register a new number for them now -- TODO move redirect below here
+                if(req.body.incomingPhoneNumber) {
+                    twilioClient
+                        .availablePhoneNumbers('US')
+                        .local.list({
+                            inRegion: 'CA',
+                        })
+                        .then(data => {
+                            var number = data[0];
+                            var success = twilio.incomingPhoneNumber.create({
+                                friendlyName: "Incoming number for user: " + user.username,
+                                phoneNumber: number.phoneNumber,
+                                voiceUrl: 'https://transcord.app/ivr/incomingcall'
+                            });
 
+                            console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username)
+
+                            User.update({
+                                _id: req.user._id
+                            }, {
+                                incomingCountryCode: '+1',
+                                incomingPhoneNumber: number.phoneNumber.split('+1')[1],
+                                incomingCombinedPhoneNumber: number.phoneNumber,
+                                incomingPhoneNumberExpiration: moment().add(1, 'months'),
+                            }, function(err, numberAffected, rawResponse) {
+                                if (err) {
+                                    console.log('There was an error');
+                                }
+
+                                // send the new user to their dashboard
+                                passport.authenticate('local')(req, res, function() {
+                                    res.redirect('/dashboard');
+                                });
+                            });
+                        })
+                } else {
+                    // send the new user to their dashboard
+                    passport.authenticate('local')(req, res, function() {
+                        res.redirect('/dashboard');
+                    });
+                }
             }
     
         });
