@@ -30,7 +30,7 @@ $(document).ready(function() {
 
   // lets me check if they haven't changed the value
   $.validator.addMethod("notEqual", function(value, element, param) {
-    return this.optional(element) || value != param;
+    return this.optional(element) || value != $(param).val();
     // TODO: the form still needs to be valid
   });
 
@@ -69,7 +69,7 @@ $(document).ready(function() {
     }
 });
 
-  var profileValidator = $('#form-profile').validate({
+  var settingsValidator = $('#form-settings').validate({
     errorPlacement: function(error, element) {
       $(element).parent('.mdl-textfield').addClass('is-invalid');
       $(element).siblings('.error').text(error.text());
@@ -86,12 +86,12 @@ $(document).ready(function() {
             data: {
               username: function() {
                 //console.log($('#form-register input[name="username"]').val());
-                return $('#form-profile input[name="username"]').val();
+                return $('#form-settings input[name="username"]').val();
               }
             }
           },
           depends: function() {
-            return ($('#form-profile input[name="username"]').val() !== $('#form-profile input[name="username"]').attr('original'));
+            return ($('#form-settings input[name="username"]').val() !== $('#form-settings input[name="username"]').attr('original'));
           },
           /*
           depends: function(element) {
@@ -110,7 +110,7 @@ $(document).ready(function() {
       email: {
         required: true,
         email: true,
-        //notEqual: $('#form-profile input[name="email"]').attr('original'),
+        //notEqual: $('#form-settings input[name="email"]').attr('original'),
         remote: {
           param: {
             url: '/validate',
@@ -118,13 +118,13 @@ $(document).ready(function() {
             data: {
               email: function() {
                 //console.log($('#form-register input[name="username"]').val());
-                return $('#form-profile input[name="email"]').val();
+                return $('#form-settings input[name="email"]').val();
               }
             },
           },
           depends: function(element) {
               // compare email address in form to hidden field
-              return ($(element).val() !== $('#form-profile input[name="email"]').attr('original'));
+              return ($(element).val() !== $('#form-settings input[name="email"]').attr('original'));
           }
         }
       },
@@ -139,13 +139,13 @@ $(document).ready(function() {
             data: {
               phoneNumber: function() {
                 //console.log($('#form-register input[name="username"]').val());
-                return $('#form-profile input[name="phoneNumber"]').val();
+                return $('#form-settings input[name="phoneNumber"]').val();
               }
             },
           },
           depends: function(element) {
               // compare email address in form to hidden field
-              return ($(element).val() !== $('#form-profile input[name="phoneNumber"]').attr('original'));
+              return ($(element).val().replace(/\D/g,'') !== $('#form-settings input[name="phoneNumber"]').attr('original'));
           }
         }
       }
