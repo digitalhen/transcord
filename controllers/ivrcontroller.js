@@ -566,6 +566,8 @@ function processFiles(user, recordingObject) {
     var r = request(recordingObject.recordingUrl);
     r.pause();
     r.on('response', function(res) {
+            console.log("In response");
+            
             if(res.statusCode=="200" && res.headers['content-type'] == 'audio/x-wav') {
                 r.pipe(stream).on('close', function() {
                     // download the dual audio
