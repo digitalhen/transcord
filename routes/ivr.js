@@ -32,4 +32,7 @@ router.post('/recording', ivr.recording);
 // POST: /ivr/incomingcall
 router.post('/incomingcall', ivr.incomingcall);
 
+// POST: /ivr/incomingrecording
+router.post('/incomingrecording', ivr.incomingrecording);
+
 module.exports = router;
