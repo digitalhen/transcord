@@ -51,6 +51,7 @@ ivrController.incomingcall = function(req, res) {
 
             // TODO: plug in to the database, and check the user is running
             const dial = voiceResponse.dial({
+                action: '/ivr/incomingCallFinished',
                 record: 'record-from-ringing-dual',
                 recordingStatusCallback: '/ivr/incomingrecording',
                 method: 'POST'
@@ -126,23 +127,21 @@ ivrController.dialer = function(req, res) {
     res.send(voiceResponse.toString());
 };
 
+ivrController.incomingCallFinished = function(req, res) {
+    // TODO: fix This
+    console.log(req.body); 
+    const userNumber = req.body.Caller;
+
+    billCall(userNumber, req);
+}
+
 ivrController.callFinished = function(req, res) {
-    /*
-     * DialCallStatus -- completed
-     * DialCallSid
-     * DialCallDuration
-     */
+     const userNumber = req.body.Caller;
 
-     /*
-      * 1. Get current user & their rateCode
-      * 2. Lookup the rateCode
-      * 3. Create a new calls object, and calculate the cost based on the rateCode
-      * 4. Push a new entry to the user's calls list
-      * 5. Take their current balance and minus the cost of the call
-      * 6. Push user object back to database
-      */
+     billCall(userNumber, req);
+}
 
-     const numberFrom = req.body.Caller;
+function billCall(userNumber, req) {
 
      console.log(req.body);
 
@@ -265,6 +264,9 @@ ivrController.recording = function(req, res) {
 // callback from incoming calls to capture recording
 ivrController.incomingrecording = function(req, res) {
     processRecordings(req.body.RecordingSid, req.body.RecordingUrl, 1);
+
+    // TODO: Need to bill this?
+
     res.send('');
 }
 
