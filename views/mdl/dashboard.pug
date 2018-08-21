@@ -15,7 +15,7 @@ block content
         div.mdl-grid.table-grid
           - var i=startingIndex;
           - var paginationCount=10;
-          - var pageNumber=Math.floor(user.recordings.length/paginationCount); // how many pages 
+          - var pageNumber=Math.ceil(user.recordings.length/paginationCount); // how many pages 
           - user.recordings.slice(i,i+paginationCount).forEach(function(recording) {
             div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col
               //div.mdl-card__title.mdl-color--primary.mdl-color-text--white
@@ -47,11 +47,16 @@ block content
                     a(href='/dashboard/transcript/' + recording.recordingSid)
                       button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.transcriptButton)}
             - i++;
-          - })
+          - });
         div.mdl-grid.table-grid
           div.pagination.mdl-cell.mdl-cell--8-col
+                - var y = 0;
+                - console.log(user.recordings.length)
                 span
-                  a(href=pageNumber*paginationCount) 5
+                  while y < pageNumber
+                    a(href="/dashboard/calls/" + (y)*paginationCount) 
+                      button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{y == 0 ? 1 : y+1}
+                    - y++
           
     //include footer
 
