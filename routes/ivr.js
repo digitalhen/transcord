@@ -36,6 +36,6 @@ router.post('/incomingcall', ivr.incomingcall);
 router.post('/incomingrecording', ivr.incomingrecording);
 
 // POST: /ivr/incomingCallFinished 
-router.post('/incomingCallFinished', ivr.callFinished);
+router.post('/incomingCallFinished', ivr.incomingCallFinished);
 
 module.exports = router;

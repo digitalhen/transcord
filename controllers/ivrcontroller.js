@@ -136,7 +136,7 @@ ivrController.incomingCallFinished = function(req, res) {
 
   const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Thank you for using Transcord. Goodbye!');
+    voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
 
     voiceResponse.hangup();
 
@@ -153,7 +153,7 @@ ivrController.callFinished = function(req, res) {
 
      const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Thank you for using Transcord. Goodbye!');
+    voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
 
     voiceResponse.hangup(); 
 
