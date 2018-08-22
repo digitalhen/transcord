@@ -18,7 +18,7 @@
         "dateFormat": "MMM DD, YYYY h:mm a"
     },
     "homepage": {
-        "logoUrl": "img/white/logo.png",
+        "logoUrl": "img/white-logo.png",
         "logoAltText": "Transcord",
         "welcome": "Automatically record & transcribe all of your calls.",
         "welcomeButton": "Try it for free",
