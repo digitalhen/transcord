@@ -34,6 +34,12 @@ userController.privacy = function(req, res) {
 
 // Go to registration page
 userController.register = function(req, res) {
+    //if there's already a user
+    if (req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/dashboard');
+    }
+
     // if rate specified, look that up, else look up default
     var theRate = {
         description: '',
@@ -341,6 +347,12 @@ userController.validate = function(req, res) {
 
 // Go to login page
 userController.login = function(req, res) {
+    // if there's already a user, go to the dashboard
+    if (req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/dashboard');
+    }
+
     var status = req.session['status'];
     req.session['status'] = null; // wipe out the status now we've seen it
 
