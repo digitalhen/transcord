@@ -134,7 +134,14 @@ ivrController.incomingCallFinished = function(req, res) {
 
   billCall(userLookup, req, 1);
 
-  res.send('');
+  const voiceResponse = new VoiceResponse();
+
+    voiceResponse.say('Thank you for using Transcord. Goodbye!');
+
+    voiceResponse.hangup();
+
+    res(voiceResponse.toString());
+
 }
 
 ivrController.callFinished = function(req, res) {
@@ -144,7 +151,13 @@ ivrController.callFinished = function(req, res) {
 
      billCall(userLookup, req, 0);
 
-     res.send('');
+     const voiceResponse = new VoiceResponse();
+
+    voiceResponse.say('Thank you for using Transcord. Goodbye!');
+
+    voiceResponse.hangup();
+
+    res(voiceResponse.toString());
 }
 
 function billCall(userLookupObject, req, direction) {
