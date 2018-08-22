@@ -135,7 +135,7 @@ userController.doRegister = function(req, res) {
                 }); */
             } else {
                 // locals to feed through to template
-                var locals = {'moment': moment, 'user': user};
+                var locals = {'moment': moment, 'user': user, 'config': config, 'strings': strings};
 
                 var plaintextEmail = "Hello " + user.name;
                 var htmlEmail = pug.renderFile('views/email/welcome.pug', locals);
@@ -442,7 +442,7 @@ userController.sendReset = function(req, res) {
                     console.log('There was an error');
                 }
         
-                var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset};
+                var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset, 'config': config, 'strings': strings};
 
                 var plaintextEmail = "Hello " + user.name;
                 var htmlEmail = pug.renderFile('views/email/reset.pug', locals);
@@ -559,7 +559,7 @@ userController.doReset = function(req,res) {
 
             
                     // send email
-                    var locals = {'moment': moment, 'user': user};
+                    var locals = {'moment': moment, 'user': user, 'config': config, 'strings': strings};
 
                     var plaintextEmail = "Hello " + user.name;
                     var htmlEmail = pug.renderFile('views/email/resetDone.pug', locals);

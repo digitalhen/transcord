@@ -145,7 +145,7 @@ dashController.processPayment = function(req, res) {
 
         // send email to user
         // locals to feed through to template
-        var locals = {'moment': moment, 'user': user, 'payment': paymentObject};
+        var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings};
 
         var plaintextEmail = "Hello " + user.name;
         var htmlEmail = pug.renderFile('views/email/payment.pug', locals);

@@ -683,7 +683,7 @@ function generateEmail(user, recording) {
     var transcription = JSON.parse(recording.transcription);
 
     // locals to feed through to template
-    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription};
+    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'config': config, 'strings': strings};
 
     // loop through transcription object and build up the email
     var plaintextTranscript = '';
