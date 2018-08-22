@@ -36,7 +36,7 @@ block content
                         i.material-icons.direction-icon call_made
                     - recording.startTimeFormatted = new Date(recording.startTime.toString());
                     p(style='font-weight=300,font-size=10px') !{moment(recording.startTimeFormatted).format('MMM DD, YYYY h:mm a')}
-                  div.mdl-card.mdl-cell.mdl-cell--8-col
+                  div.mdl-card.mdl-cell.mdl-cell--8-col(style="overflow:visible")
                     audio.audio(id='audio-' + i data-id=i crossorigin=true playsinline=true)
                       source(src=recording.recordingUrl type="audio/wav")
                     //div.waveform(id='waveform-' + i data-id=i data-recordingUrl=recording.recordingUrl)
