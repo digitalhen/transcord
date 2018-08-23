@@ -10,13 +10,17 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
                 p <b>!{tim(strings.sidebar.numberLabel)}:</b> !{formatUsPhone(user.phoneNumber)}
                 p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialOutLabel)}: </b>
                     a.phoneNumber(href="tel:+19177088094") (917) 708-8094
+                if(user.incomingPhoneNumber)
+                    p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.dialInLabel)}: </b>
+                        a.phoneNumber(href="tel:" + user.incomingCountryCode + user.incomingPhoneNumber) !{formatUsPhone(user.incomingPhoneNumber)}
+
                 - if(user.balance !== 'undefined' && user.balance) {
                 - var balance = (user.balance/100).toFixed(2);
                     p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.balanceLabel)}:</b> $!{balance}
                 - } else {
                     p.mdl-layout--small-screen-only <b>!{tim(strings.sidebar.balanceLabel)}:</b> $0.00
                 - }
-
+                
             div.mdl-card__actions.mdl-card--border
                 a(href='/settings' style="float:left")
                     button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.sidebar.userAction)}

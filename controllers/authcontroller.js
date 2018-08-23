@@ -186,21 +186,40 @@ userController.doUpdate = function(req, res) {
 
     console.log("I'm in the update");
 
+    // TODO: handle turning off incoming phone number here, and remove it from Twilio
+
+    // Figure out what we need to turn off, if they're turning off the phone number
+    var unset = {
+        dummyValue: ''
+    };
+
+    if(typeof req.user.incomingPhoneNumber !== 'undefined' && req.body.incomingPhoneNumber!=="on") {
+        console.log("Will remove this users incoming phone number");
+
+        unset = {
+            incomingCountryCode: '',
+            incomingPhoneNumber: '',
+            incomingCombinedPhoneNumber: '',
+            incomingPhoneNumberExpiration: '',
+        };        
+    }
+
     User.update({
         _id: req.user._id
     }, {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        emailNotification: true, // TODO: feed this from the settings page
-        privacyNotification: false, // TODO: feed this from the settings page
+        emailNotification: (req.body.emailNotification==="on" ? true : false), // TODO: feed this from the settings page
+        privacyNotification: (req.body.privacyNotification==="on" ? true : false), // TODO: feed this from the settings page
         countryCode: '+1',
         phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
         combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
+        $unset: unset
         // TODO: handle updating password somehow
     }, function(err, numberAffected, rawResponse) {
         if (err) {
-            console.log('There was an error');
+            console.log('There was an error:' + err);
         }
 
         // refresh the user object
@@ -218,12 +237,18 @@ userController.doUpdate = function(req, res) {
                         });
                     }
 
-                    res.render('settings', {
-                        user: user,
-                        tim: tim,
-                        status: 'Updated',
-                        strings: strings,
-                    });
+                    // user wants a new number
+                    if(typeof req.user.incomingPhoneNumber === 'undefined' && req.body.incomingPhoneNumber==="on") {
+                        res.redirect('/dashboard/paymentIncoming');
+                    } else {
+                        res.render('settings', {
+                            user: user,
+                            tim: tim,
+                            status: 'Updated',
+                            strings: strings,
+                        });
+                    }
+                    
                 }
             })
             .catch(function(err) {
@@ -395,6 +420,7 @@ userController.sendReset = function(req, res) {
                 "passwordResets": user.passwordResets
             }, function(err, numberAffected, rawResponse) {
                 if (err) {
+                    // TODO: this should be a throw, move res.render in here, and put a generic error screen in the catch
                     console.log('There was an error');
                 }
         
@@ -510,6 +536,7 @@ userController.doReset = function(req,res) {
                     "passwordResets": {}
                 }, function(err, numberAffected, rawResponse) {
                     if (err) {
+                        // TODO: put a throw here
                         console.log('There was an error');
                     }
 

@@ -143,26 +143,86 @@ dashController.processPayment = function(req, res) {
 
         if(req.body.type==="incoming") {
             // FOR INCOMING NUMBERS, BUY THE NUMBER
-            twilioClient
-                .availablePhoneNumbers('US')
-                .local.list({
-                    inRegion: 'CA',
-                })
-                .then(data => {
-                    var number = data[0];
+            twilioClient.availablePhoneNumbers('US').local.list({
+                areaCode:'916'
+            }).then(data => {
+                // handle the case where there are no numbers found
+                if (data.length < 1) {
+                    throw { message: 'Oh noes! There are no 916 phone numbers!' };
+                }
+            
+                // Return promise for the call to buy a number...
+                return twilioClient.incomingPhoneNumbers.create({
+                    friendlyName: "Incoming number for user: " + user.username,
+                    phoneNumber:data[0].phoneNumber,
+                    voiceUrl: 'https://' + config.hostname + '/ivr/incomingcall'
+                });
+            }).then(purchasedNumber => {
+                // Success!  This is our final state
+                console.log('Number purchased! Phone number is: '+ purchasedNumber.phoneNumber);
 
-                    console.log("Number object: ");
-                    console.log(number);
+                // update user with payment & incoming number
+                User.update({
+                    _id: user._id
+                }, {
+                    payments: user.payments,
+                    incomingCountryCode: '+1',
+                    incomingPhoneNumber: purchasedNumber.phoneNumber.split('+1')[1],
+                    incomingCombinedPhoneNumber: purchasedNumber.phoneNumber,
+                    incomingPhoneNumberExpiration: moment().add(1, 'months'),
+                }, function(err, numberAffected, rawResponse) {
+                    if (err) {
+                        console.log('There was an error pushing incoming number & payments for: ' + user.username);
+                    }
 
+                    console.log('User updated with incoming phone number');
+
+                    // send email to user
+                    // locals to feed through to template
+                    var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': purchasedNumber};
+
+                    var plaintextEmail = "Hello " + user.name;
+                    var htmlEmail = pug.renderFile('views/email/paymentIncoming.pug', locals);
+                    var subject = "Your new incoming number with Transcord!";
+
+                    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+
+                    // send the new user to their dashboard
+                    res.render('paymentIncomingSuccess', {
+                        'user': user,
+                        'payment': paymentObject,
+                        'tim': tim,
+                        'strings': strings,
+                        
+                    });
+                });
+            }).catch(function(error) {
+                // Handle any error from any of the steps...
+                console.error('Buying the number failed. Reason: '+error.message);
+
+                // send the new user to their dashboard
+                res.render('incomingNumberFailed', {
+                    'user': user,
+                    'payment': paymentObject,
+                    'tim': tim,
+                    'strings': strings,
                     
-                    var success = twilioClient.incomingPhoneNumbers
+                });
+            }).finally(function() {
+                // This optional function is *always* called last, after all other callbacks
+                // are invoked.  It's like the "finally" block of a try/catch
+                console.log('Call buying process complete.');
+            });
+
+            /*
+            var success = twilioClient.incomingPhoneNumbers
                         .create({
                             friendlyName: "Incoming number for user: " + user.username,
-                            phoneNumber: '+15005550006', // number.phoneNumber,
+                            areaCode:  "916",
                             voiceUrl: 'https://' + config.host + '/ivr/incomingcall'
                         })
-                        .then(function(result) {
-                            console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username);
+                        .then(function(incomingPhoneNumber) {
+                            console.log('Registered incoming number: ' + incomingPhoneNumber.phoneNumber + ' for: ' + user.username);
 
                             // update user with payment & incoming number
                             User.update({
@@ -170,8 +230,8 @@ dashController.processPayment = function(req, res) {
                             }, {
                                 payments: user.payments,
                                 incomingCountryCode: '+1',
-                                incomingPhoneNumber: number.phoneNumber.split('+1')[1],
-                                incomingCombinedPhoneNumber: number.phoneNumber,
+                                incomingPhoneNumber: incomingPhoneNumber.phoneNumber.split('+1')[1],
+                                incomingCombinedPhoneNumber: incomingPhoneNumber.phoneNumber,
                                 incomingPhoneNumberExpiration: moment().add(1, 'months'),
                             }, function(err, numberAffected, rawResponse) {
                                 if (err) {
@@ -182,7 +242,7 @@ dashController.processPayment = function(req, res) {
         
                                 // send email to user
                                 // locals to feed through to template
-                                var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': number};
+                                var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': incomingPhoneNumber};
         
                                 var plaintextEmail = "Hello " + user.name;
                                 var htmlEmail = pug.renderFile('views/email/paymentIncoming.pug', locals);
@@ -199,8 +259,8 @@ dashController.processPayment = function(req, res) {
                                     
                                 });
                             });
-                        });
-                }).done();
+                        })
+                        .done(); */
         } else {
             /******* THIS IS FOR REGULAR PAMENTS */
             // TO DO: Update new balance

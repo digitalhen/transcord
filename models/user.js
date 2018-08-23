@@ -72,7 +72,8 @@ const UserSchema = new mongoose.Schema({
 			date: Date, // date of request
 			used: Number, // 1 == used, 0 == not used
 		}
-	]
+	],
+	dummyValue: String // used for empty unsets
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -47,7 +47,10 @@ ivrController.incomingcall = function(req, res) {
             const name = user.name;
             const voiceResponse = new VoiceResponse();
 
-            voiceResponse.say('This call will be recorded by Transcord.')
+            // check if user wants announcements
+            if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+                voiceResponse.say('This call will be recorded by Transcord.');
+            }
 
             // TODO: plug in to the database, and check the user is running
             const dial = voiceResponse.dial({
