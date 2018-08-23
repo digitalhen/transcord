@@ -7,7 +7,9 @@ block content
       div.welcome-display
         div.welcome-text
           div.welcome-title.mdl-typography--display-2 
-            img(src=tim(strings.homepage.logoUrl) alt=tim(strings.homepage.logoAltText) )
+            h1
+              a(href='https://transcord.app')
+                img(src=tim(strings.homepage.logoUrl) alt=tim(strings.homepage.logoAltText) )
           p.welcome-description.mdl-typography--headline.mdl-typography--font-thin !{tim(strings.homepage.welcome)}
           p
             a(href='/register')
