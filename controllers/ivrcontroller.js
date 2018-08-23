@@ -156,7 +156,7 @@ ivrController.callFinished = function(req, res) {
 
      const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
+    voiceResponse.say('Thank you for using Transcord. Goodbye!');
 
     voiceResponse.hangup(); 
 
@@ -245,6 +245,9 @@ ivrController.privacynotice = function(req, res) {
 
                 // TODO: check user profile to see if they have privacy notice enabled
                 if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+                    // Pause to let the person put the phone to their ear
+                    voiceResponse.pause({ length: 1 });
+
                     const gather = voiceResponse.gather({
                         action: '/ivr/privacyconnect',
                         numDigits: '1',
