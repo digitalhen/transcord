@@ -1,0 +1,38 @@
+extends layout
+
+block variables
+  title !{tim(strings.payment.title)} - Transcord
+
+block content
+  main.mdl-layout__content.bg.bg-login
+    div.login-wrapper
+      div.mdl-grid
+        div.mdl-cell.mdl-cell--6-col
+          div.mdl-card.mdl-shadow--6dp
+            div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+              h2.mdl-card__title-text !{tim(strings.payment.dialogTitle)}
+            div.mdl-card__supporting-text.mdl-grid
+              form#form-payment(novalidate role='form' method='post' data-square_application_id=square.application_id data-square_location=square.location action='/dashboard/payment')
+                div.mdl-cell.mdl-cell--12-col
+                  label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='option-1')
+                    input#option-1.mdl-radio__button(type='radio' name="amount" value=1000 checked="checked")
+                    span.mdl-radio__label $10 for incoming number service (1 month)
+                  span.error.mdl-textfield__error(for="amount") Error message goes heres
+
+                include paymentFields
+
+                input#payment-type(type="hidden" name="type" value="incoming")
+
+            div.mdl-card__actions.mdl-card--border
+              div.mdl-grid
+                button#form-payment-button.mdl-cell.mdl-cell--12-col.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(for='submit-form' onclick="requestCardNonce(event)") Buy number
+              div.mdl-grid
+                div.mdl-cell.mdl-cell--12-col
+                  a(href='/dashboard' style="float:right")
+                    button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect Skip
+
+
+  block js
+    script(type="text/javascript" src="https://js.squareup.com/v2/paymentform")
+    script(src="/js/payment.js")
+    //script(src="/js/validation.js")

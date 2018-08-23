@@ -120,7 +120,7 @@
         "title": "Payment",
         "dialogTitle": "Payment failed",
         "paymentFailed": "Sorry, your payment failed with this error: {{detail}}",
-        "button": "Try again"
+        "button": "Dashboard"
     },
     "paymentSuccess": {
         "title": "Payment",

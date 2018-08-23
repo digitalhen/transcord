@@ -143,60 +143,16 @@ userController.doRegister = function(req, res) {
 
                 emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
 
-                console.log("switch: " + req.body.incomingPhoneNumber);
-
-                // register a new number for them now -- TODO move redirect below here
-                if(req.body.incomingPhoneNumber) {
-                    twilioClient
-                        .availablePhoneNumbers('US')
-                        .local.list({
-                            inRegion: 'CA',
-                        })
-                        .then(data => {
-                            var number = data[0];
-
-                            console.log(number);
-
-                            passport.authenticate('local')(req, res, function() {
-                                res.redirect('/dashboard');
-                            });
-
-                            var success = twilio.incomingPhoneNumber
-                                .create({
-                                    friendlyName: "Incoming number for user: " + user.username,
-                                    phoneNumber: number.phoneNumber,
-                                    voiceUrl: 'https://transcord.app/ivr/incomingcall'
-                                })
-                                .then(function(result) {
-                                    console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username);
-
-                                    User.update({
-                                        _id: req.user._id
-                                    }, {
-                                        incomingCountryCode: '+1',
-                                        incomingPhoneNumber: number.phoneNumber.split('+1')[1],
-                                        incomingCombinedPhoneNumber: number.phoneNumber,
-                                        incomingPhoneNumberExpiration: moment().add(1, 'months'),
-                                    }, function(err, numberAffected, rawResponse) {
-                                        if (err) {
-                                            console.log('There was an error');
-                                        }
-
-                                        console.log('User updated with incoming phone number');
-
-                                        // send the new user to their dashboard
-                                        passport.authenticate('local')(req, res, function() {
-                                            res.redirect('/dashboard');
-                                        });
-                                    });
-                                }).done();
-                        });
-                } else {
-                    // send the new user to their dashboard
-                    passport.authenticate('local')(req, res, function() {
+                // sign the user in, and figure out where to send them
+                passport.authenticate('local')(req, res, function() {
+                    if(req.body.incomingPhoneNumber) {
+                        // collect payment for incoming number
+                        res.redirect('/dashboard/paymentIncoming');
+                    } else {
+                        // send the new user to their dashboard
                         res.redirect('/dashboard');
-                    });
-                }
+                    }
+                });
             }
     
         });

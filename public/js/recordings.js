@@ -3,7 +3,9 @@ $(document).ready(function(){
     var idNumber = $(this).attr('data-id');
     var audioId = '#audio-' + idNumber;
 
-    const player = new Plyr(audioId, {});
+    const player = new Plyr(audioId, {
+      'controls': ['play', 'progress', 'current-time', 'mute', 'settings']
+    });
   });
 
   $('.waveform').each(function() {

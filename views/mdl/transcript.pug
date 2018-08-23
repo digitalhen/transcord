@@ -40,6 +40,13 @@ block content
             else if user.recordings[0].direction == 1
               | !{tim(strings.transcript.transcriptPrefixFrom)} !{user.recordings[0].numberFromFormatted}
 
+        // if there's no transcription, give user a notice
+        if transcription.length == 0
+          div.mdl-card.mdl-cell.mdl-cell--12-col(style="border-radius:5px")
+            div.mdl-card__supporting-text
+              p No spoken words were detected by our algorithms.
+
+        // otherwise, display the transcription
         - transcription.forEach(function(line) {
           div.mdl-grid.table-grid.transcript-grid
               div(class=(line.side === 'right' ? 'mdl-layout-spacer' : '' ))

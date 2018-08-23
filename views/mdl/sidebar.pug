@@ -27,8 +27,11 @@ div.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.mdl-card__supporting-text
                 p <b>!{tim(strings.sidebar.dialOutLabel)}: </b>
                     a.phoneNumber(href="tel:+19177088094") (917) 708-8094
+                if(user.incomingPhoneNumber)
+                    p <b>!{tim(strings.sidebar.dialInLabel)}: </b>
+                        a.phoneNumber(href="tel:" + user.incomingCountryCode + user.incomingPhoneNumber) !{formatUsPhone(user.incomingPhoneNumber)}
             div.mdl-card__actions.mdl-card--border
-                a(href='/dashboard/payment' style="float:left")
+                a(href='/dashboard/paymentIncoming' style="float:left")
                     button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.sidebar.numberAction)}
 
         div.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--12-col.mdl-layout--large-screen-only

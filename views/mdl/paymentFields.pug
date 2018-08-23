@@ -1,0 +1,23 @@
+div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+    label.mdl-textfield__label.mdl-color-text--grey(for='sq-card-number') !{tim(strings.payment.cardNumberTitle)}
+    input#sq-card-number.mdl-textfield__input(type='text' name='sq-card-number')
+    span.error.mdl-textfield__error(for="sq-card-number") Error message goes heres
+
+div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--6-col
+    label.mdl-textfield__label.mdl-color-text--grey(for='sq-cvv') !{tim(strings.payment.cvvTitle)}
+    input#sq-cvv.mdl-textfield__input(type='text' name='sq-cvv')
+    span.error.mdl-textfield__error(for="sq-cvv") Error message goes heres
+
+div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--6-col
+    label.mdl-textfield__label.mdl-color-text--grey(for='sq-expiration-date') !{tim(strings.payment.expDateTitle)}
+    input#sq-expiration-date.mdl-textfield__input(type='text' name='sq-expiration-date')
+    span.error.mdl-textfield__error(for="sq-expiration-date") Error message goes heres
+
+div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+    label.mdl-textfield__label.mdl-color-text--grey(for='sq-postal-code') !{tim(strings.payment.zipTitle)}
+    input#sq-postal-code.mdl-textfield__input(type='text' name='sq-postal-code')
+    span.error.mdl-textfield__error(for="sq-postal-code") Error message goes heres
+
+input#card-nonce(type="hidden" name="nonce")
+
+input#submit-form(type='submit' class='hidden')

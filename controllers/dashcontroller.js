@@ -1,4 +1,7 @@
 let config = require('../env.json')[process.env.NODE_ENV || "development"];
+process.env.TWILIO_ACCOUNT_SID = config.twilio_account_sid; // Pass account to environment as required by api
+process.env.TWILIO_AUTH_TOKEN = config.twilio_auth_token; // Pass token to environment as required by api
+const twilioClient = require('twilio')(config.twilio_account_sid, config.twilio_auth_token);
 var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
@@ -72,6 +75,23 @@ dashController.payment = function(req, res) {
     });
 }
 
+dashController.paymentIncoming = function(req, res) {
+    if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/login');
+    }
+  
+    res.render('paymentIncoming', {
+        user: req.user,
+        square: {
+            application_id: config.square_application_id,
+            location: config.square_location
+        },
+        tim: tim,
+        strings: strings,
+    });
+}
+
 dashController.processPayment = function(req, res) {
     if (!req.user) {
         req.session.redirectTo = req.originalUrl;
@@ -121,48 +141,116 @@ dashController.processPayment = function(req, res) {
 
         user.payments.push(paymentObject);
 
-        // TO DO: Update new balance
-        if(user.balance !== 'undefined' && user.balance) {
-            user.balance = user.balance + data.transaction.tenders[0].amount_money.amount;
-        } else {
-            user.balance = data.transaction.tenders[0].amount_money.amount;
-        }
+        if(req.body.type==="incoming") {
+            // FOR INCOMING NUMBERS, BUY THE NUMBER
+            twilioClient
+                .availablePhoneNumbers('US')
+                .local.list({
+                    inRegion: 'CA',
+                })
+                .then(data => {
+                    var number = data[0];
+
+                    console.log("Number object: ");
+                    console.log(number);
+
+                    
+                    var success = twilioClient.incomingPhoneNumbers
+                        .create({
+                            friendlyName: "Incoming number for user: " + user.username,
+                            phoneNumber: '+15005550006', // number.phoneNumber,
+                            voiceUrl: 'https://' + config.host + '/ivr/incomingcall'
+                        })
+                        .then(function(result) {
+                            console.log('Registered incoming number: ' + number.phoneNumber + ' for: ' + user.username);
+
+                            // update user with payment & incoming number
+                            User.update({
+                                _id: user._id
+                            }, {
+                                payments: user.payments,
+                                incomingCountryCode: '+1',
+                                incomingPhoneNumber: number.phoneNumber.split('+1')[1],
+                                incomingCombinedPhoneNumber: number.phoneNumber,
+                                incomingPhoneNumberExpiration: moment().add(1, 'months'),
+                            }, function(err, numberAffected, rawResponse) {
+                                if (err) {
+                                    console.log('There was an error pushing incoming number & payments for: ' + user.username);
+                                }
         
-
-        // Push it to the user object
-        User.update({
-            _id: user._id
-        }, {
-            payments: user.payments,
-            balance: user.balance
-        }, function(err, numberAffected, rawResponse) {
-            if (err) {
-                console.log('There was an error');
+                                console.log('User updated with incoming phone number');
+        
+                                // send email to user
+                                // locals to feed through to template
+                                var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': number};
+        
+                                var plaintextEmail = "Hello " + user.name;
+                                var htmlEmail = pug.renderFile('views/email/paymentIncoming.pug', locals);
+                                var subject = "Your new incoming number with Transcord!";
+        
+                                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+        
+                                // send the new user to their dashboard
+                                res.render('paymentIncomingSuccess', {
+                                    'user': user,
+                                    'payment': paymentObject,
+                                    'tim': tim,
+                                    'strings': strings,
+                                    
+                                });
+                            });
+                        });
+                }).done();
+        } else {
+            /******* THIS IS FOR REGULAR PAMENTS */
+            // TO DO: Update new balance
+            if(user.balance !== 'undefined' && user.balance) {
+                user.balance = user.balance + data.transaction.tenders[0].amount_money.amount;
+            } else {
+                user.balance = data.transaction.tenders[0].amount_money.amount;
             }
-        });
-
-        console.log("Balance is now: " + user.balance);
-
-        // send email to user
-        // locals to feed through to template
-        var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings};
-
-        var plaintextEmail = "Hello " + user.name;
-        var htmlEmail = pug.renderFile('views/email/payment.pug', locals);
-        var subject = "Your payment to Transcord!";
-
-        emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
-
-
-
-		res.render('paymentSuccess', {
-            'user': user,
-            'payment': paymentObject,
-            tim: tim,
-            strings: strings,
             
-		});
+
+            // Push it to the user object
+            User.update({
+                _id: user._id
+            }, {
+                payments: user.payments,
+                balance: user.balance
+            }, function(err, numberAffected, rawResponse) {
+                if (err) {
+                    console.log('There was an error updating payments & balance for user: ' + user.username);
+                }
+            });
+
+            console.log("Balance is now: " + user.balance);
+
+            // send email to user
+            // locals to feed through to template
+            var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings};
+
+            var plaintextEmail = "Hello " + user.name;
+            var htmlEmail = pug.renderFile('views/email/payment.pug', locals);
+            var subject = "Your payment to Transcord!";
+
+            emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+
+
+
+            res.render('paymentSuccess', {
+                'user': user,
+                'payment': paymentObject,
+                'tim': tim,
+                'strings': strings,
+                
+            });
+        }
+
+        /***** TODO: HANDLE INCOMING LINE PAYMENT HERE */
+
+        
 	}, function(error) {
+        console.log(error);
         // Parse the object sent back by square, and display it to the user
         var errorsObject = JSON.parse(error.response.res.text);
         console.log("Payment failed: " + error.response.res.text);
@@ -170,8 +258,8 @@ dashController.processPayment = function(req, res) {
 		res.render('paymentFailure', {
             'user': user,
             'error': errorsObject.errors[0],
-            tim: tim,
-            strings: strings,
+            'tim': tim,
+            'strings': strings,
             
 		});
 	});
