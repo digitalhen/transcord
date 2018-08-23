@@ -45,7 +45,22 @@ emailHelper.sendEmail = function(user, subject, plaintext, html) {
     }); */
     
     sgMail.setApiKey(config.email_sendgrid);
-    sgMail.send(mailOptions);
+    sgMail.send(mailOptions)
+        .then(() => {
+            //Celebrate
+            console.log("Sent mail from: " + mailOptions.from + ", to: " + mailOptions.to + ", with subject: " + mailOptions.subject);
+        })
+        .catch(error => {
+    
+            //Log friendly error
+            console.error(error.toString());
+        
+            //Extract error msg
+            const {message, code, response} = error;
+        
+            //Extract response msg
+            const {headers, body} = response;
+        });
 }
 
 module.exports = emailHelper;
