@@ -110,7 +110,7 @@ userController.doRegister = function(req, res) {
             name: req.body.name,
             email: req.body.email,
             emailNotification: true,
-            privacyNotification: false,
+            privacyNotification: true,
             countryCode: '+1',
             phoneNumber: req.body.phoneNumber.replace(/\D/g,''),
             combinedPhoneNumber: '+1' + req.body.phoneNumber.replace(/\D/g,''),
