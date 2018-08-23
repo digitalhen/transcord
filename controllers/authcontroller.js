@@ -199,9 +199,27 @@ userController.doUpdate = function(req, res) {
         unset = {
             incomingCountryCode: '',
             incomingPhoneNumber: '',
+            incomingPhoneNumberSid: '',
             incomingCombinedPhoneNumber: '',
             incomingPhoneNumberExpiration: '',
-        };        
+        };    
+
+        twilioClient.incomingPhoneNumbers(req.user.incomingPhoneNumberSid)
+            .remove()
+            .then(incomingPhoneNumber => {
+                // Success!  This is our final state
+                console.log("Incoming phone number: " + incoming_phone_number.sid + ", removed for user: " + req.user.username);
+
+            })
+            .catch(function(error) {
+                // Handle any error from any of the steps...
+                console.error("Removing incoming phone number: " + incoming_phone_number.sid + ", removed for user: " + req.user.username + ", failed because: " + error.message);
+            })
+            .finally(function() {
+                // This optional function is *always* called last, after all other callbacks
+                // are invoked.  It's like the "finally" block of a try/catch
+                console.log('Removing incoming number process complete.');
+            });
     }
 
     User.update({

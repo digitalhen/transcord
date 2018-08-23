@@ -31,7 +31,7 @@ $(document).ready(function() {
   // lets me check if they haven't changed the value
   $.validator.addMethod("notEqual", function(value, element, param) {
     return this.optional(element) || value != $(param).val();
-    // TODO: the form still needs to be valid
+    // TODO: the form still needs to be valid 
   });
 
   var resetValidator = $('#form-reset').validate({

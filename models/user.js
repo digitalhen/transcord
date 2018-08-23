@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
 	combinedPhoneNumber: String,
 	incomingCountryCode: String,
 	incomingPhoneNumber: String,
+	incomingPhoneNumberSid: String,
 	incomingCombinedPhoneNumber: String,
 	incomingPhoneNumberExpiration: Date,
 	recordings: [ // this can be deleted by the user

@@ -93,13 +93,6 @@
 		  color: rgb(117,117,117);
 		}
 
-		.mdl-button: {
-		  color: rgb(0,0,0);
-		}
-
-		.mdl-button:hover{
-		  background-color: ;
-		}
 
 		.mdl-button:focus:not(:active){
 		  background-color: rgb(0,0,0);
@@ -237,7 +230,7 @@
 		}
 
 		.mdl-checkbox.is-focused .mdl-checkbox__focus-helper {
-			box-shadow: box-shadow:0 0 0 8px rgba(117,117,117, .1);
+			box-shadow: 0 0 0 8px rgba(117,117,117, .1);
 			background-color: rgb(117,117,117);
 		}
 

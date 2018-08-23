@@ -32,6 +32,7 @@ dashController.calls = function(req, res) {
   var startingIndex = typeof req.params.index !== 'undefined' ? req.params.index : 0
   startingIndex = numberHelper.tryParseInt(startingIndex, 0);
 
+
   res.render('dashboard', {
       user: req.user,
       startingIndex: startingIndex,
@@ -168,6 +169,7 @@ dashController.processPayment = function(req, res) {
                     payments: user.payments,
                     incomingCountryCode: '+1',
                     incomingPhoneNumber: purchasedNumber.phoneNumber.split('+1')[1],
+                    incomingPhoneNumberSid: purchasedNumber.sid,
                     incomingCombinedPhoneNumber: purchasedNumber.phoneNumber,
                     incomingPhoneNumberExpiration: moment().add(1, 'months'),
                 }, function(err, numberAffected, rawResponse) {
@@ -213,54 +215,6 @@ dashController.processPayment = function(req, res) {
                 // are invoked.  It's like the "finally" block of a try/catch
                 console.log('Call buying process complete.');
             });
-
-            /*
-            var success = twilioClient.incomingPhoneNumbers
-                        .create({
-                            friendlyName: "Incoming number for user: " + user.username,
-                            areaCode:  "916",
-                            voiceUrl: 'https://' + config.host + '/ivr/incomingcall'
-                        })
-                        .then(function(incomingPhoneNumber) {
-                            console.log('Registered incoming number: ' + incomingPhoneNumber.phoneNumber + ' for: ' + user.username);
-
-                            // update user with payment & incoming number
-                            User.update({
-                                _id: user._id
-                            }, {
-                                payments: user.payments,
-                                incomingCountryCode: '+1',
-                                incomingPhoneNumber: incomingPhoneNumber.phoneNumber.split('+1')[1],
-                                incomingCombinedPhoneNumber: incomingPhoneNumber.phoneNumber,
-                                incomingPhoneNumberExpiration: moment().add(1, 'months'),
-                            }, function(err, numberAffected, rawResponse) {
-                                if (err) {
-                                    console.log('There was an error pushing incoming number & payments for: ' + user.username);
-                                }
-        
-                                console.log('User updated with incoming phone number');
-        
-                                // send email to user
-                                // locals to feed through to template
-                                var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': incomingPhoneNumber};
-        
-                                var plaintextEmail = "Hello " + user.name;
-                                var htmlEmail = pug.renderFile('views/email/paymentIncoming.pug', locals);
-                                var subject = "Your new incoming number with Transcord!";
-        
-                                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
-        
-                                // send the new user to their dashboard
-                                res.render('paymentIncomingSuccess', {
-                                    'user': user,
-                                    'payment': paymentObject,
-                                    'tim': tim,
-                                    'strings': strings,
-                                    
-                                });
-                            });
-                        })
-                        .done(); */
         } else {
             /******* THIS IS FOR REGULAR PAMENTS */
             // TO DO: Update new balance

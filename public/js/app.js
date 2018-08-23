@@ -9,6 +9,8 @@ $(document).ready(function(){
       {
           window.location=this.getAttribute("href");
           return false
-      }
+      } 
   }
+
+  // test
 });

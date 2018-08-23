@@ -36,7 +36,7 @@ $(document).ready(function(){
       $('.messageContainer').removeClass('dimmed');
     });
 
-    wavesurfer.on('audioprocess', function (percents) {
+    wavesurfer.on('audioprocess', function (percents) { 
       var currentTime = wavesurfer.getCurrentTime();
       var found = null;
       
