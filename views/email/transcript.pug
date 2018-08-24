@@ -17,6 +17,8 @@ block content
                         tr(style="height:20px")
                         tr
                           td
+                            if transcription.length == 0
+                              p No spoken words were detected by our algorithms. 
                             - transcription.forEach(function(line) {
                                 div(style='padding: 0px;margin: inherit;display: flex;')
                                   div
