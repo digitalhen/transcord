@@ -197,7 +197,7 @@ a img {
 
 .welcome-section {
   position: relative;
-  background: url("../../img/red-phone.jpg") right bottom no-repeat;
+  background: url("../../img/red-phone.jpg") right center no-repeat;
   background-size: cover;
   height: 100%;
 }
