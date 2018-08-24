@@ -264,14 +264,18 @@ a img {
   min-height: 300px;
 }
 
+.pricing-section .pricing-display {
+  display: flex;
+  align-items: center;
+}
+
 .pricing-section .pricing-display .mdl-grid {
   padding: 40px 0;
   max-width: 1200px;
 }
 
 .pricing-section .pricing-display .mdl-grid .price-container {
-  max-width: 300px;
-  min-height: 300px;
+  min-height: 370px;
   background-color: #ffe5e3;
   border: 1px solid #ff5252;
   box-shadow: inset 0 0 0 2px #ff5252;
@@ -286,6 +290,10 @@ a img {
   margin: 0px;
   color: #ff5252;
   font-weight: 600;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-details {
+  min-height: 150px;
 }
 
 .pricing-section .pricing-display .mdl-grid .price-container .price-details .price-price {
@@ -303,6 +311,10 @@ a img {
   font-weight: 300;
   font-size: 12px;
   padding-right: 5px;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-button {
+  text-align: center;
 }
 
 .features-section {

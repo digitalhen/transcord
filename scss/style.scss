@@ -276,13 +276,16 @@ a img {
   min-height:300px;
 
   .pricing-display {
+    
+    display: flex;
+    align-items: center;
+
     .mdl-grid {
       padding:40px 0;
       max-width: 1200px;
 
       .price-container {
-        max-width: 300px;
-        min-height: 300px;
+        min-height: 370px;
         background-color: rgb(255, 229, 227);
         border: 1px solid rgba(255,82,82,1);
         box-shadow: inset 0 0 0 2px rgba(255,82,82,1);
@@ -299,6 +302,8 @@ a img {
         }
 
         .price-details {
+          min-height: 150px;
+
           .price-price {
             margin: 0px;
             color: rgba(255,82,82,1);
@@ -315,6 +320,10 @@ a img {
               padding-right: 5px;
             }
           }
+        }
+
+        .price-button {
+          text-align: center;
         }
 
         

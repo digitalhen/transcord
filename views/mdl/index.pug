@@ -63,8 +63,7 @@ block content
     div#pricing.pricing-section
       div.pricing-display
         div.mdl-grid
-          div.mdl-layout-spacer 
-          div.price-container.mdl-cell.mdl-cell--3-col.mdl-cell--12-col-tablet
+          div.price-container.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.price-top
               h4.price-title Basic
               p Information about the price plan
@@ -77,7 +76,11 @@ block content
               p
                 i.material-icons keyboard_arrow_right
                 | Instant transcriptions
-          div.price-container.mdl-cell.mdl-cell--3-col.mdl-cell--12-col-tablet
+            div.price-button
+              p
+                a(href='/register')
+                  button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.homepage.calltoactionButton)}
+          div.price-container.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.price-top
               h4.price-title Full
               p Pre-pay $50 up front, and get discounted calling rates.
@@ -93,7 +96,11 @@ block content
               p
                 i.material-icons keyboard_arrow_right
                 | Prioritized support
-          div.price-container.mdl-cell.mdl-cell--3-col.mdl-cell--12-col-tablet
+            div.price-button
+              p
+                a(href='mailto:support@transcord.app')
+                  button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Contact support
+          div.price-container.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
             div.price-top
               h4.price-title Incoming number
               p Records all incoming calls
@@ -109,12 +116,15 @@ block content
               p
                 i.material-icons keyboard_arrow_right
                 | An optional privacy notice
-          div.mdl-layout-spacer 
+            div.price-button
+              p
+                a(href='/register')
+                  button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white Register to subscribe
     div.calltoaction-section
       div.calltoaction-display
         div.calltoaction-text
           p.mdl-typography--headline.mdl-typography--font-thin !{tim(strings.homepage.calltoaction)}
-          p
+          //p
             a(href='/register')
               button.mdl-button--raised.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white !{tim(strings.homepage.calltoactionButton)}
     include footer
