@@ -10,6 +10,10 @@ body {
   margin: 0;
 } 
 
+html, body {
+  font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+}
+
 #overlay {
   position:fixed;
   z-index:99999;
@@ -64,7 +68,7 @@ a img {
       vertical-align: top;
       height: 30px;
 
-      font-family: "Roboto","Helvetica","Arial",sans-serif;
+      font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
       font-size: 1.2em;
   
       a {
