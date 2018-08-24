@@ -46,7 +46,7 @@
             }
         ],
         "calltoaction": "Instant call recording and transcription",
-        "calltoactionButton": "Start with free credit"
+        "calltoactionButton": "$5 free credit"
     },
     "login": {
         "title": "User login",
