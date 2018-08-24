@@ -259,6 +259,52 @@ a img {
   padding-top: 8px;
 }
 
+.pricing-section {
+  background-color: rgba(187, 83, 76, 0.8);
+  min-height: 300px;
+}
+
+.pricing-section .pricing-display .mdl-grid {
+  padding: 40px 0;
+  max-width: 1200px;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container {
+  max-width: 300px;
+  min-height: 300px;
+  background-color: #ffe5e3;
+  border: 1px solid #ff5252;
+  box-shadow: inset 0 0 0 2px #ff5252;
+  padding: 2.25em;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-top {
+  min-height: 85px;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-top .price-title {
+  margin: 0px;
+  color: #ff5252;
+  font-weight: 600;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-details .price-price {
+  margin: 0px;
+  color: #ff5252;
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-details p {
+  margin: 0;
+}
+
+.pricing-section .pricing-display .mdl-grid .price-container .price-details p i.material-icons {
+  font-weight: 300;
+  font-size: 12px;
+  padding-right: 5px;
+}
+
 .features-section {
   background-color: white;
 }

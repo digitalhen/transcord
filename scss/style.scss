@@ -271,6 +271,58 @@ a img {
   }
 }
 
+.pricing-section {
+  background-color:rgba(187,83,76,0.8);
+  min-height:300px;
+
+  .pricing-display {
+    .mdl-grid {
+      padding:40px 0;
+      max-width: 1200px;
+
+      .price-container {
+        max-width: 300px;
+        min-height: 300px;
+        background-color: rgb(255, 229, 227);
+        border: 1px solid rgba(255,82,82,1);
+        box-shadow: inset 0 0 0 2px rgba(255,82,82,1);
+        padding: 2.25em;
+
+        .price-top {
+          min-height: 85px;
+
+          .price-title {
+            margin: 0px;
+            color: rgba(255,82,82,1);
+            font-weight: 600;
+          }
+        }
+
+        .price-details {
+          .price-price {
+            margin: 0px;
+            color: rgba(255,82,82,1);
+            font-weight: 600;
+            padding: 10px 0;
+          }
+  
+          p {
+            margin: 0;
+  
+            i.material-icons {
+              font-weight: 300;
+              font-size: 12px;
+              padding-right: 5px;
+            }
+          }
+        }
+
+        
+      }
+    }
+  }
+}
+
 .features-section {
   background-color:white;
 
