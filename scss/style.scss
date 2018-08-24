@@ -151,6 +151,7 @@ a img {
     a.phoneNumber {
       text-decoration:none;
       color:inherit;
+      font-weight: 400;
     }
 
     @media screen and (max-width: '839px') {
@@ -474,6 +475,16 @@ a img {
   .mdl-card__supporting-text {
     position: relative;
     overflow: visible;
+
+    .waveform {
+      padding-top: 10px;
+    }
+
+    a.phoneNumber {
+      text-decoration:none;
+      color:inherit;
+      font-weight: 400;
+    }
 
     .transcript-play-button {
       position: absolute;

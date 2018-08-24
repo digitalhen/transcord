@@ -138,6 +138,7 @@ a img {
 .grouped-cards .mdl-card a.phoneNumber {
   text-decoration: none;
   color: inherit;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 839px) {
@@ -451,6 +452,16 @@ a img {
 .transcript-control-card .mdl-card__supporting-text {
   position: relative;
   overflow: visible;
+}
+
+.transcript-control-card .mdl-card__supporting-text .waveform {
+  padding-top: 10px;
+}
+
+.transcript-control-card .mdl-card__supporting-text a.phoneNumber {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 400;
 }
 
 .transcript-control-card .mdl-card__supporting-text .transcript-play-button {
