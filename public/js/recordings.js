@@ -49,21 +49,16 @@ $(document).ready(function(){
         var time = parseFloat($(this).attr('data-time'));
         console.log(currentTime + " vs " + time + ": " + (time<currentTime));
         if (time < currentTime) {
+          // we've found a match but keep checking
           found = $(this);
 
-          // special handling for the last one, or the only one, so let's highlight that and quit.
-          if($(this) === $('.messageContainer').last()) {
+          if(found[0] === $('.messageContainer').last()[0]) {
+            // special handling for the last one
             found.removeClass('dimmed');
             return false;
           }
         } else if (found !== null) {
-
-          //$('main').scrollTop(found.offset().top - 50);
-
-          /*
-          $('main').stop().animate({
-              scrollTop: found.offset().top - 50
-          }, 200); */
+          // we've gone beyond where the audio is, so let's stop and mark the last good one as where we are
           found.removeClass('dimmed');
           return false;
         }
