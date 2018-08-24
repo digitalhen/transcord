@@ -271,7 +271,7 @@ a img {
 
 .pricing-section .pricing-display .mdl-grid {
   padding: 40px 0;
-  max-width: 1200px;
+  max-width: 1000px;
 }
 
 .pricing-section .pricing-display .mdl-grid .price-container {
@@ -283,7 +283,7 @@ a img {
 }
 
 .pricing-section .pricing-display .mdl-grid .price-container .price-top {
-  min-height: 85px;
+  min-height: 105px;
 }
 
 .pricing-section .pricing-display .mdl-grid .price-container .price-top .price-title {
