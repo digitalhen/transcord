@@ -126,8 +126,6 @@ dashController.processPayment = function(req, res) {
         
     transactions_api.charge(config.square_location, request_body).then(function(data) {        
         // TO DO: Payment WAS successful. Update database
-
-        console.log(data.transaction.tenders[0]);
         
         console.log("Saving payment to database...")
         var paymentObject = {
