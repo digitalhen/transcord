@@ -436,11 +436,32 @@ a img {
   background-color: #ff5252;
 }
 
-.recording-card .mdl-card__supporting-text .recording-play-button {
+.recording-card .mdl-card__actions .recording-play-button {
   position: absolute;
   left: 25px;
   bottom: 80px;
   z-index: 100;
+}
+
+.recording-card .mdl-card__actions .delete-button i.material-icons.rotate {
+  -webkit-animation: BigRocking 1s infinite linear;
+  top: 12.5%;
+  left: 12.5%;
+}
+
+@-webkit-keyframes BigRocking {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  33% {
+    -webkit-transform: rotate(-180deg);
+  }
+  66% {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(-360deg);
+  }
 }
 
 .transcript-control-card {

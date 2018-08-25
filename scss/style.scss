@@ -456,6 +456,10 @@ a img {
       color: white;
       background-color: $accent;
     }
+  }
+
+  .mdl-card__actions {
+    
     
 
     .recording-play-button {
@@ -463,6 +467,26 @@ a img {
       left: 25px;
       bottom: 80px;
       z-index: 100;
+    }
+
+    .delete-button {
+      i.material-icons {
+        
+        &.rotate {
+            -webkit-animation: BigRocking 1s infinite linear;
+
+
+            top: 12.5%;
+            left: 12.5%;
+        }
+
+        @-webkit-keyframes BigRocking { 
+          from { -webkit-transform: rotate(0deg); } 
+          33% { -webkit-transform: rotate(-180deg); } 
+          66% { -webkit-transform: rotate(0deg); } 
+          to {-webkit-transform: rotate(-360deg); } }
+      }
+        
     }
   }
 }

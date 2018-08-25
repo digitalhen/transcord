@@ -329,6 +329,39 @@ dashController.transcript = function(req, res) {
   });
 }
 
+dashController.ajaxDeleteRecording = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
+    if(!req.user) {
+        return res.status(404).send('Not found');
+    } 
+
+    User.update({
+        _id: req.user._id
+    }, {
+        $pull: {"recordings": {"recordingSid": req.params.recordingSid }}
+    }, function(err, numberAffected, rawResponse) {
+        if (err) {
+            return res.send(JSON.stringify({
+                "status": "Error",
+                "message": "There was an error trying to delete the recording"
+            }))
+
+            console.log('There was an error trying to delete the recording');
+        }
+
+        var response = {
+            "recordingSid": req.params.recordingSid,
+            "status": "Success",
+            "message": "Recording deleted"
+        };
+    
+        res.send(JSON.stringify(response));
+    });
+    
+    
+}
+
 dashController.deleteRecording = function(req, res) {
     if (!req.user) {
         req.session.redirectTo = req.originalUrl;

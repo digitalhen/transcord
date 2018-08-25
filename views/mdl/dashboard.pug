@@ -22,7 +22,7 @@ block content
           - var paginationCount=10;
           - var pageNumber=Math.ceil(user.recordings.length/paginationCount); // how many pages 
           - user.recordings.reverse().slice(i,i+paginationCount).forEach(function(recording) {
-            div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col
+            div.recording-card.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--12-col(data-recordingSid=recording.recordingSid)
               div.mdl-card__supporting-text
                 //button.recording-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored(id='button-' + i)
                   i.material-icons.play(id='button-text-' + i) play_arrow
@@ -54,9 +54,8 @@ block content
                     a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                       button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
                         i.material-icons save_alt
-                    a(href='/dashboard/deleteRecording/' + recording.recordingSid)
-                      button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                        i.material-icons delete
+                    button.delete-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary(data-recordingSid=recording.recordingSid)
+                      i.material-icons delete
                     a(href='/dashboard/transcript/' + recording.recordingSid)
                       button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.transcriptButton)}
             - i++;

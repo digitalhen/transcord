@@ -1,4 +1,25 @@
 $(document).ready(function(){
+  // handle the deletes here but only on the dashboard
+  $('.recording-card .delete-button').click(function() {
+    console.log($(this).attr('data-recordingSid'));
+
+    $(this).children('i.material-icons').text('autorenew').addClass('rotate');
+
+    $.post( "/dashboard/ajaxDeleteRecording/" + $(this).attr('data-recordingSid'), function( data ) {
+      console.log(data);
+      
+      if(data.status==="Success") {
+        $('.recording-card[data-recordingSid="' + data.recordingSid + '"]').fadeOut('slow', function() {
+          $(this).remove();
+        });
+      } else if (data.status==="Error") {
+        console.log(data.status.message);
+      }
+    });
+
+  });
+
+  // audios go on the dashboard
   $('.audio').each(function() {
     var idNumber = $(this).attr('data-id');
     var audioId = '#audio-' + idNumber;
@@ -8,6 +29,8 @@ $(document).ready(function(){
     });
   });
 
+
+  // waveforms go on the transcript page
   $('.waveform').each(function() {
     var idNumber = $(this).attr('data-id');
     var waveformId = '#waveform-' + idNumber;
