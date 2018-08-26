@@ -64,7 +64,6 @@ block content
           if user.recordings.length > paginationCount
             div.pagination-container.mdl-card.mdl-cell.mdl-cell--12-col
                   - var y = 0;
-                  - console.log(user.recordings.length)
                   ul.pagination.mdl-list
                     li(class=(startingIndex==0 ? "disabled" : false))
                       if startingIndex !== 0
