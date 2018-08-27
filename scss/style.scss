@@ -445,7 +445,7 @@ a img {
 
   .mdl-card__supporting-text {
     padding: 0px;
-    width: 97%;
+    width: calc(100% - 16px);
     padding: 5px 8px;
 
     .direction-icon {
