@@ -513,7 +513,7 @@ a img {
 
 .transcript-grid .mdl-card .mdl-card__supporting-text {
   padding: 5px 8px;
-  width: 97%;
+  width: calc(100% - 16px);
 }
 
 .transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer.dimmed {
