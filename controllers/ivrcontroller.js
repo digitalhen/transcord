@@ -246,19 +246,19 @@ ivrController.privacynotice = function(req, res) {
                 // TODO: check user profile to see if they have privacy notice enabled
                 if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
                     // Pause to let the person put the phone to their ear
-                    voiceResponse.pause({ length: 1 });
+                    //voiceResponse.pause({ length: 1 });
 
-                    const gather = voiceResponse.gather({
+                    /*const gather = voiceResponse.gather({
                         action: '/ivr/privacyconnect',
                         numDigits: '1',
                         method: 'POST',
-                    });
+                    }); */
 
-                    gather.say("You have an incoming call from " + name + ". Please press any key to accept.");
+                    voiceResponse.say("You have an incoming call from " + name + ". This call will be recorded by Transcord. Please visit transcord dot app to learn more.");
 
-                    voiceResponse.say("No response received, goodbye.");
+                    //voiceResponse.say("No response received, goodbye.");
 
-                    voiceResponse.hangup();
+                    //voiceResponse.hangup();
                 }
 
 
