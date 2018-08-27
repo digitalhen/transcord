@@ -504,6 +504,7 @@ a img {
 
 .transcript-grid .mdl-card.right {
   background-color: #ff5252;
+  text-align: right;
 }
 
 .transcript-grid .mdl-card.right .mdl-card__supporting-text {
