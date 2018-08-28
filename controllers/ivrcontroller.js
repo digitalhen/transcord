@@ -558,7 +558,7 @@ function buildTranscription(leftResults, rightResults) {
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
 
-  //user.recordings.push(recordingObject);
+  user.recordings.push(recordingObject);
 
   // look up the user and recording, if we don't find it, then push it
   User.update({
@@ -586,9 +586,7 @@ function saveToDatabase(user, recordingObject) {
           User.update({
             _id: user._id
           }), {
-              "$push": {
-                  "recordings": recordingObject
-              }
+              "recordings": user.recordings
           }, function(err, numberAffected, rawResponse) {
             if (err) {
                 throw new Error('There was an error inserting a new recording object');
