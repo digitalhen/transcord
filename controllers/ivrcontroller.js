@@ -562,14 +562,8 @@ function saveToDatabase(user, recordingObject) {
 
   // look up the user and recording, if we don't find it, then push it
   User.update({
-      _id: user._id,
-      recordings: {
-          $all: [{
-              "$elemMatch": {
-                  "recordingSid": recordingObject.recordingSid
-              }
-          }]
-      }
+      "_id": user._id,
+      "recording.recordingSid": recordingObject.recordingSid
   }, {
       $set: {
           "recordings.$": recordingObject
