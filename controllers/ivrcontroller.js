@@ -558,14 +558,14 @@ function buildTranscription(leftResults, rightResults) {
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
 
-  user.recordings.push(recordingObject);
+  //user.recordings.push(recordingObject);
 
   // look up the user and recording, if we don't find it, then push it
   User.update({
       "_id": user._id,
       "recording.recordingSid": recordingObject.recordingSid
   }, {
-      $set: {
+      "$set": {
           "recordings.$": recordingObject
       }
   }, function(err, numberAffected, rawResponse) {
@@ -579,11 +579,14 @@ function saveToDatabase(user, recordingObject) {
 
       if(numberAffected.nModified==0) {
           // the recording object doesn't exist, so we need to insert it
+          console.log("Going to try and create a new recording object");
+
+          console.log(user);
 
           User.update({
             _id: user._id
           }), {
-              $push: {
+              "$push": {
                   "recordings": recordingObject
               }
           }, function(err, numberAffected, rawResponse) {
