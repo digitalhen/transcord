@@ -579,6 +579,10 @@ function saveToDatabase(user, recordingObject) {
          throw new Error('There was an error looking for an existing recording object');
       }
 
+      console.log("numAffected: ");
+      console.log(numberAffected);
+      console.log("rawResponse: " + rawResponse);
+
       if(numberAffected.nModified==0) {
           // the recording object doesn't exist, so we need to insert it
 
