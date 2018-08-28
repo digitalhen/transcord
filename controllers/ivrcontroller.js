@@ -325,30 +325,35 @@ function processRecordings(recordingSid, recordingUrl, direction) {
                             recordingUrl: recordingUrl,
                         };
 
-                        // find the user and download the files
-                        if(direction==0) { // this is an outgoing call, so we're looking up their phone number
-                            User.findOne({
+                        // now build an object to search for the user and process the files
+                        var userLookupObject = {};
+
+                        if(direction==0) {
+                            userLookupObject = {
                                 combinedPhoneNumber: parentCall.from
-                            })
-                            .then(function(user) {
-                                if (user == null) {
-                                    // TODO: we should never reach here?
-                                } else {
-                                    processFiles(user, recordingObject);
-                                }
-                            });
-                        } else if(direction==1) { // this is the incoming number, so we're looking for the number *called*
-                            User.findOne({
+                            };
+                        } else if(direction==1) {
+                            userLookupObject = {
                                 incomingCombinedPhoneNumber: parentCall.to
-                            })
+                            };
+                        }
+
+                        // find the right kind of user and process the files.
+                        User.findOne(userLookupObject)
                             .then(function(user) {
                                 if (user == null) {
-                                    // TODO: we should never reach here?
-                                } else {
-                                    processFiles(user, recordingObject);
+                                    throw new Error("User not found");
                                 }
+
+                                // mark progress
+                                recordingObject.processingStatus = 0; // initial status
+                                    
+                                // save progress to the database
+                                saveToDatabase(user, recordingObject);
+
+                                // process the files
+                                processFiles(user, recordingObject);
                             });
-                        }
 
 
                         // TODO, fix for conference calls with multiple child calls
@@ -443,6 +448,7 @@ function runTranscription(user, recordingObject) {
       if(status.left && status.right) {
         var transcription = buildTranscription(leftResults, rightResults);
         recordingObject.transcription = JSON.stringify(transcription);
+        recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
         console.log(transcription);
         generateEmail(user, recordingObject);
@@ -470,6 +476,7 @@ function runTranscription(user, recordingObject) {
 
         if(status.left && status.right) {
           var transcription = buildTranscription(leftResults, rightResults);
+          recordingObject.processingStatus = 2; // finished (with transcription)
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           console.log(transcription);
@@ -549,19 +556,60 @@ function buildTranscription(leftResults, rightResults) {
 }
 
 function saveToDatabase(user, recordingObject) {
-  console.log("Finishing processing files for user: " + user.username + ", pushing to database & sending email.");
+  console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
 
   user.recordings.push(recordingObject);
 
+  // look up the user and recording, if we don't find it, then push it
   User.update({
-      _id: user._id
+      _id: user._id,
+      recordings: {
+          $all: [{
+              "$elemMatch": {
+                  "recordingSid": recordingObject.recordingSid
+              }
+          }]
+      }
   }, {
-      recordings: user.recordings
+      $set: {
+          "recordings.$": recordingObject
+      }
   }, function(err, numberAffected, rawResponse) {
       if (err) {
-          console.log('There was an error');
+         throw new Error('There was an error looking for an existing recording object');
+      }
+
+      if(numberAffected==0) {
+          // the recording object doesn't exist, so we need to insert it
+
+          User.update({
+            _id: user._id
+          }), {
+              $push: {
+                  "recordings": recordingObject
+              }
+          }, function(err, numberAffected, rawResponse) {
+            if (err) {
+                throw new Error('There was an error inserting a new recording object');
+            }
+
+            console.log('Successfully inserted new recording object');
+          }
+      } else {
+        console.log('Successfully updated new recording object');
       }
   });
+
+  /*
+  {
+        passwordResets: {
+            $all: [{
+                "$elemMatch": {
+                    "token": token,
+                }
+            }]
+        }
+    } */
 }
 
 function processFiles(user, recordingObject) {
@@ -612,8 +660,16 @@ function processFiles(user, recordingObject) {
 
                                       status.main = true;
 
-                                      if(status.main && status.left && status.right)
+                                      if(status.main && status.left && status.right) {
+                                        // mark progress
+                                        recordingObject.processingStatus = 1; // audio complete
+                                        
+                                        // save progress to the database
+                                        saveToDatabase(user, recordingObject);
+
+                                        // now try and run the transcription
                                         runTranscription(user, recordingObject);
+                                    }
                                   });
                                 });
                             });
@@ -638,8 +694,17 @@ function processFiles(user, recordingObject) {
 
                                       status.right = true;
 
-                                      if(status.main && status.left && status.right)
+                                      if(status.main && status.left && status.right) {
+                                        // mark progress
+                                        recordingObject.processingStatus = 1; // audio complete
+                                        
+                                        // save progress to the database
+                                        saveToDatabase(user, recordingObject);
+
+                                        // now try and run the transcription
                                         runTranscription(user, recordingObject);
+                                    
+                                    }
                                   });
                                 });
                             });
@@ -664,8 +729,20 @@ function processFiles(user, recordingObject) {
 
                                         status.left = true;
 
-                                        if(status.main && status.left && status.right)
-                                          runTranscription(user, recordingObject);
+                                        if(status.main && status.left && status.right) {
+                                            // mark progress
+                                            recordingObject.processingStatus = 1; // audio complete
+                                            
+                                            // save progress to the database
+                                            saveToDatabase(user, recordingObject);
+
+                                            // now try and run the transcription
+                                            runTranscription(user, recordingObject);
+                                        }
+                                        
+
+                                
+                                            
                                     });
                                 });
                             });

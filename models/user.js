@@ -42,6 +42,7 @@ const UserSchema = new mongoose.Schema({
 			transcription: String,
 			transcriptionLeft: String,
 			transcriptionRight: String,
+			processingStatus: Number
 		}
 	],
 	balance: Number,
