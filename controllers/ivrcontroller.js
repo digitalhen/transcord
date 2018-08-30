@@ -131,19 +131,33 @@ ivrController.dialer = function(req, res) {
 };
 
 ivrController.incomingCallFinished = function(req, res) {
-  const userLookup = {
+    const userLookup = {
           incomingCombinedPhoneNumber: req.body.Called
       };
 
-  billCall(userLookup, req, 1);
+    billCall(userLookup, req, 1);
 
-  const voiceResponse = new VoiceResponse();
+    const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
+    
 
-    voiceResponse.hangup();
+    // let's check if the user has privacy on or off
+    User.findOne(userLookup)
+    .then(function(user) {
+        if (user == null) {
+            // Can't find a user so let's just hang up
+        } else {
+            if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+                voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
+            }
+        }
 
-    res.send(voiceResponse.toString());
+        voiceResponse.hangup();
+        return res.send(voiceResponse.toString());
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 
 }
 
