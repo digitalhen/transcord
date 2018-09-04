@@ -47,8 +47,8 @@ ivrController.incomingcall = function(req, res) {
             const name = user.name;
             const voiceResponse = new VoiceResponse();
 
-            // check if user wants announcements
-            if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+            // check if user wants announcements OR the call will be blocked (and we MUST record)
+            if((user.privacyNotification !== 'undefined' && user.privacyNotification) || (user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1)) {
                 voiceResponse.say('This call will be recorded by Transcord.');
             }
 
@@ -60,7 +60,12 @@ ivrController.incomingcall = function(req, res) {
                 method: 'POST'
             });
 
-            dial.number(user.phoneNumber);
+            // if on block list, then forward it back to the same number, else, call the user
+            if(user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1) {
+                dial.number(numberFrom);
+            } else {
+                dial.number(user.phoneNumber);
+            }
 
             res.send(voiceResponse.toString());
         }
