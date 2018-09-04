@@ -62,8 +62,10 @@ ivrController.incomingcall = function(req, res) {
 
             // if on block list, then forward it back to the same number, else, call the user
             if(user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1) {
+                console.log("Caller is blocked, forward the call back to themselves...");
                 dial.number(numberFrom);
             } else {
+                console.log("Forwarding the call to the user...");
                 dial.number(user.phoneNumber);
             }
 
