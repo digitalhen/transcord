@@ -42,7 +42,7 @@ ivrController.incomingcall = function(req, res) {
     })
     .then(function(user) {
         if (user == null) {
-            res.send(reject());
+            return res.send(reject());
         } else {
             const name = user.name;
             const voiceResponse = new VoiceResponse();
@@ -69,7 +69,7 @@ ivrController.incomingcall = function(req, res) {
                 dial.number(user.phoneNumber);
             }
 
-            res.send(voiceResponse.toString());
+            return res.send(voiceResponse.toString());
         }
     })
     .catch(function(err) {
