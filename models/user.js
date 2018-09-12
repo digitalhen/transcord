@@ -74,7 +74,7 @@ const UserSchema = new mongoose.Schema({
 			used: Number, // 1 == used, 0 == not used
 		}
 	],
-	blockList: [
+	blockList: [  // list of phone numbers to block
 		String
 	],
 	dummyValue: String // used for empty unsets

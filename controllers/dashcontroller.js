@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var User = require("../models/user");
 var squareConnect = require('square-connect');
+var transcriptionHelper = require('../helpers/transcriptionHelper');
 const https   = require('https');
 const moment = require('moment');
 const pug = require('pug');
@@ -31,6 +32,8 @@ dashController.calls = function(req, res) {
   // see if we have a starting index, try to parse, and in both cases set it to 0
   var startingIndex = typeof req.params.index !== 'undefined' ? req.params.index : 0
   startingIndex = numberHelper.tryParseInt(startingIndex, 0);
+
+  // TODO: combine the transcripts here?
 
 
   res.render('dashboard', {
@@ -258,8 +261,6 @@ dashController.processPayment = function(req, res) {
             });
         }
 
-        /***** TODO: HANDLE INCOMING LINE PAYMENT HERE */
-
         
 	}, function(error) {
         console.log(error);
@@ -317,8 +318,13 @@ dashController.transcript = function(req, res) {
 
   if(req.user.recordings.length == 0) 
     res.redirect('/dashboard');
+  
     
   var transcription = JSON.parse(req.user.recordings[0].transcription);
+
+  // TODO: rebuild new transcription here
+  var transcription = transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight));
+  console.log(transcription);
 
   res.render('transcript', {
       user: req.user,

@@ -14,6 +14,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const pug = require('pug');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
+const transcriptionHelper = require('../helpers/transcriptionHelper');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 
@@ -462,7 +463,7 @@ function runTranscription(user, recordingObject) {
       recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
       if(status.left && status.right) {
-        var transcription = buildTranscription(leftResults, rightResults);
+        var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
         recordingObject.transcription = JSON.stringify(transcription);
         saveToDatabase(user,recordingObject);
         console.log(transcription);
@@ -490,7 +491,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcriptionRight = JSON.stringify(response.results);
 
         if(status.left && status.right) {
-          var transcription = buildTranscription(leftResults, rightResults);
+          var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           console.log(transcription);
@@ -503,71 +504,7 @@ function runTranscription(user, recordingObject) {
       });
 }
 
-function buildTranscription(leftResults, rightResults) {
-    // this builds the objects to contains the transcriptions
-  console.log("Building transcription...");
 
-  var combinedTranscript = [];
-
-  // go through the two seperate transcripts and combined them together
-  leftResults.forEach(function (result) {
-    var newLine = {};
-
-    console.log(JSON.stringify(result.alternatives));
-
-    // if there are any words, lets grab them
-    if(result.alternatives.length > 0 && result.alternatives[0].words.length > 0) {
-      newLine.side = 'left';
-
-      // compute the float start time
-      var startTimeSecond, startTimeNano = "0";
-
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
-        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
-
-      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
-        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
-
-      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
-
-
-      newLine.transcript = result.alternatives[0].transcript;
-
-      combinedTranscript.push(newLine);
-    }
-
-  });
-
-  rightResults.forEach(function (result) {
-    var newLine = {};
-
-    // if there are any words, lets grab them
-    if(result.alternatives.length > 0 && result.alternatives[0].words.length > 0) {
-      newLine.side = 'right';
-
-      // compute the float start time
-      var startTimeSecond, startTimeNano = "0";
-
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
-        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
-
-      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
-        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
-
-      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
-
-      newLine.transcript = result.alternatives[0].transcript;
-
-      combinedTranscript.push(newLine);
-    }
-  });
-
-  // sort the array so the two cominbed transcripts are in order
-  combinedTranscript.sort(function(a,b) { return a.startTime - b.startTime; }); // sorts by startTime;
-
-  return combinedTranscript;
-
-}
 
 function saveToDatabase(user, recordingObject) {
   console.log("Finishing processing files for user: " + user.username + ", pushing to database & sending email.");
