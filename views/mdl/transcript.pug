@@ -53,7 +53,6 @@ block content
         - var line = "";
         - var startTime = "";
         - for(var i=0; i<=transcription.length; i++) {
-          - if(previousWord !== null) console.log(previousWord.lineBreak);
           - if(line.length > 0 && (previousWord !== null && (previousWord.lineBreak || transcription[i].side !== previousWord.side))) { // we have something to display and it's a break
               - console.log("Spitting out the word");
               div.mdl-grid.table-grid.transcript-grid
@@ -62,7 +61,7 @@ block content
                   div.mdl-card.mdl-shadow--2dp.mdl-cell.mdl-cell--10-col(class=(previousWord.side === 'right' ? 'left' : 'right') style="border-radius:5px")
                     div.mdl-card__supporting-text
                       div.messageContainer(data-time=line.startTime data-length=user.recordings[0].length)
-                        h6.transcript-title(style="font-size:12px") #{line.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
+                        h6.transcript-title(style="font-size:12px") #{previousWord.side === "left" ? user.recordings[0].numberFromFormatted : user.recordings[0].numberCalledFormatted}
                         p.transcript-text !{line}
                         //p.transcript-time #{moment.utc(line.startTime*1000).format('mm:ss')}
                 else if user.recordings[0].direction == 1
