@@ -63,7 +63,7 @@ $(document).ready(function(){
       var currentTime = wavesurfer.getCurrentTime();
       var found = null;
 
-      console.log("currentTime:" +  currentTime);
+      //console.log("currentTime:" +  currentTime);
       
       // dim everything first
       $('.word').removeClass('highlight');
@@ -98,6 +98,13 @@ $(document).ready(function(){
       }); */
 
 
+    });
+
+    $('.word').click(function() {
+      var duration = wavesurfer.getDuration();
+      var percentage = parseFloat($(this).attr('data-startTime')) / duration;
+
+      wavesurfer.seekTo(percentage);
     });
 
     $(buttonId).click(function() {

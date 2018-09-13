@@ -555,11 +555,19 @@ a img {
             font-weight: 600;
             line-height: 16px;
 
-            .word.highlight {
-              background-color: yellow;
-              padding: 0px 1px;
-              text-decoration: underline;
-              color: black;
+            .word {
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+
+              &.highlight {
+                background-color: yellow;
+                padding: 0px 1px;
+                text-decoration: underline;
+                color: black;
+              }
             }
           }
   

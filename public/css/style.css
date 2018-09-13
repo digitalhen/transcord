@@ -530,6 +530,14 @@ a img {
   line-height: 16px;
 }
 
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text .word {
+  cursor: pointer;
+}
+
+.transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text .word:hover {
+  text-decoration: underline;
+}
+
 .transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text .word.highlight {
   background-color: yellow;
   padding: 0px 1px;
