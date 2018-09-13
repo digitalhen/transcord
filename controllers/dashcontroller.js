@@ -319,12 +319,11 @@ dashController.transcript = function(req, res) {
   if(req.user.recordings.length == 0) 
     res.redirect('/dashboard');
   
-    
-  var transcription = JSON.parse(req.user.recordings[0].transcription);
+  // TODO: this is how we used to do it
+  //var transcription = JSON.parse(req.user.recordings[0].transcription);
 
-  // TODO: rebuild new transcription here
+  // TODO: we shouldn't need this really
   var transcription = transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight));
-  console.log(transcription);
 
   res.render('transcript', {
       user: req.user,

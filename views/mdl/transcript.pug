@@ -77,12 +77,10 @@ block content
           - } 
           - // let's keep processing text if there's more
           - if(i<transcription.length) {
+          -   if(line.length==0) startTime = transcription[i].startTime;
           -   previousWord = transcription[i];
           -   line = line + "<span class='word' data-startTime='" + transcription[i].startTime + "' data-endTime='" + transcription[i].endTime + "'>" + transcription[i].characters + "</span> ";
           - }
-          
-
-
         - }
 
 block js
