@@ -1,0 +1,33 @@
+extends layout
+
+block content
+                    table(style='background-color:#ffffff;text-align:center;width:100%;margin:0 auto;')
+                      tbody
+                        tr(style="height:20px")
+                        tr
+                          td(style="padding: 0px 15px")
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') 
+                              if recording.direction == 0
+                                | Call to !{recording.numberCalledFormatted}
+                              else if recording.direction == 1
+                                | Call from !{recording.numberFromFormatted}
+                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif')
+                              br 
+                              | Long Transcription
+                        tr(style="height:20px")
+                        tr
+                          td
+                            p Your call is quite long, and may need some extra time to process. We will send another email when the transcript is ready.                             
+                        tr
+                          td
+                            table(style="text-align:center;margin:0 auto")
+                              tbody
+                                tr(style="height:20px")
+                                tr
+                                  td(style="width:100px")
+                                  td(style="width:400px;text-align: center;height: 40px;background-color:rgb(68,138,255);")
+                                    a(style="text-decoration:none;color:white" href="https://" + config.hostname + "/dashboard/transcript/" + recording.recordingSid target="_blank")
+                                      p(style='text-align:center;vertical-align:middle;font-size:14px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif;font-weight:bold') VIEW ONLINE
+                                  td(style="width:100px")
+                                tr(style="height:20px")
+                    
