@@ -524,7 +524,7 @@ function saveToDatabase(user, recordingObject) {
       "_id": user._id,
       "recording.recordingSid": recordingObject.recordingSid
   }, {
-      "$set": {
+      $set: {
           "recordings.$": recordingObject
       }
   }, function(err, numberAffected, rawResponse) {
@@ -545,7 +545,7 @@ function saveToDatabase(user, recordingObject) {
           User.update({
             _id: user._id
           }), {
-              "$push": { "recordings": recordingObject }
+              $push: { "recordings": recordingObject }
           }, function(err, numberAffected, rawResponse) {
             if (err) {
                 throw new Error('There was an error inserting a new recording object');
