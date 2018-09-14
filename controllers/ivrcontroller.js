@@ -458,7 +458,7 @@ function runTranscription(user, recordingObject) {
       return operation.promise();
     })
     .then(data => {
-      console.log(data);
+      //console.log(data);
       const response = data[0];
 
       status.left = true;
@@ -472,7 +472,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcription = JSON.stringify(transcription);
         recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
-        console.log(transcription);
+        //console.log(transcription);
         generateEmail(user, recordingObject);
       }
     })
@@ -501,7 +501,7 @@ function runTranscription(user, recordingObject) {
             recordingObject.processingStatus = 2; // finished (with transcription)
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
-          console.log(transcription);
+          //console.log(transcription);
           generateEmail(user, recordingObject);
         }
 
@@ -540,7 +540,7 @@ function saveToDatabase(user, recordingObject) {
           // the recording object doesn't exist, so we need to insert it
           console.log("Going to try and create a new recording object");
 
-          console.log(user);
+          //console.log(user);
 
           User.update({
             _id: user._id
