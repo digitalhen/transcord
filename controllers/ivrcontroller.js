@@ -544,7 +544,7 @@ function saveToDatabase(user, recordingObject) {
 
           User.update({
             _id: user._id
-          }), {
+          }, {
               $push: { "recordings": recordingObject }
           }, function(err, numberAffected, rawResponse) {
             if (err) {
@@ -552,7 +552,7 @@ function saveToDatabase(user, recordingObject) {
             }
 
             console.log('Successfully inserted new recording object');
-          }
+          });
       } else {
         console.log('Successfully updated recording object');
       }
