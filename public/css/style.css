@@ -443,7 +443,7 @@ a img {
   z-index: 100;
 }
 
-.recording-card .mdl-card__actions .delete-button i.material-icons.rotate {
+.recording-card .mdl-card__actions i.material-icons.rotate {
   -webkit-animation: BigRocking 1s infinite linear;
   top: 12.5%;
   left: 12.5%;

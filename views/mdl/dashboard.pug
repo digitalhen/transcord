@@ -42,15 +42,23 @@ block content
                     - recording.startTimeFormatted = new Date(recording.startTime.toString());
                     p(style='font-weight=300,font-size=10px') !{moment(recording.startTimeFormatted).format(strings.shared.dateFormat)}
                   div.mdl-card.mdl-cell.mdl-cell--8-col(style="overflow:visible")
-                    audio.audio(id='audio-' + i data-id=i crossorigin=true playsinline=true)
-                      source(src=recording.recordingUrl type="audio/wav")
-                    //div.waveform(id='waveform-' + i data-id=i data-recordingUrl=recording.recordingUrl)
-                      div(id="progress-" + i class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
+                    if recording.processingStatus < 2 
+                      p Still processing...
+                    else 
+                      audio.audio(id='audio-' + i data-id=i crossorigin=true playsinline=true)
+                        source(src=recording.recordingUrl type="audio/wav")
+                      //div.waveform(id='waveform-' + i data-id=i data-recordingUrl=recording.recordingUrl)
+                        div(id="progress-" + i class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
+                    
               div.mdl-card__actions.mdl-card--border
                 //div(style="float:left")
                   b(style="font-weight:500") Some info here
                 
                 div(style="float:right")
+                  if recording.processingStatus < 2
+                    button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary(data-recordingSid=recording.recordingSid)
+                      i.material-icons.rotate autorenew
+                  else 
                     a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                       button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
                         i.material-icons save_alt
