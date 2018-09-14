@@ -555,7 +555,6 @@ function processFiles(user, recordingObject) {
 
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
-                        .audioChannels(1)
                         .audioBitrate('16k')
                         .audioCodec('pcm_s16le')
                         .on('end', function() {
