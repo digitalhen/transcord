@@ -14,6 +14,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const pug = require('pug');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
+const transcriptionHelper = require('../helpers/transcriptionHelper');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 
@@ -42,13 +43,13 @@ ivrController.incomingcall = function(req, res) {
     })
     .then(function(user) {
         if (user == null) {
-            res.send(reject());
+            return res.send(reject());
         } else {
             const name = user.name;
             const voiceResponse = new VoiceResponse();
 
-            // check if user wants announcements
-            if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+            // check if user wants announcements OR the call will be blocked (and we MUST record)
+            if((user.privacyNotification !== 'undefined' && user.privacyNotification) || (user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1)) {
                 voiceResponse.say('This call will be recorded by Transcord.');
             }
 
@@ -60,9 +61,16 @@ ivrController.incomingcall = function(req, res) {
                 method: 'POST'
             });
 
-            dial.number(user.phoneNumber);
+            // if on block list, then forward it back to the same number, else, call the user
+            if(user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1) {
+                console.log("Caller is blocked, forward the call back to themselves...");
+                dial.number(numberFrom);
+            } else {
+                console.log("Forwarding the call to the user...");
+                dial.number(user.phoneNumber);
+            }
 
-            res.send(voiceResponse.toString());
+            return res.send(voiceResponse.toString());
         }
     })
     .catch(function(err) {
@@ -131,19 +139,33 @@ ivrController.dialer = function(req, res) {
 };
 
 ivrController.incomingCallFinished = function(req, res) {
-  const userLookup = {
+    const userLookup = {
           incomingCombinedPhoneNumber: req.body.Called
       };
 
-  billCall(userLookup, req, 1);
+    billCall(userLookup, req, 1);
 
-  const voiceResponse = new VoiceResponse();
+    const voiceResponse = new VoiceResponse();
 
-    voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
+    
 
-    voiceResponse.hangup();
+    // let's check if the user has privacy on or off
+    User.findOne(userLookup)
+    .then(function(user) {
+        if (user == null) {
+            // Can't find a user so let's just hang up
+        } else {
+            if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+                voiceResponse.say('Thank you for using Transcord. Please visit transcord dot app to sign up. Goodbye!');
+            }
+        }
 
-    res.send(voiceResponse.toString());
+        voiceResponse.hangup();
+        return res.send(voiceResponse.toString());
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
 
 }
 
@@ -446,7 +468,7 @@ function runTranscription(user, recordingObject) {
       recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
       if(status.left && status.right) {
-        var transcription = buildTranscription(leftResults, rightResults);
+        var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
         recordingObject.transcription = JSON.stringify(transcription);
         recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
@@ -475,8 +497,8 @@ function runTranscription(user, recordingObject) {
         recordingObject.transcriptionRight = JSON.stringify(response.results);
 
         if(status.left && status.right) {
-          var transcription = buildTranscription(leftResults, rightResults);
-          recordingObject.processingStatus = 2; // finished (with transcription)
+            var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
+            recordingObject.processingStatus = 2; // finished (with transcription)
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           console.log(transcription);
@@ -489,71 +511,7 @@ function runTranscription(user, recordingObject) {
       });
 }
 
-function buildTranscription(leftResults, rightResults) {
-    // this builds the objects to contains the transcriptions
-  console.log("Building transcription...");
 
-  var combinedTranscript = [];
-
-  // go through the two seperate transcripts and combined them together
-  leftResults.forEach(function (result) {
-    var newLine = {};
-
-    console.log(JSON.stringify(result.alternatives));
-
-    // if there are any words, lets grab them
-    if(result.alternatives.length > 0 && result.alternatives[0].words.length > 0) {
-      newLine.side = 'left';
-
-      // compute the float start time
-      var startTimeSecond, startTimeNano = "0";
-
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
-        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
-
-      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
-        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
-
-      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
-
-
-      newLine.transcript = result.alternatives[0].transcript;
-
-      combinedTranscript.push(newLine);
-    }
-
-  });
-
-  rightResults.forEach(function (result) {
-    var newLine = {};
-
-    // if there are any words, lets grab them
-    if(result.alternatives.length > 0 && result.alternatives[0].words.length > 0) {
-      newLine.side = 'right';
-
-      // compute the float start time
-      var startTimeSecond, startTimeNano = "0";
-
-      if(typeof result.alternatives[0].words[0].startTime.seconds !== 'undefined')
-        startTimeSecond = result.alternatives[0].words[0].startTime.seconds;
-
-      if(typeof result.alternatives[0].words[0].startTime.nanos !== 'undefined')
-        startTimeNano = result.alternatives[0].words[0].startTime.nanos;
-
-      newLine.startTime = parseFloat(startTimeSecond + '.' + startTimeNano);
-
-      newLine.transcript = result.alternatives[0].transcript;
-
-      combinedTranscript.push(newLine);
-    }
-  });
-
-  // sort the array so the two cominbed transcripts are in order
-  combinedTranscript.sort(function(a,b) { return a.startTime - b.startTime; }); // sorts by startTime;
-
-  return combinedTranscript;
-
-}
 
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
@@ -645,7 +603,6 @@ function processFiles(user, recordingObject) {
 
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
-                        .audioChannels(1)
                         .audioBitrate('16k')
                         .audioCodec('pcm_s16le')
                         .on('end', function() {

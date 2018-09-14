@@ -19,25 +19,38 @@ block content
                           td
                             if transcription.length == 0
                               p No spoken words were detected by our algorithms. 
-                            - transcription.forEach(function(line) {
+                            - var previousWord = null;
+                            - var line = "";
+                            - var startTime = "";
+                            - for(var i=0; i<=transcription.length; i++) {
+                              - if(line.length > 0 && (previousWord !== null && (previousWord.lineBreak || transcription[i].side !== previousWord.side))) { // we have something to display and it's a break
+                              
                                 div(style='padding: 0px;margin: inherit;display: flex;')
                                   div
                                   if(recording.direction == 0)
-                                    div(style="background:" + (line.side === 'right' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
+                                    div(style="background:" + (previousWord.side === 'right' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
                                       div(style="width:100%")
-                                        div(style='text-align: ' + (line.side === 'left' ? 'right' : 'left') + ';margin-' + line.side + ':10%;margin-' + (line.side === 'left' ? 'right' : 'left') + ': 20px;')
+                                        div(style='text-align: ' + (previousWord.side === 'left' ? 'right' : 'left') + ';margin-' + previousWord.side + ':10%;margin-' + (previousWord.side === 'left' ? 'right' : 'left') + ': 20px;')
                                           h6.transcript-title(style="font-size:12px;margin: 0px;")
-                                          p.transcript-text #{line.transcript}
-                                          p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
+                                          p.transcript-text #{line}
+                                          p.transcript-time(style="font-size:10px;") #{moment.utc(startTime*1000).format('mm:ss')}
                                   else if(recording.direction==1)
-                                    div(style="background:" + (line.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
+                                    div(style="background:" + (previousWord.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
                                       div(style="width:100%")
-                                        div(style='text-align: ' + line.side + ';margin-' + (line.side === 'left' ? 'right' : 'left') + ':10%;margin-' + line.side + ': 20px;')
+                                        div(style='text-align: ' + previousWord.side + ';margin-' + (previousWord.side === 'left' ? 'right' : 'left') + ':10%;margin-' + previousWord.side + ': 20px;')
                                           h6.transcript-title(style="font-size:12px;margin: 0px;")
-                                          p.transcript-text #{line.transcript}
-                                          p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
-
-                            - })
+                                          p.transcript-text #{line}
+                                          p.transcript-time(style="font-size:10px;") #{moment.utc(startTime*1000).format('mm:ss')}
+                              -   line = "";
+                              - } 
+                              - // let's keep processing text if there's more
+                              - if(i<transcription.length) {
+                              -   if(line.length==0) startTime = transcription[i].startTime;
+                              -   previousWord = transcription[i];
+                              -   line = line + transcription[i].characters + " ";
+                              - }
+                              
+                            - }
                         tr
                           td
                             table(style="text-align:center;margin:0 auto")

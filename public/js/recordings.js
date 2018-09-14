@@ -62,12 +62,22 @@ $(document).ready(function(){
     wavesurfer.on('audioprocess', function (percents) { 
       var currentTime = wavesurfer.getCurrentTime();
       var found = null;
+
+      //console.log("currentTime:" +  currentTime);
       
       // dim everything first
-      $('.messageContainer').addClass('dimmed');
+      $('.word').removeClass('highlight');
 
       // search for the last message that has been passed by the audio
-      $('.messageContainer').each(function(index) {
+      
+      $('.word').filter(function() {
+        return parseFloat($(this).attr('data-startTime')) < currentTime;
+      }).filter(function() {
+        return parseFloat($(this).attr('data-endTime')) > currentTime;
+      })
+      .addClass('highlight');
+
+      /*$('.messageContainer').each(function(index) {
 
         var time = parseFloat($(this).attr('data-time'));
         console.log(currentTime + " vs " + time + ": " + (time<currentTime));
@@ -85,7 +95,16 @@ $(document).ready(function(){
           found.removeClass('dimmed');
           return false;
         }
-      });
+      }); */
+
+
+    });
+
+    $('.word').click(function() {
+      var duration = wavesurfer.getDuration();
+      var percentage = parseFloat($(this).attr('data-startTime')) / duration;
+
+      wavesurfer.seekTo(percentage);
     });
 
     $(buttonId).click(function() {
