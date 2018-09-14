@@ -186,11 +186,10 @@ dashController.processPayment = function(req, res) {
                     // locals to feed through to template
                     var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings, 'number': purchasedNumber};
 
-                    var plaintextEmail = "Hello " + user.name;
                     var htmlEmail = pug.renderFile('views/email/paymentIncoming.pug', locals);
                     var subject = "Your new incoming number with Transcord!";
 
-                    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+                    emailHelper.sendEmail(user, subject, htmlEmail);
 
                     // send the new user to their dashboard
                     res.render('paymentIncomingSuccess', {
@@ -248,11 +247,10 @@ dashController.processPayment = function(req, res) {
             // locals to feed through to template
             var locals = {'moment': moment, 'user': user, 'payment': paymentObject, 'config': config, 'strings': strings};
 
-            var plaintextEmail = "Hello " + user.name;
             var htmlEmail = pug.renderFile('views/email/payment.pug', locals);
             var subject = "Your payment to Transcord!";
 
-            emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+            emailHelper.sendEmail(user, subject, htmlEmail);
 
 
 

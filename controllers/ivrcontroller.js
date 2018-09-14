@@ -741,8 +741,6 @@ function generateEmail(user, recording) {
     });
 
     // generate the final bits
-    var plaintextEmail = 'Dear ' + user.name + ',\n\nHere is your ' + recording.duration + ' second call transcript: https://transcord.app/dashboard/transcript/' + recording.recordingSid + '\n\n' +
-    plaintextTranscript;
     var htmlEmail = htmlTranscript;
 
     var subject = 'Transcription of your call ';
@@ -753,7 +751,7 @@ function generateEmail(user, recording) {
     }
 
     // send the email
-    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+    emailHelper.sendEmail(user, subject, htmlEmail);
 
 }
 

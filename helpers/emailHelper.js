@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 
 var emailHelper = {};
 
-emailHelper.sendEmail = function(user, subject, plaintext, html) {
+emailHelper.sendEmail = function(user, subject, html) {
     // send the email but check if users wants it first
     if(user.emailNotification !== 'undefined' && !user.emailNotification) {
         console.log('User has emails turned off, so not sending: ' + user.email);

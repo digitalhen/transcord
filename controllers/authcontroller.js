@@ -137,11 +137,10 @@ userController.doRegister = function(req, res) {
                 // locals to feed through to template
                 var locals = {'moment': moment, 'user': user, 'config': config, 'strings': strings};
 
-                var plaintextEmail = "Hello " + user.name;
                 var htmlEmail = pug.renderFile('views/email/welcome.pug', locals);
                 var subject = "Welcome to Transcord!";
 
-                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+                emailHelper.sendEmail(user, subject, htmlEmail);
 
                 // sign the user in, and figure out where to send them
                 passport.authenticate('local')(req, res, function() {
@@ -446,11 +445,10 @@ userController.sendReset = function(req, res) {
         
                 var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset, 'config': config, 'strings': strings};
 
-                var plaintextEmail = "Hello " + user.name;
                 var htmlEmail = pug.renderFile('views/email/reset.pug', locals);
                 var subject = "Password reset";
 
-                emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+                emailHelper.sendEmail(user, subject, htmlEmail);
             });
         }
     })
@@ -564,11 +562,10 @@ userController.doReset = function(req,res) {
                     // send email
                     var locals = {'moment': moment, 'user': user, 'config': config, 'strings': strings};
 
-                    var plaintextEmail = "Hello " + user.name;
                     var htmlEmail = pug.renderFile('views/email/resetDone.pug', locals);
                     var subject = "Password changed";
 
-                    emailHelper.sendEmail(user, subject, plaintextEmail, htmlEmail);
+                    emailHelper.sendEmail(user, subject, htmlEmail);
 
                     console.log("Password reset for: " + user.email);
                     req.session['status'] = "Password reset.";
