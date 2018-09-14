@@ -33,14 +33,14 @@ block content
                                         div(style='text-align: ' + (previousWord.side === 'left' ? 'right' : 'left') + ';margin-' + previousWord.side + ':10%;margin-' + (previousWord.side === 'left' ? 'right' : 'left') + ': 20px;')
                                           h6.transcript-title(style="font-size:12px;margin: 0px;")
                                           p.transcript-text #{line}
-                                          //p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
+                                          p.transcript-time(style="font-size:10px;") #{moment.utc(startTime*1000).format('mm:ss')}
                                   else if(recording.direction==1)
                                     div(style="background:" + (previousWord.side === 'left' ? '#f6f6f6' : '#ff5252;color:white') + ";border-radius:5px;min-height: inherit;width:100%;margin: 8px;box-sizing: border-box;display: flex;flex-direction: column;font-size: 16px;font-weight: 400;overflow: hidden;z-index: 1;position: relative;border-radius:5px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif")
                                       div(style="width:100%")
                                         div(style='text-align: ' + previousWord.side + ';margin-' + (previousWord.side === 'left' ? 'right' : 'left') + ':10%;margin-' + previousWord.side + ': 20px;')
                                           h6.transcript-title(style="font-size:12px;margin: 0px;")
                                           p.transcript-text #{line}
-                                          //p.transcript-time(style="font-size:10px;") #{moment.utc(line.startTime*1000).format('mm:ss')}
+                                          p.transcript-time(style="font-size:10px;") #{moment.utc(startTime*1000).format('mm:ss')}
                               -   line = "";
                               - } 
                               - // let's keep processing text if there's more
