@@ -516,9 +516,6 @@ function runTranscription(user, recordingObject) {
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
 
-  // TODO: this needs to find the recordingObject in the user and update it if needed and pass it back?
-  user.recordings.push(recordingObject);
-
   // look up the user and recording, if we don't find it, then push it
   User.update({
       "_id": user._id,
@@ -655,6 +652,10 @@ function processFiles(user, recordingObject) {
                                         // mark progress
                                         recordingObject.processingStatus = 1; // audio complete
                                         
+                                        // TODO: send long run email?
+                                        //if(recordingObject.duration>600) // long running email -- 10 minutes
+                                        
+
                                         // save progress to the database
                                         saveToDatabase(user, recordingObject);
 
