@@ -655,8 +655,20 @@ function processFiles(user, recordingObject) {
                                         recordingObject.processingStatus = 1; // audio complete
                                         
                                         // TODO: send long run email?
-                                        //if(recordingObject.duration>600) // long running email -- 10 minutes
-                                        
+                                        if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
+                                            var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
+
+                                            var htmlEmail = pug.renderFile('views/email/transcriptDelay.pug', locals);
+
+                                            var subject = 'Long running transcript for your call ';
+                                            if(recordingObject.direction==0) {
+                                                subject = subject + 'to ' + recordingObject.numberCalledFormatted;
+                                            } else if (recording.direction==1) {
+                                                subject = subject + 'from ' + recordingObject.numberFromFormatted;
+                                            }
+
+                                            emailHelper.sendEmail(user, subject, htmlEmail);
+                                        }
 
                                         // save progress to the database
                                         saveToDatabase(user, recordingObject);
