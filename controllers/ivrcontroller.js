@@ -219,7 +219,7 @@ function billCall(userLookupObject, req, direction) {
                         "cost": cost
                     };
 
-                    user.calls.push(call);
+                    //user.calls.push(call);
 
                     // recalc balance
                     user.balance = user.balance - cost;
@@ -230,7 +230,9 @@ function billCall(userLookupObject, req, direction) {
                     User.update({
                         _id: user._id
                     }, {
-                        calls: user.calls,
+                        $push: {
+                            calls: call
+                        },
                         balance: user.balance
                     }, function(err, numberAffected, rawResponse) {
                         if (err) {

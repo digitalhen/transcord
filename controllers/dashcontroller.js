@@ -141,7 +141,7 @@ dashController.processPayment = function(req, res) {
             cardLast4: data.transaction.tenders[0].card_details.card.last_4,
         };
 
-        user.payments.push(paymentObject);
+        //user.payments.push(paymentObject);
 
         if(req.body.type==="incoming") {
             // FOR INCOMING NUMBERS, BUY THE NUMBER
@@ -167,7 +167,9 @@ dashController.processPayment = function(req, res) {
                 User.update({
                     _id: user._id
                 }, {
-                    payments: user.payments,
+                    $push: {
+                        payments: paymentObject,
+                    },
                     incomingCountryCode: '+1',
                     incomingPhoneNumber: purchasedNumber.phoneNumber.split('+1')[1],
                     incomingPhoneNumberSid: purchasedNumber.sid,
@@ -230,7 +232,9 @@ dashController.processPayment = function(req, res) {
             User.update({
                 _id: user._id
             }, {
-                payments: user.payments,
+                $push: {
+                    payments: paymentObject,
+                },
                 balance: user.balance
             }, function(err, numberAffected, rawResponse) {
                 if (err) {

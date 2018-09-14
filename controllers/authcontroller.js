@@ -428,14 +428,16 @@ userController.sendReset = function(req, res) {
                 "used": 0,
             };
 
-            user.passwordResets.push(passwordReset);
+            //user.passwordResets.push(passwordReset);
 
-            console.log(user.passwordResets);
+            //console.log(user.passwordResets);
 
             User.update({
                 _id: user._id
             }, {
-                "passwordResets": user.passwordResets
+                $push: {
+                    "passwordResets": passwordReset
+                }
             }, function(err, numberAffected, rawResponse) {
                 if (err) {
                     // TODO: this should be a throw, move res.render in here, and put a generic error screen in the catch
