@@ -15,7 +15,10 @@
         "rights": "All rights reserved.",
         "supportEmail": "support@transcord.app",
         "supportNumber": "415-483-0085",
-        "dateFormat": "MMM DD, YYYY h:mm a"
+        "dateFormat": "MMM DD, YYYY h:mm a",
+        "mandatoryRecording": [
+            "CA", "DE", "FL", "IL", "MD", "MA", "MT", "NV", "NH", "PA", "WA" 
+        ] 
     },
     "homepage": {
         "logoUrl": "img/white-logo.png",

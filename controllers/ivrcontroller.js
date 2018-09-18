@@ -48,8 +48,16 @@ ivrController.incomingcall = function(req, res) {
             const name = user.name;
             const voiceResponse = new VoiceResponse();
 
+            // look up state
+            var state = numberHelper.getStateFromZip(user.zip)
+            var mandatoryRecording = false;
+
+            if(strings.shared.mandatoryRecording.indexOf(state) > -1) {
+                mandatoryRecording = true;
+            }
+
             // check if user wants announcements OR the call will be blocked (and we MUST record)
-            if((user.privacyNotification !== 'undefined' && user.privacyNotification) || (user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1)) {
+            if(mandatoryRecording || (user.privacyNotification !== 'undefined' && user.privacyNotification) || (user.blockList !== 'undefined' && user.blockList.indexOf(numberFrom) > -1)) {
                 voiceResponse.say('This call will be recorded by Transcord.');
             }
 
@@ -267,12 +275,20 @@ ivrController.privacynotice = function(req, res) {
 
                 const voiceResponse = new VoiceResponse();
 
+                // look up state
+                var state = numberHelper.getStateFromZip(user.zip)
+                var mandatoryRecording = false;
+
+                if(strings.shared.mandatoryRecording.indexOf(state) > -1) {
+                    mandatoryRecording = true;
+                }
+
                 // TODO: check user profile to see if they have privacy notice enabled
-                if(user.privacyNotification !== 'undefined' && user.privacyNotification) {
+                if((user.privacyNotification !== 'undefined' && user.privacyNotification) || mandatoryRecording) {
                     // Pause to let the person put the phone to their ear
                     //voiceResponse.pause({ length: 1 });
 
-                    /*const gather = voiceResponse.gather({
+                    /*const gather = voiceResponse.gather({ 
                         action: '/ivr/privacyconnect',
                         numDigits: '1',
                         method: 'POST',

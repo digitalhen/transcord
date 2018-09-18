@@ -38,7 +38,7 @@ block content
 
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
                   label.mdl-textfield__label.mdl-color-text--grey(for='zip') !{tim(strings.settings.zipTitle)}
-                  input.mdl-textfield__input(type='text' name='zip' value=user.zip original=user.zip)
+                  input.mdl-textfield__input(type='text' name='zip' value=numberHelper.pad(user.zip, 5) original=numberHelper.pad(user.zip, 5))
                   span.error.mdl-textfield__error(for="zip") Error message goes heres
 
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
@@ -51,10 +51,11 @@ block content
                   span.mdl-switch__label.mdl-color-text--grey(for='emailNotification') !{tim(strings.settings.emailNotificationTitle)}
                   span.error.mdl-textfield__error(for="emailNotification") Error message goes heres
 
-                label.mdl-switch.mdl-js-switch.mdl-cell.mdl-cell--12-col
-                  input.mdl-switch__input(type='checkbox' id='privacyNotification' name='privacyNotification' checked=(user.privacyNotification) ? 'checked' : false)
-                  span.mdl-switch__label.mdl-color-text--grey(for='privacyNotification') !{tim(strings.settings.privacyNotificationTitle)}
-                  span.error.mdl-textfield__error(for="privacyNotification") Error message goes heres
+                if(!mandatoryRecording)
+                  label.mdl-switch.mdl-js-switch.mdl-cell.mdl-cell--12-col
+                    input.mdl-switch__input(type='checkbox' id='privacyNotification' name='privacyNotification' checked=(user.privacyNotification) ? 'checked' : false)
+                    span.mdl-switch__label.mdl-color-text--grey(for='privacyNotification') !{tim(strings.settings.privacyNotificationTitle)}
+                    span.error.mdl-textfield__error(for="privacyNotification") Error message goes heres
 
                 label.mdl-switch.mdl-js-switch.mdl-cell.mdl-cell--12-col
                   input.mdl-switch__input(type='checkbox' id='incomingPhoneNumber' name='incomingPhoneNumber' checked=(user.incomingPhoneNumber) ? 'checked' : false)

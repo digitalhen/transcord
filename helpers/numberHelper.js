@@ -13,16 +13,21 @@ numberHelper.tryParseInt = function(str,defaultValue) {
     return retValue;
 }
 
+numberHelper.pad = function(number,length) {
+    return number.pad(length);
+}
+
 numberHelper.getStateFromZip = function(zipcode) {
 
         // Ensure param is a string to prevent unpredictable parsing results
-        if (typeof zipcode !== 'string') {
-            console.log('Must pass the zipcode as a string.');
-            return;
+        if (typeof zipcode == 'string') {
+            const thiszip = parseInt(zipcode,10); 
+        } else {
+            thiszip = zipcode;
         }
     
         // Ensure you don't parse codes that start with 0 as octal values
-        const thiszip = parseInt(zipcode,10); 
+        
     
         if (thiszip >= 35000 && thiszip <= 36999) {
                 thisst = 'AL';
@@ -240,3 +245,9 @@ numberHelper.getStateFromZip = function(zipcode) {
 
 
 module.exports = numberHelper;
+
+Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = "0" + s;}
+    return s;
+  }

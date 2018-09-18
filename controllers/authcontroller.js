@@ -9,6 +9,7 @@ var Rate = require("../models/rate");
 const moment = require('moment');
 const pug = require('pug');
 const emailHelper = require("../helpers/emailHelper");
+const numberHelper = require("../helpers/numberHelper");
 const uuidv1 = require('uuid/v1');
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
@@ -84,8 +85,18 @@ userController.settings = function(req, res) {
         }
     };
 
+    // look up state
+    var state = numberHelper.getStateFromZip(req.user.zip)
+    var mandatoryRecording = false;
+
+    if(strings.shared.mandatoryRecording.indexOf(state) > -1) {
+        mandatoryRecording = true;
+    }
+
     res.render('settings', {
-        user: req.user,            
+        user: req.user,           
+        mandatoryRecording: mandatoryRecording, 
+        numberHelper: numberHelper,
         tim: tim,
         strings: strings,
     });
@@ -259,8 +270,19 @@ userController.doUpdate = function(req, res) {
                     if(typeof req.user.incomingPhoneNumber === 'undefined' && req.body.incomingPhoneNumber==="on") {
                         res.redirect('/dashboard/paymentIncoming');
                     } else {
+                        
+                        // look up state
+                        var state = numberHelper.getStateFromZip(user.zip)
+                        var mandatoryRecording = false;
+
+                        if(strings.shared.mandatoryRecording.indexOf(state) > -1) {
+                            mandatoryRecording = true;
+                        }
+                        
                         res.render('settings', {
-                            user: user,
+                            user: user,           
+                            mandatoryRecording: mandatoryRecording, 
+                            numberHelper: numberHelper,
                             tim: tim,
                             status: 'Updated',
                             strings: strings,
