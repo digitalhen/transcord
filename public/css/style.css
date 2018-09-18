@@ -411,6 +411,7 @@ a img {
 
 .recording-card {
   min-height: auto;
+  overflow: visible;
 }
 
 .recording-card .mdl-card {
@@ -469,6 +470,7 @@ a img {
   position: sticky;
   position: -webkit-sticky;
   top: 16px;
+  overflow: visible;
 }
 
 .transcript-control-card .mdl-card__supporting-text {

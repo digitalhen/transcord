@@ -28,6 +28,11 @@ $(document).ready(function() {
          && value.length > 7 // is 8 char or longer
   });
 
+  // add a metod to check zipcode
+  $.validator.addMethod("zipcode", function(value, element) {
+    return this.optional(element) || /^\d{5}(?:-\d{4})?$/.test(value);
+  }, "Please provide a valid zip code.");
+
   // lets me check if they haven't changed the value
   $.validator.addMethod("notEqual", function(value, element, param) {
     return this.optional(element) || value != $(param).val();
@@ -128,6 +133,10 @@ $(document).ready(function() {
           }
         }
       },
+      zip: {
+        required: true,
+        zipcode: true
+      },
       phoneNumber: {
         required: true,
         phoneUS: true,
@@ -211,6 +220,10 @@ $(document).ready(function() {
             }
           }
         }
+      },
+      zip: {
+        required: true,
+        zipcode: true
       },
       phoneNumber: {
         required: true,

@@ -37,6 +37,11 @@ block content
                   span.error.mdl-textfield__error(for="email") Error message goes heres
 
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='zip') !{tim(strings.settings.zipTitle)}
+                  input.mdl-textfield__input(type='text' name='zip' value=user.zip original=user.zip)
+                  span.error.mdl-textfield__error(for="zip") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
                   label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') !{tim(strings.settings.phoneNumberTitle)}
                   input.mdl-textfield__input(type='text' name='phoneNumber' value=user.phoneNumber original=user.phoneNumber)
                   span.error.mdl-textfield__error(for="phoneNumber") Error message goes heres

@@ -57,13 +57,16 @@ block content
                 div(style="float:right")
                   if recording.processingStatus < 2
                     button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary(data-recordingSid=recording.recordingSid)
-                      i.material-icons.rotate autorenew
+                      i.icon.material-icons.rotate(id="processing-button-" + i) autorenew
+                      div.mdl-tooltip.mdl-tooltip--left(data-mdl-for="processing-button-" + i) Still processing
                   else 
                     a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                       button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                        i.material-icons save_alt
+                        i.icon.material-icons(id="download-button-" + i) save_alt
+                        div.mdl-tooltip.mdl-tooltip--top(data-mdl-for="download-button-" + i) Download audio
                     button.delete-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary(data-recordingSid=recording.recordingSid)
-                      i.material-icons delete
+                      i.icon.material-icons(id="delete-button-" + i) delete
+                      div.mdl-tooltip.mdl-tooltip--top(data-mdl-for="delete-button-" + i) Delete
                     a(href='/dashboard/transcript/' + recording.recordingSid)
                       button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.transcriptButton)}
             - i++;

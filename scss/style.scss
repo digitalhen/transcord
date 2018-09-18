@@ -434,6 +434,7 @@ a img {
 
 .recording-card {
   min-height: auto;
+  overflow: visible;
 
   .mdl-card {
     min-height: inherit;
@@ -496,6 +497,7 @@ a img {
   position: sticky;
   position: -webkit-sticky;
   top: 16px;
+  overflow: visible;
 
   .mdl-card__supporting-text {
     position: relative;

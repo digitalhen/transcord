@@ -39,6 +39,22 @@ block content
                   input.mdl-textfield__input(type='text' name='email')
                   span.error.mdl-textfield__error(for="email") Error message goes heres
 
+                // -
+                  div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.getmdl-select.getmdl-select__fix-height.mdl-cell.mdl-cell--12-col
+                    input#state.mdl-textfield__input(type="text" value="" readonly=true)
+                    input(type="hidden" value="" name="state")
+                    i.mdl-icon-toggle__label.material-icons keyboard_arrow_down
+                    label.mdl-textfield__label(for="state") State
+                    ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu(for="state")
+                      li.mdl-menu__item(data-val="NY") New York
+                      li.mdl-menu__item(data-val="DE") Delaware
+                    span.error.mdl-textfield__error(for="state") Error message goes heres
+
+                div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+                  label.mdl-textfield__label.mdl-color-text--grey(for='zip') !{tim(strings.register.zipTitle)}
+                  input.mdl-textfield__input(type='text' name='zip')
+                  span.error.mdl-textfield__error(for="zip") Error message goes heres
+
                 div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
                   label.mdl-textfield__label.mdl-color-text--grey(for='phoneNumber') !{tim(strings.register.phoneNumberTitle)}
                   input.mdl-textfield__input(type='text' name='phoneNumber')

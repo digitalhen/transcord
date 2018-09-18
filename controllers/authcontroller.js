@@ -227,6 +227,7 @@ userController.doUpdate = function(req, res) {
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
+        zip: req.body.zip,
         emailNotification: (req.body.emailNotification==="on" ? true : false), // TODO: feed this from the settings page
         privacyNotification: (req.body.privacyNotification==="on" ? true : false), // TODO: feed this from the settings page
         countryCode: '+1',

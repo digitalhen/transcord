@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema({
 	email: String,
 	emailNotification: Boolean,
 	privacyNotification: Boolean,
+	zip: Number,
 	countryCode: String,
 	phoneNumber: String,
 	combinedPhoneNumber: String,
