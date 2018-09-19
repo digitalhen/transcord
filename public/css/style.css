@@ -529,7 +529,7 @@ a img {
 
 .transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text {
   font-weight: 600;
-  line-height: 16px;
+  line-height: 20px;
 }
 
 .transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text .word {
@@ -541,9 +541,9 @@ a img {
 }
 
 .transcript-grid .mdl-card .mdl-card__supporting-text .messageContainer .transcript-text .word.highlight {
-  background-color: yellow;
-  padding: 0px 1px;
-  text-decoration: underline;
+  background-color: #eaea12;
+  padding: 3px 3px;
+  border-radius: 5px;
   color: black;
 }
 
