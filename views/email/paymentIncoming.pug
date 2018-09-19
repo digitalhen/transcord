@@ -6,9 +6,58 @@ block content
                         tr(style="height:20px")
                         tr
                           td(style="padding: 0px 15px")
-                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') Thank you for purchasing a new incoming number.
-                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') Your payment of $!{(payment.amount/100).toFixed(2)} was successfully completed.
-                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') The incoming number for your account is: !{number.phoneNumber}
+                            h2(style='color:#4a4a4a;text-align:center;font-size:24px;font-weight:lighter;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') Thank you for purchasing a new incoming number!
+                            //p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') Your payment of $!{(payment.amount/100).toFixed(2)} was successfully completed.
+                            //p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') The incoming number for your account is: !{number.phoneNumber}
+                            p(style='color:#4a4a4a;font-size:16px;text-align:center;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif') The following message provides information regarding your order. Your balance is now $!{(user.balance/100).toFixed(2)}.
+                            table(style="width:700px")
+                              tbody
+                                tr
+                                  td(style="width:20%;text-align:left")
+                                    | Item
+                                  td(style="width:30%;text-align:left")
+                                    | Description
+                                  td(style="width:10%;text-align:center")
+                                    | Qty
+                                  td(style="width:20%;text-align:right")
+                                    | Unit Price
+                                  td(style="width:10%;text-align:right")
+                                    | Price
+                                tr
+                                  td(colspan="5")
+                                    hr
+                                tr
+                                  td(style="text-align:left")
+                                    | INC
+                                  td(style="text-align:left") Incoming phone number: !{number.phoneNumber}
+                                  td(style="text-align:center")
+                                    | 1
+                                  td(style="text-align:right")
+                                    | $!{(payment.amount/100).toFixed(2)}
+                                  td(style="text-align:right")
+                                    | $!{(payment.amount/100).toFixed(2)}
+                                tr
+                                  td(colspan="5")
+                                    hr
+                                tr
+                                  td(colspan="4" style="text-align:right")
+                                    | Subtotal:
+                                  td(colspan="1" style="text-align:right")
+                                    | $!{(payment.amount/100).toFixed(2)}
+                                tr
+                                  td(colspan="4" style="text-align:right")
+                                    | Taxes:
+                                  td(colspan="1" style="text-align:right")
+                                    | $0.00
+                                tr
+                                  td(colspan="3")
+                                  td(colspan="2")
+                                    hr
+                                tr
+                                  td(colspan="4" style="text-align:right")
+                                    | Total Charge: 
+                                  td(colspan="2" style="text-align:right")
+                                    | $!{(payment.amount/100).toFixed(2)}
                         tr(style="height:20px")
 
                       
