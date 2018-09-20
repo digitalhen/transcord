@@ -111,7 +111,7 @@ ivrController.welcome = function(req, res) {
                         method: 'POST',
                     });
 
-                    gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by the # key.");
+                    gather.say("Hello " + user.name + ", your current balance is $" + (user.balance/100).toFixed(2) + ". Please enter the number you wish to dial, followed by pound.");
                 }
 
                 res.send(voiceResponse.toString());
