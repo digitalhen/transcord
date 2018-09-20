@@ -33,6 +33,14 @@ userController.privacy = function(req, res) {
     });
 }
 
+// Go to terms page
+userController.terms = function(req, res) {
+    res.render('terms', {          
+        tim: tim,
+        strings: strings,
+    });
+}
+
 // Go to registration page
 userController.register = function(req, res) {
     //if there's already a user

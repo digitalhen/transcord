@@ -371,6 +371,11 @@ a img {
   color: rgba(255, 255, 255, 0.7);
 }
 
+.information-section .information-grid .information-holder .mdl-card__supporting-text.information-company a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .information-section .information-grid .information-holder .mdl-card__supporting-text.information-contact {
   text-align: right;
 }

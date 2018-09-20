@@ -16,6 +16,9 @@ router.get('/', auth.home);
 // privacy policy
 router.get('/privacy', auth.privacy);
 
+// terms
+router.get('/terms', auth.terms);
+
 // route to register page
 router.get('/register/:rateCode*?', auth.register);
 
