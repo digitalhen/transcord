@@ -37,10 +37,17 @@ router.get('/downloadRecording/:recordingSid', dash.downloadRecording);
 // for deleting a recording
 router.get('/deleteRecording/:recordingSid', dash.deleteRecording);
 
-// 
+// for deleting a recording by ajax
 router.post('/ajaxDeleteRecording/:recordingSid', dash.ajaxDeleteRecording);
 
 //  for getting a transcriptions
 router.get('/transcript/:recordingSid', dash.transcript);
+
+// for sending a transcript by email
+router.post('/ajaxSendTranscript', dash.ajaxSendTranscript);
+
+//  for getting a transcription without being logged in
+router.get('/transcript/:recordingSid/token/:token', dash.sharedTranscript);
+
 
 module.exports = router;

@@ -19,6 +19,22 @@ $(document).ready(function(){
 
   });
 
+  $('.transcript-control-card .email-button').click(function() {
+    var dialog = $('#sharetranscript-dialog')[0];
+
+    if (! dialog.showModal) {
+      dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.showModal();
+  });
+
+  $('#sharetranscript-dialog .cancel-button').click(function() {
+    var dialog = $('#sharetranscript-dialog')[0];
+
+    dialog.close();
+  });
+
   // audios go on the dashboard
   $('.audio').each(function() {
     var idNumber = $(this).attr('data-id');

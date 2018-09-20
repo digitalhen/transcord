@@ -8,6 +8,24 @@ block variables
 
 
 block content
+  dialog#sharetranscript-dialog.mdl-dialog(style="padding:0")
+    div.mdl-card.mdl-shadow--6dp(style="height:auto")
+      div.mdl-card__title.mdl-color--primary.mdl-color-text--white
+        h2.mdl-card__title-text Share transcript
+      div.mdl-card__supporting-text.mdl-grid
+
+        form#form-sharetranscript(style="width:100%")
+          div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
+            label.mdl-textfield__label.mdl-color-text--grey(for='email') Email
+            input#email.mdl-textfield__input(type='text' name='email')
+            span.error.mdl-textfield__error(for="email") Error message goes heres
+
+      div.mdl-card__actions.mdl-card--border
+        div.mdl-grid
+          div.mdl-cell.mdl-cell--12-col
+            button.cancel-button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect(style="float:left") Cancel
+            button.sharetranscript-button.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(style="float:right") Send email
+            
   main.mdl-layout__content.bg
     div.mdl-grid(style="max-width:900px")
       div.transcript-control-card.mdl-card.mdl-shadow--160dp.mdl-cell.mdl-cell--4-col.mdl-cell--12-col-tablet
@@ -23,21 +41,20 @@ block content
             | !{moment(user.recordings[0].startTime).format(strings.shared.dateFormat)}
           div.waveform(id='waveform-0' data-id='0' data-recordingUrl=user.recordings[0].recordingUrl)
             div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
-
-
-
-
           button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
             i#button-text-0.material-icons.play play_arrow
         div.mdl-card__actions.mdl-card--border
           div(style="float:left")
+            button.email-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+              i.icon.material-icons email
+              div.mdl-tooltip(data-mdl-for="email-button") Share transcript
             a(href='/dashboard/downloadRecording/' + user.recordings[0].recordingSid)
-              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                i#download-button.icon.material-icons save_alt
+              button.download-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.icon.material-icons save_alt
                 div.mdl-tooltip(data-mdl-for="download-button") Download audio
             a(href='/dashboard/deleteRecording/' + user.recordings[0].recordingSid)
-              button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                i#delete-button.icon.material-icons delete
+              button.delete-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                i.icon.material-icons delete
                 div.mdl-tooltip(data-mdl-for="delete-button") Delete
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
@@ -87,4 +104,5 @@ block content
 
 block js
   script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+  script(src="/js/validation.js")
   script(src="/js/recordings.js")

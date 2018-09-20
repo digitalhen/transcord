@@ -336,6 +336,14 @@ dashController.transcript = function(req, res) {
   });
 }
 
+dashController.ajaxSendTranscript = function(req, res) {
+    // TODO: Send the transcript by email.... this is AJAX
+}
+
+dashController.sharedTranscript = function(req, res) {
+    // TODO: Display the transcript
+}
+
 dashController.ajaxDeleteRecording = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
