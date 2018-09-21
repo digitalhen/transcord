@@ -14,6 +14,8 @@ const emailHelper = require("../helpers/emailHelper");
 const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
+const uuidv1 = require('uuid/v1');
+
 
 var dashController = {};
 
@@ -332,7 +334,7 @@ dashController.transcript = function(req, res) {
       transcription: transcription,
       tim: tim,
       strings: strings,
-      //recording: recording
+      recording: req.user.recordings[0]
   });
 }
 
@@ -342,29 +344,109 @@ dashController.ajaxSendTranscript = function(req, res) {
     if(!req.user) {
         return res.status(404).send('Not found');
     }
-    
-    // find the recording we want to download
-    req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.body.recordingSid});
 
-    // build transcript object
-    var transcription = JSON.stringify(transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight)));
-    req.user.recordings[0].transcription = transcription;
+    // generate token to send to user
+    var uuid = uuidv1();
 
-    generateShareTranscriptEmail(req.user, req.body.email, req.user.recordings[0]);
-
-    var response = {
-        "email": req.body.email,
-        "recordingSid": req.body.recordingSid,
-        "status": "Success",
-        "message": "Email sent"
+    var shareToken = {
+        "token": uuid,
+        "date": moment()
     };
 
-    res.send(JSON.stringify(response));
+    User.update({
+        _id: req.user._id,
+        "recordings.recordingSid": req.body.recordingSid
+    }, {
+        $push: {
+            "recordings.$.shareTokens": shareToken
+        }
+    }, function(err, numberAffected, rawResponse) {
+        if (err) {
+            // TODO: this should be a throw, move res.render in here, and put a generic error screen in the catch
+            console.log('There was an error');
+        }
+
+        console.log(shareToken);
+
+        // find the recording we want to download
+        req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.body.recordingSid});
+
+        // build transcript object
+        var transcription = JSON.stringify(transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight)));
+        req.user.recordings[0].transcription = transcription;
+
+        generateShareTranscriptEmail(req.user, req.body.email, req.user.recordings[0], shareToken);
+
+        var response = {
+            "email": req.body.email,
+            "recordingSid": req.body.recordingSid,
+            "status": "Success",
+            "message": "Email sent"
+        };
+
+        res.send(JSON.stringify(response));
+
+        /*
+        var locals = {'moment': moment, 'user': user, 'passwordReset': passwordReset, 'config': config, 'strings': strings};
+
+        var htmlEmail = pug.renderFile('views/email/reset.pug', locals);
+        var subject = "Password reset";
+
+        emailHelper.sendEmail(user, subject, htmlEmail); */
+    });
+
+    
 
 }
 
 dashController.sharedTranscript = function(req, res) {
+    // if we didn't receive the required parameters bounce them to home
+    console.log(req.params);
+
+    if(typeof req.params.recordingSid === 'undefined' || typeof req.params.token === 'undefined') {
+        res.redirect('/');
+    }
+
+    var recordingSid = req.params.recordingSid;
+    var token = req.params.token;
+
+    User.findOne({
+        recordings: {
+            $elemMatch: {
+                'recordingSid': recordingSid,
+                'shareTokens': {
+                    $elemMatch: {
+                        'token': token
+                    }
+                }
+            }
+        }
+    })
+    .then(function(user) {
+        if(user == null) {
+            console.log('invalid share token used, redirecting');
+            res.redirect('/');
+        } else {
+            console.log("found user: " + user.name);
+
+            // find the recording we want to show
+            user.recordings = user.recordings.filter(function(x){return x.recordingSid==recordingSid});
+
+            var transcription = transcriptionHelper.buildTranscription(JSON.parse(user.recordings[0].transcriptionLeft), JSON.parse(user.recordings[0].transcriptionRight));
+
+            res.render('transcript', {
+                //user: user,
+                transcription: transcription,
+                tim: tim,
+                strings: strings,
+                recording: user.recordings[0]
+            });
+        }
+    });
+
+
     // TODO: Display the transcript
+    console.log('hello');
 }
 
 dashController.ajaxDeleteRecording = function(req, res) {
@@ -472,11 +554,11 @@ module.exports = dashController;
 
 
 // functions
-function generateShareTranscriptEmail(user, recipientEmail, recording) {
+function generateShareTranscriptEmail(user, recipientEmail, recording, shareToken) {
     var transcription = JSON.parse(recording.transcription);
 
     // locals to feed through to template
-    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'config': config, 'strings': strings};
+    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'shareToken': shareToken, 'config': config, 'strings': strings};
 
     // loop through transcription object and build up the email
     var htmlEmail = pug.renderFile('views/email/transcript.pug', locals);
