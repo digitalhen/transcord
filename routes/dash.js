@@ -38,7 +38,7 @@ router.get('/downloadRecording/:recordingSid', dash.downloadRecording);
 router.get('/deleteRecording/:recordingSid', dash.deleteRecording);
 
 // for deleting a recording by ajax
-router.post('/ajaxDeleteRecording/:recordingSid', dash.ajaxDeleteRecording);
+router.post('/ajaxDeleteRecording', dash.ajaxDeleteRecording);
 
 //  for getting a transcriptions
 router.get('/transcript/:recordingSid', dash.transcript);

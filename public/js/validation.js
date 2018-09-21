@@ -16,6 +16,10 @@ $(document).ready(function() {
     $('#form-reset').submit();
   });
 
+  $('#form-sharetranscript-button').click(function() {
+    $('#form-sharetranscript').submit();
+  });
+
   // Autoformatting on phone numbers
   $('input[name="phoneNumber"]').mask('(000) 000-0000');
 

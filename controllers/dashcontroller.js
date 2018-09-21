@@ -337,7 +337,30 @@ dashController.transcript = function(req, res) {
 }
 
 dashController.ajaxSendTranscript = function(req, res) {
-    // TODO: Send the transcript by email.... this is AJAX
+    res.setHeader('Content-Type', 'application/json');
+
+    if(!req.user) {
+        return res.status(404).send('Not found');
+    }
+    
+    // find the recording we want to download
+    req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.body.recordingSid});
+
+    // build transcript object
+    var transcription = JSON.stringify(transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight)));
+    req.user.recordings[0].transcription = transcription;
+
+    generateShareTranscriptEmail(req.user, req.body.email, req.user.recordings[0]);
+
+    var response = {
+        "email": req.body.email,
+        "recordingSid": req.body.recordingSid,
+        "status": "Success",
+        "message": "Email sent"
+    };
+
+    res.send(JSON.stringify(response));
+
 }
 
 dashController.sharedTranscript = function(req, res) {
@@ -354,7 +377,7 @@ dashController.ajaxDeleteRecording = function(req, res) {
     User.update({
         _id: req.user._id
     }, {
-        $pull: {"recordings": {"recordingSid": req.params.recordingSid }}
+        $pull: {"recordings": {"recordingSid": req.body.recordingSid }}
     }, function(err, numberAffected, rawResponse) {
         if (err) {
             return res.send(JSON.stringify({
@@ -366,7 +389,7 @@ dashController.ajaxDeleteRecording = function(req, res) {
         }
 
         var response = {
-            "recordingSid": req.params.recordingSid,
+            "recordingSid": req.body.recordingSid,
             "status": "Success",
             "message": "Recording deleted"
         };
@@ -446,3 +469,25 @@ dashController.transcript = function(req, res) {
 */
 
 module.exports = dashController;
+
+
+// functions
+function generateShareTranscriptEmail(user, recipientEmail, recording) {
+    var transcription = JSON.parse(recording.transcription);
+
+    // locals to feed through to template
+    var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'config': config, 'strings': strings};
+
+    // loop through transcription object and build up the email
+    var htmlEmail = pug.renderFile('views/email/transcript.pug', locals);
+
+    var subject = user.name + ' shared a call transcript with you';``
+
+    var recipient = {
+        email: recipientEmail
+    };
+
+    // send the email
+    emailHelper.sendEmail(recipient, subject, htmlEmail);
+
+}

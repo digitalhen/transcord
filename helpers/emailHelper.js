@@ -3,10 +3,10 @@ const sgMail = require('@sendgrid/mail');
 
 var emailHelper = {};
 
-emailHelper.sendEmail = function(user, subject, html) {
+emailHelper.sendEmail = function(recipientUser, subject, html) {
     // send the email but check if users wants it first
-    if(user.emailNotification !== 'undefined' && !user.emailNotification) {
-        console.log('User has emails turned off, so not sending: ' + user.email);
+    if(typeof recipientUser.emailNotification !== 'undefined' && !recipientUser.emailNotification) {
+        console.log('User has emails turned off, so not sending: ' + recipientUser.email);
         return; // returns if the have a email notification set to false
     }
 
@@ -24,7 +24,7 @@ emailHelper.sendEmail = function(user, subject, html) {
     // setup email data with unicode symbols
     let mailOptions = {
         from: config.email_from_name + ' <' + config.email_from + '>', // sender address
-        to: user.email, // list of receivers
+        to: recipientUser.email, // list of receivers
         subject: subject, // Subject line
         // plain text body
         /*html: 'Dear ' + name + ',<br/><br/><b>Thank you for using News Recorder!</b><br/>' +

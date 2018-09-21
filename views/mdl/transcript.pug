@@ -14,17 +14,20 @@ block content
         h2.mdl-card__title-text Share transcript
       div.mdl-card__supporting-text.mdl-grid
 
-        form#form-sharetranscript(style="width:100%")
+        form#form-sharetranscript(style="width:100%" data-recordingSid=user.recordings[0].recordingSid)
           div.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label.mdl-cell.mdl-cell--12-col
             label.mdl-textfield__label.mdl-color-text--grey(for='email') Email
             input#email.mdl-textfield__input(type='text' name='email')
             span.error.mdl-textfield__error(for="email") Error message goes heres
+          
+
+          input#submit-form(type='submit' class='hidden')
 
       div.mdl-card__actions.mdl-card--border
         div.mdl-grid
           div.mdl-cell.mdl-cell--12-col
             button.cancel-button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect(style="float:left") Cancel
-            button.sharetranscript-button.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(style="float:right") Send email
+            button#form-sharetranscript-button.mdl-button.mdl-button--raised.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect.mdl-color-text--white(style="float:right") Send email
             
   main.mdl-layout__content.bg
     div.mdl-grid(style="max-width:900px")
