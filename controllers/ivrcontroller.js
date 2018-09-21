@@ -15,6 +15,7 @@ const pug = require('pug');
 const moment = require('moment');
 const emailHelper = require('../helpers/emailHelper');
 const transcriptionHelper = require('../helpers/transcriptionHelper');
+const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 
