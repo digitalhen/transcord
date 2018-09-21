@@ -432,15 +432,26 @@ dashController.sharedTranscript = function(req, res) {
             // find the recording we want to show
             user.recordings = user.recordings.filter(function(x){return x.recordingSid==recordingSid});
 
-            var transcription = transcriptionHelper.buildTranscription(JSON.parse(user.recordings[0].transcriptionLeft), JSON.parse(user.recordings[0].transcriptionRight));
+            // check tokens
+            user.recordings[0].shareTokens = user.recordings[0].shareTokens.filter(function(x){return x.token==token});
 
-            res.render('transcript', {
-                //user: user,
-                transcription: transcription,
-                tim: tim,
-                strings: strings,
-                recording: user.recordings[0]
-            });
+            if(moment().diff(moment(user.recordings[0].shareTokens[0].date).add(config.sharetoken_timeout, 'minutes')) < 0) {
+                console.log("Allowing share access for transcript: " + recordingSid);
+                
+                var transcription = transcriptionHelper.buildTranscription(JSON.parse(user.recordings[0].transcriptionLeft), JSON.parse(user.recordings[0].transcriptionRight));
+
+                res.render('transcript', {
+                    //user: user,
+                    transcription: transcription,
+                    tim: tim,
+                    strings: strings,
+                    recording: user.recordings[0]
+                });
+            } else {
+                console.log("Reset was too old for: " + recordingSid);
+                req.session['status'] = "This share token has expired.";
+                res.redirect('/');
+            }
         }
     });
 
