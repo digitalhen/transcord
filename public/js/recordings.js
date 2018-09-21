@@ -1,11 +1,58 @@
 $(document).ready(function(){
+  // handle the email sharing of transcripts
+  $('.transcript-control-card .email-button').click(function() {
+    var dialog = $('#sharetranscript-dialog')[0];
+
+    if (! dialog.showModal) {
+      dialogPolyfill.registerDialog(dialog);
+    }
+
+    dialog.showModal();
+  });
+
+  $('#sharetranscript-dialog .cancel-button').click(function() {
+    var dialog = $('#sharetranscript-dialog')[0];
+
+    dialog.close();
+  });
+
+  $('#sharetranscript-dialog #form-sharetranscript').submit(function() {
+    var form = $(this);
+
+    if(form.find('.is-invalid').length > 0) {
+      // do nothing, because form is invalid
+    } else {
+      var recordingSid = $(this).attr('data-recordingSid');
+      var email = $(this).find('input[name="email"]').val();
+
+      $.post("/dashboard/ajaxSendTranscript", { 'email': email, 'recordingSid': recordingSid }, function( data ) {
+        console.log(data);
+
+        if(data.status==="Success") {
+          var dialog = $('#sharetranscript-dialog')[0];
+
+          dialog.close();
+
+          // TODO: pop up somehow?
+        } else if (data.status==="Error") {
+          console.log(data.status.message);
+        }
+      });
+
+    }
+    
+    return false;
+
+    /*  */
+  });
+
   // handle the deletes here but only on the dashboard
   $('.recording-card .delete-button').click(function() {
-    console.log($(this).attr('data-recordingSid'));
+    var recordingSid = $(this).attr('data-recordingSid');
 
     $(this).children('i.material-icons').text('autorenew').addClass('rotate');
 
-    $.post( "/dashboard/ajaxDeleteRecording/" + $(this).attr('data-recordingSid'), function( data ) {
+    $.post( "/dashboard/ajaxDeleteRecording", { 'recordingSid':recordingSid }, function( data ) {
       console.log(data);
       
       if(data.status==="Success") {
@@ -18,6 +65,7 @@ $(document).ready(function(){
     });
 
   });
+
 
   // audios go on the dashboard
   $('.audio').each(function() {

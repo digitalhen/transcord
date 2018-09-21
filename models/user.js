@@ -43,7 +43,13 @@ const UserSchema = new mongoose.Schema({
 			transcription: String,
 			transcriptionLeft: String,
 			transcriptionRight: String,
-			processingStatus: Number
+			processingStatus: Number,
+			shareTokens: [
+				{
+					token: String,
+					date: Date
+				}
+			]
 		}
 	],
 	balance: Number,

@@ -551,7 +551,6 @@ userController.checkReset = function(req, res) {
 
 userController.doReset = function(req,res) {
     if(typeof req.body.token === 'undefined' || typeof req.body.password === 'undefined') {
-        console.log("")
         res.redirect('/');
     }
 

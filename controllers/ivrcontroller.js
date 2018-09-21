@@ -492,7 +492,7 @@ function runTranscription(user, recordingObject) {
         recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
         //console.log(transcription);
-        generateEmail(user, recordingObject);
+        generateTranscriptEmail(user, recordingObject);
       }
     })
     .catch(err => {
@@ -521,7 +521,7 @@ function runTranscription(user, recordingObject) {
           recordingObject.transcription = JSON.stringify(transcription);
           saveToDatabase(user,recordingObject);
           //console.log(transcription);
-          generateEmail(user, recordingObject);
+          generateTranscriptEmail(user, recordingObject);
         }
 
       })
@@ -750,27 +750,14 @@ function processFiles(user, recordingObject) {
 
 }
 
-function generateEmail(user, recording) {
+function generateTranscriptEmail(user, recording) {
     var transcription = JSON.parse(recording.transcription);
 
     // locals to feed through to template
     var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'config': config, 'strings': strings};
 
     // loop through transcription object and build up the email
-    var plaintextTranscript = '';
-    var htmlTranscript = pug.renderFile('views/email/transcript.pug', locals);
-
-    // build plain text
-    transcription.forEach(function(line) {
-      if(line.side=='left') {
-        plaintextTranscript += 'You said:\n' + line.transcript + "\n\n";
-      } else if(line.side=='right') {
-        plaintextTranscript += 'They said:\n' + line.transcript + "\n\n";
-      }
-    });
-
-    // generate the final bits
-    var htmlEmail = htmlTranscript;
+    var htmlEmail = pug.renderFile('views/email/transcript.pug', locals);
 
     var subject = 'Transcription of your call ';
     if(recording.direction==0) {
