@@ -59,7 +59,7 @@ block content
                                 tr
                                   td(style="width:100px")
                                   td(style="width:400px;text-align: center;height: 40px;background-color:rgb(68,138,255);")
-                                    if(shareToken !== null)
+                                    if(typeof(shareToken) !== 'undefined')
                                       a(style="text-decoration:none;color:white" href="https://" + config.hostname + "/dashboard/transcript/" + recording.recordingSid + "/token/" + shareToken.token target="_blank")
                                         p(style='text-align:center;vertical-align:middle;font-size:14px;font-family:Roboto, RobotoDraft, Helvetica, Arial, sans-serif;font-weight:bold') VIEW ONLINE (AVAILABLE FOR 24 HOURS)
                                     else

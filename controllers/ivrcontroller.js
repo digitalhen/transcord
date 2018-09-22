@@ -753,6 +753,10 @@ function processFiles(user, recordingObject) {
 function generateTranscriptEmail(user, recording) {
     var transcription = JSON.parse(recording.transcription);
 
+    console.log("Inside general transcript email...");
+
+
+
     // locals to feed through to template
     var locals = {'moment': moment, 'user': user, 'recording': recording, 'transcription': transcription, 'config': config, 'strings': strings};
 
