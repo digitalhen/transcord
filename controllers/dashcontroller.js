@@ -15,6 +15,7 @@ const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 const uuidv1 = require('uuid/v1');
+const fuse = require('fuse.js');
 
 
 var dashController = {};
@@ -304,6 +305,34 @@ dashController.recordings = function(req, res) {
       tim: tim,
       strings: strings,
   });
+}
+
+dashController.ajaxSearchRecordings = function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
+    if(!req.user) {
+        return res.status(404).send('Not found');
+    }
+
+    var search = req.body.search;
+    var user = req.user;
+
+    var options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "transcriptionLeft",
+          "transcriptionRight"
+        ]
+      };
+      var fuse2 = new fuse(user.recordings, options); // "list" is the item array
+      var result = fuse2.search(search);
+
+      return res.send(JSON.stringify(result));
 }
 
 dashController.transcript = function(req, res) {

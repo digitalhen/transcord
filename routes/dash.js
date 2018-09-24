@@ -31,6 +31,9 @@ router.get('/paymentIncoming', dash.paymentIncoming);
 // show recordings list
 router.get('/recordings', dash.recordings)
 
+// get recordfings list / search
+router.post('/ajaxSearchRecordings', dash.ajaxSearchRecordings);
+
 //  for getting a recording
 router.get('/downloadRecording/:recordingSid', dash.downloadRecording);
 
