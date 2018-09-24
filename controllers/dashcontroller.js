@@ -314,8 +314,15 @@ dashController.ajaxSearchRecordings = function(req, res) {
         return res.status(404).send('Not found');
     }
 
-    var search = req.body.search;
     var user = req.user;
+
+    // if no search, send full results
+    if(!req.body.search || req.body.search.length == 0) {
+        // TODO: maybe dump the transcript to save bandwidth?
+        return res.send(JSON.stringify(user.recordings));
+    }
+
+    var search = req.body.search;
 
     var options = {
         shouldSort: true,
