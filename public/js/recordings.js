@@ -21,6 +21,11 @@ $(document).ready(function(){
         clone.find('.call-received-button').show().before(data[i].numberFromFormatted);
       }
 
+      // Tag the buttons
+      clone.find('.delete-button').attr('data-recordingSid', data[i].recordingSid);
+      clone.find('.transcript-button').attr('data-recordingSid', data[i].recordingSid);
+      clone.find('.download-button').attr('data-recordingSid', data[i].recordingSid);
+
       // Load the audio tag in
       clone.find('audio').children('source').attr('src', data[i].recordingUrl);
 
@@ -34,24 +39,36 @@ $(document).ready(function(){
       // Save start time
       clone.find('.call-start-date').text(data[i].startTime);
 
+      // Set up audio time
+      clone.find('.audio').attr('id', 'audio-' + i);
+
       // Add in the recording card to the container
       $('#recording-card-container').append(clone);
-    }
 
-    // generate the audios
-    $('audio').each(function() {
-      var idNumber = $(this).attr('data-id');
-      var audioId = '#audio-' + idNumber;
-
-      const player = new Plyr(audioId, {
+      // create audio player 
+      const player = new Plyr('#audio-' + i, {
         'controls': ['play', 'progress', 'current-time', 'mute', 'settings']
       });
-    });
+    }
   });
   
+  // handle the download button
+  $('#recording-card-container').on('click', '.recording-card .download-button', function() {
+    var recordingSid = $(this).attr('data-recordingSid');
+
+    window.location.href = window.location.protocol + "//" + window.location.host + "/dashboard/downloadRecording/" + recordingSid;
+  });
+
+
+  // handle the transcript button
+  $('#recording-card-container').on('click', '.recording-card .transcript-button', function() {
+    var recordingSid = $(this).attr('data-recordingSid');
+
+    window.location.href = window.location.protocol + "//" + window.location.host + "/dashboard/transcript/" + recordingSid;
+  });
 
   // handle the deletes here but only on the dashboard
-  $('.recording-card .delete-button').click(function() {
+  $('#recording-card-container').on('click', '.recording-card .delete-button', function() {
     var recordingSid = $(this).attr('data-recordingSid');
 
     $(this).children('i.material-icons').text('autorenew').addClass('rotate');
