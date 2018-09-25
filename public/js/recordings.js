@@ -31,9 +31,22 @@ $(document).ready(function(){
         clone.find('.done-processing').remove();
       }
 
+      // Save start time
+      clone.find('.call-start-date').text(data[i].startTime);
+
       // Add in the recording card to the container
       $('#recording-card-container').append(clone);
     }
+
+    // generate the audios
+    $('audio').each(function() {
+      var idNumber = $(this).attr('data-id');
+      var audioId = '#audio-' + idNumber;
+
+      const player = new Plyr(audioId, {
+        'controls': ['play', 'progress', 'current-time', 'mute', 'settings']
+      });
+    });
   });
   
 
@@ -58,15 +71,7 @@ $(document).ready(function(){
   });
 
 
-  // audios go on the dashboard
-  $('.audio').each(function() {
-    var idNumber = $(this).attr('data-id');
-    var audioId = '#audio-' + idNumber;
-
-    const player = new Plyr(audioId, {
-      'controls': ['play', 'progress', 'current-time', 'mute', 'settings']
-    });
-  });
+  
 
 
   
