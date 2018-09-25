@@ -11,24 +11,27 @@ $(document).ready(function(){
     for (var i=0; i < data.length; i++) {
       var clone = $('#recording-card-template').clone().prop('id', 'recording-card-' + i).attr('data-iteration', i).show();
 
-      // TODO: update values here
+      // Capture the recordingSid for programmatic button presses
       clone.attr('data-recordingSid', data[i].recordingSid);
       
-      if(data[i].callDirection==0)
-        clone.find('.call-made-button').show();
-      else if(data[i].callDirection==1)
-        clone.find('.call-received-button').show();
+      // Show number and call direction
+      if(!data[i].callDirection || data[i].callDirection==0) {
+        clone.find('.call-made-button').show().before(data[i].numberCalledFormatted);
+      } else if(data[i].callDirection==1) {
+        clone.find('.call-received-button').show().before(data[i].numberFromFormatted);
+      }
 
+      // Load the audio tag in
       clone.find('audio').children('source').attr('src', data[i].recordingUrl);
 
+      // Show the processing button
       if(!data[i].processingStatus || data[i].processingStatus==2) {
         clone.find('.still-processing').remove();
       } else {
         clone.find('.done-processing').remove();
       }
 
-
-
+      // Add in the recording card to the container
       $('#recording-card-container').append(clone);
     }
   });
