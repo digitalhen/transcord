@@ -37,7 +37,7 @@ $(document).ready(function(){
       }
 
       // Save start time
-      clone.find('.call-start-date').text(data[i].startTime);
+      clone.find('.call-start-date').text(moment(data[i].startTime).format("MMM DD, YYYY h:mm a"));
 
       // Set up audio time
       clone.find('.audio').attr('id', 'audio-' + i);

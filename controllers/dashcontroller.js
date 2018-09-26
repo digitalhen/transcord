@@ -314,7 +314,15 @@ dashController.ajaxSearchRecordings = function(req, res) {
         return res.status(404).send('Not found');
     }
 
+    // get the user
     var user = req.user;
+
+    // get the starting place
+    var position = 0;
+    if(req.body.position) position = req.body.position;
+
+    // reverse ordering of recordings and slice the number of records to show
+    user.recordings = user.recordings.reverse().slice(position,position+config.pagination_count);
 
     // if no search, send full results
     if(!req.body.search || req.body.search.length == 0) {
