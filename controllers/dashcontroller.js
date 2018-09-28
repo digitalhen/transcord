@@ -331,7 +331,8 @@ dashController.ajaxSearchRecordings = function(req, res) {
     // build metadata
     reply.metadata = {
         'pages': Math.ceil(user.recordings.length/config.pagination_count),
-        'page': page // TODO: try this, catch error?
+        'page': page, // TODO: try this, catch error?
+        'calls': user.recordings.length
     }
 
     // get the starting place
@@ -370,6 +371,7 @@ dashController.ajaxSearchRecordings = function(req, res) {
       // capture the results and count the number of pages
       reply.recordings = result;
       reply.metadata.pages = Math.ceil(reply.recordings.length/config.pagination_count);
+      reply.metadata.calls = reply.recordings.length;
 
       return res.send(JSON.stringify(reply));
 }

@@ -82,6 +82,9 @@ function refreshView() {
   $.post("/dashboard/ajaxSearchRecordings", searchObject, function(data) {
     console.log(data);
 
+    // save call count
+    $('#call-count .count').text(data.metadata.calls);
+
     // TODO: save meta data here?
 
     // erase existing recording cards

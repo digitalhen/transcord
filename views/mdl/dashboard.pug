@@ -11,19 +11,19 @@ block content
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-          h2.mdl-card__title-text Calls
-        
-          <form action="#">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-              <label class="mdl-button mdl-js-button mdl-button--icon" for="sample6">
-                <i class="material-icons">search</i>
-              </label>
-              <div class="mdl-textfield__expandable-holder">
-                <input class="mdl-textfield__input" type="text" id="sample6">
-                <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+          h2#call-count.mdl-card__title-text Calls (#[#span.count 0])
+          div
+            <form action="#">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="sample6">
+                  <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                  <input class="mdl-textfield__input" type="text" id="sample6">
+                  <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
         div#recording-card-container.mdl-grid.table-grid
           // if there's no transcription, give user a notice
           if user.recordings.length == 0
