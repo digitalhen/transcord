@@ -314,22 +314,35 @@ dashController.ajaxSearchRecordings = function(req, res) {
         return res.status(404).send('Not found');
     }
 
+    // empty reply object
+    var reply = {};
+
     // get the user
     var user = req.user;
 
+    // build metadata
+    reply.metadata = {
+        pages: Math.ceil(user.recordings.length/config.pagination_count),
+        page: req.body.page
+    }
+
     // get the starting place
     var position = 0;
-    if(req.body.position) position = req.body.position;
+    if(req.body.page) position = (req.body.page-1)*10;
 
     // reverse ordering of recordings and slice the number of records to show
     user.recordings = user.recordings.reverse().slice(position,position+config.pagination_count);
 
     // if no search, send full results
     if(!req.body.search || req.body.search.length == 0) {
+        reply.recordings = user.recordings;
         // TODO: maybe dump the transcript to save bandwidth?
-        return res.send(JSON.stringify(user.recordings));
+        //console.log(reply);
+        return res.send(JSON.stringify(reply));
     }
 
+    // capture search data
+    reply.metadata.search = req.body.search;
     var search = req.body.search;
 
     var options = {
@@ -346,8 +359,9 @@ dashController.ajaxSearchRecordings = function(req, res) {
       };
       var fuse2 = new fuse(user.recordings, options); // "list" is the item array
       var result = fuse2.search(search);
+      reply.recordings = result;
 
-      return res.send(JSON.stringify(result));
+      return res.send(JSON.stringify(reply));
 }
 
 dashController.transcript = function(req, res) {
