@@ -1,13 +1,14 @@
 $(document).ready(function(){
 
   // load the default view
-  refreshView(1, ''); // TODO: this needs to read the query string if it exists
+  refreshView(); // TODO: this needs to read the query string if it exists
   
   // TODO: handle pagination button click
 
   // TODO: handle search field changes
   $('#sample6').on('input',function(e){
-      refreshView(1, $(this).val());
+      $.bbq.pushState({'page': 1, 'search': $(this).val()}); // go back to page 1
+      refreshView();
   });
   
   // handle the download button
@@ -45,6 +46,23 @@ $(document).ready(function(){
 
   });
 
+  
+
+  // reload container without actually going anywhere
+  //console.log($.deparam.fragment);
+  $('#pagination-container').on('click', '.page', function(event) {
+    event.preventDefault();
+
+    // capture the state
+    $.bbq.pushState({'page': $(this).attr('data-page')});
+
+    // load the data
+    refreshView();
+
+    // refresh the pagination
+    //buildPagination(pages, $(this).attr('data-page'));
+  }); 
+
 
   
 
@@ -52,9 +70,16 @@ $(document).ready(function(){
   
 });
 
-function refreshView(page, search) {
+function refreshView() {
+  var page = $.bbq.getState('page');
+  var search = $.bbq.getState('search');
+
+  var searchObject = {};
+  if(search) searchObject.search = search;
+  if(page) searchObject.page = page;
+
   // load initial
-  $.post("/dashboard/ajaxSearchRecordings", {'page': page, 'search': search}, function(data) {
+  $.post("/dashboard/ajaxSearchRecordings", searchObject, function(data) {
     console.log(data);
 
     // TODO: save meta data here?
@@ -112,6 +137,46 @@ function refreshView(page, search) {
       });
     }
 
-    // TODO: load pagination here
+    buildPagination(data.metadata.pages, data.metadata.page);
+
   });
+}
+
+function buildPagination(pages, page) {
+  console.log('Building pagination:');
+  console.log(pages);
+  console.log(page);
+
+  // build pagination here
+  if(pages>1) {
+    // show the page container
+    $('#pagination-container').show();
+
+    // clear the pages
+    $('#pagination-container .pagination .paginator .page').remove();
+
+    // add new pages
+    for(var i=0; i<pages; i++) {
+      var number = $('<div>', {'data-page':(i+1), 'text':(i+1), 'class':(i+1)===page ? 'page active' : 'page'})
+      $('#pagination-container .pagination .paginator').append(number);
+    }   
+
+    // decide if arrows should work and add links if so     
+    if(pages==page) { // last page
+      $('#pagination-container .pagination .right-pagination').addClass('disabled');
+    } else {
+      $('#pagination-container .pagination .right-pagination').removeClass('disabled');
+      $('#pagination-container .pagination .right-pagination .page').attr('data-page',page+1);
+    }
+
+    if(page==1) { // first page
+      $('#pagination-container .pagination .left-pagination').addClass('disabled');
+    } else {
+      $('#pagination-container .pagination .left-pagination').removeClass('disabled');
+      $('#pagination-container .pagination .left-pagination .page').attr('data-page',(page-1));
+    }
+
+  } else {
+    $('#pagination-container').hide();
+  }
 }

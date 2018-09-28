@@ -48,14 +48,14 @@ a img {
   border: 0px;
 }
 
-.pagination-container {
+#pagination-container {
   text-align: right;
   margin-top: 0px;
   font-size: 12px;
   min-height: auto;
 }
 
-.pagination-container .pagination li {
+#pagination-container .pagination li {
   display: inline-block;
   border-radius: 2px;
   text-align: center;
@@ -65,33 +65,31 @@ a img {
   font-size: 1.2em;
 }
 
-.pagination-container .pagination li a {
+#pagination-container .pagination li .page {
   color: #444;
   display: inline-block;
   padding: 0 10px;
   line-height: 30px;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.pagination-container .pagination li.active a {
+#pagination-container .pagination li .page.active {
   color: #fff;
-}
-
-.pagination-container .pagination li.active {
   background-color: #ff5252;
 }
 
-.pagination-container .pagination li.disabled i {
+#pagination-container .pagination li.disabled i {
   cursor: default;
   color: #999;
 }
 
-.pagination-container .pagination li i {
+#pagination-container .pagination li i {
   font-size: 1.2em;
   line-height: 1.5;
 }
 
-.pagination-container .pagination li.pages ul li {
+#pagination-container .pagination li.pages ul li {
   display: inline-block;
   float: none;
 }

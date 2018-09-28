@@ -57,31 +57,21 @@ block content
                       i.delete-button.icon.material-icons delete
                       div.mdl-tooltip.mdl-tooltip--top(data-mdl-for="delete-button") Delete
                     button.transcript-button.mdl-button.mdl-button--accent.mdl-js-button.mdl-color-text--primary.mdl-js-ripple-effect !{tim(strings.dashboard.transcriptButton)}
-        //div.mdl-grid.table-grid
-          if user.recordings.length > paginationCount
-            div.pagination-container.mdl-card.mdl-cell.mdl-cell--12-col
-                  - var y = 0;
+        div.mdl-grid.table-grid
+          div#pagination-container.mdl-card.mdl-cell.mdl-cell--12-col
                   ul.pagination.mdl-list
-                    li(class=(startingIndex==0 ? "disabled" : false))
-                      if startingIndex !== 0
-                        a(href="/dashboard/calls/" + (startingIndex-paginationCount))
-                          i.material-icons chevron_left
-                      else
+                    li.left-pagination
+                      div.page
                         i.material-icons chevron_left
-                    while y < pageNumber
-                      li(class=(startingIndex==y*paginationCount ? "active": ""))
-                        a(href="/dashboard/calls/" + y*paginationCount) !{y+1}
-                      - y++
-                    li(class=(startingIndex==(pageNumber-1)*paginationCount ? "disabled" : false))
-                      if startingIndex !== (pageNumber-1)*paginationCount
-                        a(href="/dashboard/calls/" + (startingIndex+paginationCount))
-                          i.material-icons chevron_right
-                      else
+                    li.paginator
+                      //a(href="/dashboard/calls/" + y*paginationCount) 1
+                    li.right-pagination
+                      div.page
                         i.material-icons chevron_right
           
     //include footer
 
 block js
   script(src="//cdn.plyr.io/3.4.3/plyr.js")
-  script(src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.6/wavesurfer.min.js")
+  script(src="/js/libs/jquery.ba-bbq.min.js")
   script(src="/js/recordings.js")

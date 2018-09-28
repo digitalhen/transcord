@@ -320,15 +320,22 @@ dashController.ajaxSearchRecordings = function(req, res) {
     // get the user
     var user = req.user;
 
+    // try and parse the page number, or stick with the default
+    var page = 1;
+    try {
+        if(req.body.page) page = parseInt(req.body.page);
+    } catch(err) {
+        console.log(err);
+    }
+
     // build metadata
     reply.metadata = {
-        pages: Math.ceil(user.recordings.length/config.pagination_count),
-        page: req.body.page
+        'pages': Math.ceil(user.recordings.length/config.pagination_count),
+        'page': page // TODO: try this, catch error?
     }
 
     // get the starting place
-    var position = 0;
-    if(req.body.page) position = (req.body.page-1)*10;
+    var position = (page-1)*10;
 
     // reverse ordering of recordings and slice the number of records to show
     user.recordings = user.recordings.reverse().slice(position,position+config.pagination_count);
@@ -359,7 +366,10 @@ dashController.ajaxSearchRecordings = function(req, res) {
       };
       var fuse2 = new fuse(user.recordings, options); // "list" is the item array
       var result = fuse2.search(search);
+
+      // capture the results and count the number of pages
       reply.recordings = result;
+      reply.metadata.pages = Math.ceil(reply.recordings.length/config.pagination_count);
 
       return res.send(JSON.stringify(reply));
 }
