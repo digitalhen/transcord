@@ -15,7 +15,8 @@ const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
 const uuidv1 = require('uuid/v1');
-const fuse = require('fuse.js');
+//const fuse = require('fuse.js');
+const fuzzysort = require('fuzzysort');
 
 
 var dashController = {};
@@ -343,6 +344,7 @@ dashController.ajaxSearchRecordings = function(req, res) {
 
     // if no search, send full results
     if(!req.body.search || req.body.search.length == 0) {
+
         reply.recordings = user.recordings;
         // TODO: maybe dump the transcript to save bandwidth?
         //console.log(reply);
@@ -353,20 +355,29 @@ dashController.ajaxSearchRecordings = function(req, res) {
     reply.metadata.search = req.body.search;
     var search = req.body.search;
 
+    /*
     var options = {
         shouldSort: true,
-        threshold: 0.6,
+        threshold: 0.7,
         location: 0,
-        distance: 100,
+        distance: 1000,
         maxPatternLength: 32,
         minMatchCharLength: 1,
         keys: [
-          "transcriptionLeft",
-          "transcriptionRight"
+          "numberCalled",
+          "numberFrom",
+          "transcription"
         ]
       };
       var fuse2 = new fuse(user.recordings, options); // "list" is the item array
-      var result = fuse2.search(search);
+      var result = fuse2.search(search); */
+
+      var result = fuzzysort.go(search, user.recordings, 
+        {
+            key: 'transcription',
+            threshold: -10000
+        }
+    );
 
       // capture the results and count the number of pages
       reply.recordings = result;
@@ -379,7 +390,7 @@ dashController.ajaxSearchRecordings = function(req, res) {
 dashController.transcript = function(req, res) {
   if (!req.user) {
       req.session.redirectTo = req.originalUrl;
-      return res.redirect('/login');w
+      return res.redirect('/login');
   }
 
   // check for a negative balance and force payment

@@ -11,15 +11,15 @@ block content
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
-          h2#call-count.mdl-card__title-text Calls (#[#span.count 0])
-          div
+          h2#call-count.mdl-card__title-text(style="float:left") Calls (#[#span.count 0])
+          div(style="float:right; margin-left: auto")
             <form action="#">
-              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="sample6">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="padding:0px">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="sample6" style="top:0px; bottom: 0px; padding: 0px">
                   <i class="material-icons">search</i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
-                  <input class="mdl-textfield__input" type="text" id="sample6">
+                  <input class="mdl-textfield__input" type="text" id="sample6" style="color:black;background-color:white">
                   <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
                 </div>
               </div>

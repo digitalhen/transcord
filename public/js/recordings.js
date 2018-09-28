@@ -91,7 +91,10 @@ function refreshView() {
     $('#recording-card-container .recording-card').remove();
 
     for (var i=0; i < data.recordings.length; i++) {
-      var recording = data.recordings[i];
+      if(data.recordings[i].hasOwnProperty('obj'))
+        var recording = data.recordings[i].obj; // via search
+      else
+        var recording = data.recordings[i]; // directly from the user object
 
       var clone = $('#recording-card-template')
         .clone()
@@ -102,11 +105,11 @@ function refreshView() {
 
       // Capture the recordingSid for programmatic button presses
       clone.attr('data-recordingSid', recording.recordingSid);
-      
+
       // Show number and call direction
-      if(!recording.callDirection || recording.callDirection==0) {
+      if(!recording.direction || recording.direction==0) {
         clone.find('.call-made-button').show().before(recording.numberCalledFormatted);
-      } else if(recording.callDirection==1) {
+      } else if(recording.direction==1) {
         clone.find('.call-received-button').show().before(recording.numberFromFormatted);
       }
 
@@ -146,9 +149,6 @@ function refreshView() {
 }
 
 function buildPagination(pages, page) {
-  console.log('Building pagination:');
-  console.log(pages);
-  console.log(page);
 
   // build pagination here
   if(pages>1) {
