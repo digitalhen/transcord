@@ -599,6 +599,31 @@ dashController.deleteRecording = function(req, res) {
 
 }
 
+dashController.downloadTranscript = function(req, res) {
+    if (!req.user) {
+        req.session.redirectTo = req.originalUrl;
+        return res.redirect('/login');w
+    }
+
+    // check for a negative balance and force payment
+    if(req.user.balance<0) {
+        return res.redirect('/dashboard/payment');
+    }
+
+    // find the recording we want to download
+    req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.params.recordingSid});
+
+    if(req.user.recordings.length == 0) 
+      res.redirect('/dashboard');  
+
+    res.setHeader('Content-disposition', 'attachment; filename=Transcord between ' + req.user.recordings[0].numberFromFormatted + ' and ' + req.user.recordings[0].numberCalledFormatted + '.docx');
+
+    // generate transcript for older transcripts
+    var transcription = transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight));
+
+    transcriptionHelper.generateWordDocument(req.user.recordings[0], transcription, res);
+}
+
 // pull the file from google and stream it to the person with the right file name
 dashController.downloadRecording = function(req, res) {
     if (!req.user) {

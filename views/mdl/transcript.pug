@@ -53,9 +53,13 @@ block content
               button.email-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
                 i.icon.material-icons email
                 div.mdl-tooltip(data-mdl-for="email-button") Share transcript
+              a(href='/dashboard/downloadTranscript/' + recording.recordingSid)
+                button.document-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
+                  i.icon.material-icons description
+                  div.mdl-tooltip(data-mdl-for="document-button") Download Word document
               a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                 button.download-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                  i.icon.material-icons save_alt
+                  i.icon.material-icons speaker_phone
                   div.mdl-tooltip(data-mdl-for="download-button") Download audio
               a(href='/dashboard/deleteRecording/' + recording.recordingSid)
                 button.delete-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary

@@ -37,6 +37,9 @@ router.post('/ajaxSearchRecordings', dash.ajaxSearchRecordings);
 //  for getting a recording
 router.get('/downloadRecording/:recordingSid', dash.downloadRecording);
 
+//  for getting a recording
+router.get('/downloadTranscript/:recordingSid', dash.downloadTranscript);
+
 // for deleting a recording
 router.get('/deleteRecording/:recordingSid', dash.deleteRecording);
 

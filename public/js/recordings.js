@@ -18,6 +18,13 @@ $(document).ready(function(){
     window.location.href = window.location.protocol + "//" + window.location.host + "/dashboard/downloadRecording/" + recordingSid;
   });
 
+  // handle the document button
+  $('#recording-card-container').on('click', '.recording-card .document-button', function() {
+    var recordingSid = $(this).attr('data-recordingSid');
+
+    window.location.href = window.location.protocol + "//" + window.location.host + "/dashboard/downloadTranscript/" + recordingSid;
+  });
+
 
   // handle the transcript button
   $('#recording-card-container').on('click', '.recording-card .transcript-button', function() {
@@ -117,6 +124,7 @@ function refreshView() {
       clone.find('.delete-button').attr('data-recordingSid', recording.recordingSid);
       clone.find('.transcript-button').attr('data-recordingSid', recording.recordingSid);
       clone.find('.download-button').attr('data-recordingSid', recording.recordingSid);
+      clone.find('.document-button').attr('data-recordingSid', recording.recordingSid);
 
       // Load the audio tag in
       clone.find('audio').children('source').attr('src', recording.recordingUrl);

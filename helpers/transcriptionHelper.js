@@ -1,3 +1,4 @@
+var officegen = require('officegen');
 
 var transcriptionHelper = {};
 
@@ -29,6 +30,66 @@ transcriptionHelper.buildTranscription = function(leftTranscription,rightTranscr
     combinedTranscript.sort(function(a,b) { return a.startTime - b.startTime; }); // sorts by startTime;s
 
     return combinedTranscript;
+}
+
+transcriptionHelper.generateWordDocument = function(recording, transcription, stream) {
+    // Take the combinedd transcript and build a word document for it
+    
+    // create docx
+    var docx = officegen('docx');
+
+    // capture error
+    docx.on('error', function(err) {
+        console.log(err);
+    });
+
+    var previousWord = null;
+    var line = "";
+
+    // create the document
+    var paragraph = docx.createP();
+
+    // add the title
+    paragraph.addText('Transcord between ' + recording.numberFromFormatted + ' and ' + recording.numberCalledFormatted, {bold: true});
+
+
+    for(var i=0; i<=transcription.length; i++) {
+        // out the full line
+        if(line.length > 0 && (previousWord !== null && (previousWord.lineBreak || transcription[i].side !== previousWord.side))) {
+            var paragraph = docx.createP();
+
+            // display the phone number
+            if((recording.direction === 0 && previousWord.side === 'left') || (recording.direction === 1 && previousWord.side === 'right'))
+                paragraph.addText(recording.numberFromFormatted);
+            else if((recording.direction === 1 && previousWord.side === 'left') || (recording.direction === 0 && previousWord.side === 'right'))
+                paragraph.addText(recording.numberCalledFormatted);
+            
+            // line break
+            paragraph.addLineBreak ();
+
+            // the actual line of transcript
+            paragraph.addText(line);
+            line = "";
+        } 
+        
+        // capture a word
+        if(i<transcription.length) {
+            previousWord = transcription[i];
+            line = line + transcription[i].characters + ' ';
+        }
+    }
+
+    /*
+
+    var paragraph = docx.createP();
+
+    paragraph.addText('Transcord between ' + recording.numberFromFormatted + ' and ' + recording.numberCalledFormatted);
+
+    var paragraph = docx.createP();
+
+    paragraph.addText('Some content here'); */
+
+    return docx.generate(stream);
 }
 
 
