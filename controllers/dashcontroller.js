@@ -374,7 +374,7 @@ dashController.ajaxSearchRecordings = function(req, res) {
 
       var result = fuzzysort.go(search, user.recordings, 
         {
-            key: 'transcription',
+            key: 'transcriptionPlainText',
             threshold: -10000
         }
     );
@@ -408,7 +408,7 @@ dashController.transcript = function(req, res) {
   //var transcription = JSON.parse(req.user.recordings[0].transcription);
 
   // TODO: we shouldn't need this really
-  var transcription = transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight));
+  var transcription = JSON.parse(req.user.recordings[0].transcription);
 
   res.render('transcript', {
       user: req.user,
@@ -451,10 +451,6 @@ dashController.ajaxSendTranscript = function(req, res) {
 
         // find the recording we want to download
         req.user.recordings = req.user.recordings.filter(function(x){return x.recordingSid==req.body.recordingSid});
-
-        // build transcript object
-        var transcription = JSON.stringify(transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight)));
-        req.user.recordings[0].transcription = transcription;
 
         generateShareTranscriptEmail(req.user, req.body.email, req.user.recordings[0], shareToken);
 
@@ -519,7 +515,7 @@ dashController.sharedTranscript = function(req, res) {
             if(moment().diff(moment(user.recordings[0].shareTokens[0].date).add(config.sharetoken_timeout, 'minutes')) < 0) {
                 console.log("Allowing share access for transcript: " + recordingSid);
                 
-                var transcription = transcriptionHelper.buildTranscription(JSON.parse(user.recordings[0].transcriptionLeft), JSON.parse(user.recordings[0].transcriptionRight));
+                var transcription = JSON.parse(user.recordings[0].transcription);
 
                 res.render('transcript', {
                     //user: user,
@@ -619,9 +615,9 @@ dashController.downloadTranscript = function(req, res) {
     res.setHeader('Content-disposition', 'attachment; filename=Transcord between ' + req.user.recordings[0].numberFromFormatted + ' and ' + req.user.recordings[0].numberCalledFormatted + '.docx');
 
     // generate transcript for older transcripts
-    var transcription = transcriptionHelper.buildTranscription(JSON.parse(req.user.recordings[0].transcriptionLeft), JSON.parse(req.user.recordings[0].transcriptionRight));
+    var transcription = JSON.parse(req.user.recordings[0].transcription);
 
-    transcriptionHelper.generateWordDocument(req.user.recordings[0], transcription, res);
+    transcriptionHelper.buildWordDocument(req.user.recordings[0], transcription, res);
 }
 
 // pull the file from google and stream it to the person with the right file name

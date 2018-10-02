@@ -41,6 +41,7 @@ const UserSchema = new mongoose.Schema({
 			recordingUrlLeft: String,
 			recordingUrlRight: String,
 			transcription: String,
+			transcriptionPlainText: String,
 			transcriptionLeft: String,
 			transcriptionRight: String,
 			processingStatus: Number,

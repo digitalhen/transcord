@@ -32,7 +32,51 @@ transcriptionHelper.buildTranscription = function(leftTranscription,rightTranscr
     return combinedTranscript;
 }
 
-transcriptionHelper.generateWordDocument = function(recording, transcription, stream) {
+transcriptionHelper.buildPlainText = function(recording, transcription) {
+    var previousWord = null;
+    var line = "";
+    var startTime = "";
+
+    // add the title
+    var output = 'Transcord between ' + recording.numberFromFormatted + ' and ' + recording.numberCalledFormatted + ' at ' + moment(recording.startTime).format(strings.shared.dateFormat);
+
+    for(var i=0; i<=transcription.length; i++) {
+        // out the full line
+        if(line.length > 0 && (previousWord !== null && (previousWord.lineBreak || transcription[i].side !== previousWord.side))) {
+            var newLine = "";
+
+            // display the phone number
+            if((recording.direction === 0 && previousWord.side === 'left') || (recording.direction === 1 && previousWord.side === 'right')) {
+                newLine = newLine + " " + recording.numberCalledFormatted;
+            } 
+            else if((recording.direction === 1 && previousWord.side === 'left') || (recording.direction === 0 && previousWord.side === 'right')) {
+                newLine = newLine + " " + recording.numberFromFormatted;
+            }
+
+            // add the time stamp
+            newLine = newLine + " " + ' (' + moment.utc(startTime*1000).format('mm:ss') + ')', {italic: true};
+            
+            // Add the new actual line
+            newLine = newLine + " " + line;
+
+            // Add to the output
+            output = output + " " + newLine;
+            
+            line = "";
+        } 
+        
+        // capture a word
+        if(i<transcription.length) {
+            if(line.length==0) startTime = transcription[i].startTime; // capture the start time for a new sentence
+            previousWord = transcription[i];
+            line = line + transcription[i].characters + ' ';
+        }
+    }
+
+    return output;
+}
+
+transcriptionHelper.buildWordDocument = function(recording, transcription, stream) {
     // Take the combinedd transcript and build a word document for it
     
     // create docx

@@ -102,6 +102,16 @@ ivrController.welcome = function(req, res) {
             } else {
                 const voiceResponse = new VoiceResponse();
 
+                for(var i=0; i<user.recordings.length; i++) {
+                    var transcription = transcriptionHelper.buildTranscription(JSON.parse(user.recordings[i].transcriptionLeft), JSON.parse(user.recordings[i].transcriptionRight));
+                    user.recordings[i].transcription = JSON.stringify(transcription);
+                    user.recordings[i].transcriptionPlainText = transcriptionHelper.buildPlainText(user.recordings[i], transcription);
+            
+                    saveToDatabase(user, user.recordings[i]);
+
+                    voiceResponse.say("Resave complete");
+                }
+
                 if(typeof user.balance === 'undefined' || user.balance<0) {
                     voiceResponse.say("Hello " + user.name + ", you have a balance due of $" + ((user.balance/100)*-1).toFixed(2) + ". Please visit transcord dot app to top up your account.");
                     voiceResponse.hangup();
@@ -488,6 +498,7 @@ function runTranscription(user, recordingObject) {
 
       if(status.left && status.right) {
         var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
+        var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
         recordingObject.transcription = JSON.stringify(transcription);
         recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
@@ -517,11 +528,12 @@ function runTranscription(user, recordingObject) {
 
         if(status.left && status.right) {
             var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
+            var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
             recordingObject.processingStatus = 2; // finished (with transcription)
-          recordingObject.transcription = JSON.stringify(transcription);
-          saveToDatabase(user,recordingObject);
-          //console.log(transcription);
-          generateTranscriptEmail(user, recordingObject);
+            recordingObject.transcription = JSON.stringify(transcription);
+            saveToDatabase(user,recordingObject);
+            //console.log(transcription);
+            generateTranscriptEmail(user, recordingObject);
         }
 
       })
