@@ -1,4 +1,8 @@
 var officegen = require('officegen');
+const moment = require('moment');
+const strings = require('../strings.json');
+
+
 
 var transcriptionHelper = {};
 
@@ -45,13 +49,22 @@ transcriptionHelper.generateWordDocument = function(recording, transcription, st
 
     var previousWord = null;
     var line = "";
+    var startTime = "";
 
     // create the document
     var paragraph = docx.createP();
+    //paragraph.options.align = 'center';
+    paragraph.addImage('public/img/regular-logo.png');
 
     // add the title
-    paragraph.addText('Transcord between ' + recording.numberFromFormatted + ' and ' + recording.numberCalledFormatted, {bold: true});
+    var paragraph = docx.createP();
+    paragraph.addText('Transcord between ' + recording.numberFromFormatted + ' and ' + recording.numberCalledFormatted + ' at ' + moment(recording.startTime).format(strings.shared.dateFormat), {bold: true});
 
+    if(transcription.length==0) {
+        var paragraph = docx.createP();
+
+        paragraph.addText('No spoken words were detected by our algorithms.');
+    }
 
     for(var i=0; i<=transcription.length; i++) {
         // out the full line
@@ -59,10 +72,16 @@ transcriptionHelper.generateWordDocument = function(recording, transcription, st
             var paragraph = docx.createP();
 
             // display the phone number
-            if((recording.direction === 0 && previousWord.side === 'left') || (recording.direction === 1 && previousWord.side === 'right'))
-                paragraph.addText(recording.numberFromFormatted);
-            else if((recording.direction === 1 && previousWord.side === 'left') || (recording.direction === 0 && previousWord.side === 'right'))
+            if((recording.direction === 0 && previousWord.side === 'left') || (recording.direction === 1 && previousWord.side === 'right')) {
                 paragraph.addText(recording.numberCalledFormatted);
+            } 
+            else if((recording.direction === 1 && previousWord.side === 'left') || (recording.direction === 0 && previousWord.side === 'right')) {
+                paragraph.addText(recording.numberFromFormatted);
+            }
+
+            // add the time stamp
+            console.log(startTime);
+            paragraph.addText(' (' + moment.utc(startTime*1000).format('mm:ss') + ')', {italic: true});
             
             // line break
             paragraph.addLineBreak ();
@@ -74,6 +93,7 @@ transcriptionHelper.generateWordDocument = function(recording, transcription, st
         
         // capture a word
         if(i<transcription.length) {
+            if(line.length==0) startTime = transcription[i].startTime; // capture the start time for a new sentence
             previousWord = transcription[i];
             line = line + transcription[i].characters + ' ';
         }
