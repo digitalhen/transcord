@@ -54,20 +54,20 @@ block content
           div.mdl-card__actions.mdl-card--border
             div(style="float:left")
               button.email-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                i.icon.material-icons email
-                div.mdl-tooltip(data-mdl-for="email-button") Share transcript
+                i#email-icon.icon.material-icons email
+                div.mdl-tooltip(data-mdl-for="email-icon") Share transcript
               a(href='/dashboard/downloadTranscript/' + recording.recordingSid)
                 button.document-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                  i.icon.material-icons description
-                  div.mdl-tooltip(data-mdl-for="document-button") Download Word document
+                  i#document-icon.icon.material-icons description
+                  div.mdl-tooltip(data-mdl-for="document-icon") Download Word document
               a(href='/dashboard/downloadRecording/' + recording.recordingSid)
                 button.download-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                  i.icon.material-icons volume_up
-                  div.mdl-tooltip(data-mdl-for="download-button") Download audio
+                  i#audio-icon.icon.material-icons volume_up
+                  div.mdl-tooltip(data-mdl-for="audio-icon") Download audio
               a(href='/dashboard/deleteRecording/' + recording.recordingSid)
                 button.delete-button.mdl-button.mdl-js-button.mdl-button--icon.mdl-button--accent.mdl-color-text--primary
-                  i.icon.material-icons delete
-                  div.mdl-tooltip(data-mdl-for="delete-button") Delete
+                  i#delete-icon.icon.material-icons delete
+                  div.mdl-tooltip(data-mdl-for="delete-icon") Delete
 
       div.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
