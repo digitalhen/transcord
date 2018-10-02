@@ -501,6 +501,7 @@ function runTranscription(user, recordingObject) {
         var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
         var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
         recordingObject.transcription = JSON.stringify(transcription);
+        recordingObject.transcriptionPlainText = transcriptionPlainText;
         recordingObject.processingStatus = 2; // finished (with transcription)
         saveToDatabase(user,recordingObject);
         //console.log(transcription);
@@ -532,6 +533,7 @@ function runTranscription(user, recordingObject) {
             var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
             recordingObject.processingStatus = 2; // finished (with transcription)
             recordingObject.transcription = JSON.stringify(transcription);
+            recordingObject.transcriptionPlainText = transcriptionPlainText;
             saveToDatabase(user,recordingObject);
             //console.log(transcription);
             generateTranscriptEmail(user, recordingObject);
