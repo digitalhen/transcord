@@ -44,7 +44,7 @@ $(document).ready(function(){
       
       if(data.status==="Success") {
         $('.recording-card[data-recordingSid="' + data.recordingSid + '"]').fadeOut('slow', function() {
-          $(this).remove();
+          refreshView();
         });
       } else if (data.status==="Error") {
         console.log(data.status.message);

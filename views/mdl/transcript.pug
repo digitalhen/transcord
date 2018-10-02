@@ -42,6 +42,9 @@ block content
               a.phoneNumber(href="tel:" + recording.numberFrom) !{recording.numberFromFormatted}
           p <b>Date: </b>
             | !{moment(recording.startTime).format(strings.shared.dateFormat)}
+          p <b>Position: </b>
+            span.position 00:00
+            | /!{moment.utc(recording.duration*1000).format('mm:ss')}
           div.waveform(id='waveform-0' data-id='0' data-recordingUrl=recording.recordingUrl)
             div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
           button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored

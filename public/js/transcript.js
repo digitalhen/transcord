@@ -75,45 +75,15 @@ $(document).ready(function() {
       $('.messageContainer').removeClass('dimmed');
     });
 
+    // this is exactly the same code as audio process
+    wavesurfer.on('seek', function(percents) {
+      var currentTime = wavesurfer.getCurrentTime();
+      processAudioPosition(currentTime);
+    });
+
     wavesurfer.on('audioprocess', function (percents) { 
       var currentTime = wavesurfer.getCurrentTime();
-      var found = null;
-
-      //console.log("currentTime:" +  currentTime);
-      
-      // dim everything first
-      $('.word').removeClass('highlight');
-
-      // search for the last message that has been passed by the audio
-      
-      $('.word').filter(function() {
-        return parseFloat($(this).attr('data-startTime')) < currentTime;
-      }).filter(function() {
-        return parseFloat($(this).attr('data-endTime')) > currentTime;
-      })
-      .addClass('highlight');
-
-      /*$('.messageContainer').each(function(index) {
-
-        var time = parseFloat($(this).attr('data-time'));
-        console.log(currentTime + " vs " + time + ": " + (time<currentTime));
-        if (time < currentTime) {
-          // we've found a match but keep checking
-          found = $(this);
-
-          if(found[0] === $('.messageContainer').last()[0]) {
-            // special handling for the last one
-            found.removeClass('dimmed');
-            return false;
-          }
-        } else if (found !== null) {
-          // we've gone beyond where the audio is, so let's stop and mark the last good one as where we are
-          found.removeClass('dimmed');
-          return false;
-        }
-      }); */
-
-
+      processAudioPosition(currentTime);
     });
 
     $('.word').click(function() {
@@ -138,3 +108,23 @@ $(document).ready(function() {
     });
   });
 });
+
+function processAudioPosition(currentTime) {
+  var found = null;
+      
+  // dim everything first
+  $('.word').removeClass('highlight');
+
+  // update playback time
+  $('.position').text(moment.utc(currentTime*1000).format('mm:ss'));
+
+  // search for the last message that has been passed by the audio
+  
+  $('.word').filter(function() {
+    return parseFloat($(this).attr('data-startTime')) < currentTime;
+  }).filter(function() {
+    return parseFloat($(this).attr('data-endTime')) > currentTime;
+  })
+  .addClass('highlight');
+
+}
