@@ -492,6 +492,7 @@ a img {
 }
 
 .transcript-control-card .mdl-card__supporting-text .transcript-play-button {
+  z-index: 10;
   position: absolute;
   right: 25px;
   bottom: -28px;

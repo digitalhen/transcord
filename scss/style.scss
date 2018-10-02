@@ -523,6 +523,7 @@ a img {
     }
 
     .transcript-play-button {
+      z-index: 10;
       position: absolute;
       right: 25px;
       bottom: -28px;
