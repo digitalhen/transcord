@@ -15,8 +15,6 @@ transcriptionHelper.buildTranscription = function(leftTranscription,rightTranscr
 
     // go through the two seperate transcripts and combined them together
     leftTranscription.forEach(function (result) {
-        console.log(result);
-        
         // if it has words.... let's process it
         combinedTranscript = combinedTranscript.concat(processWords('left', result));
 
@@ -24,8 +22,6 @@ transcriptionHelper.buildTranscription = function(leftTranscription,rightTranscr
 
     // go through the two seperate transcripts and combined them together
     rightTranscription.forEach(function (result) {
-        console.log(result);
-        
         // if it has words.... let's process it
         combinedTranscript = combinedTranscript.concat(processWords('right', result));
     });
@@ -80,7 +76,6 @@ transcriptionHelper.generateWordDocument = function(recording, transcription, st
             }
 
             // add the time stamp
-            console.log(startTime);
             paragraph.addText(' (' + moment.utc(startTime*1000).format('mm:ss') + ')', {italic: true});
             
             // line break
