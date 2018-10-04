@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-  // handle appear and disappear of control card (only applies on narrow screens)
-  $('main').scroll(function() {
+  // throttle & handle appear and disappear of control card (only applies on narrow screens)
+  $('main').on('scroll', _.throttle(function() {
     if($(this).scrollTop() > $('.transcript-control-card')[0].scrollHeight) {
       $('.transcript-control-card').addClass('sticky');
     } else {
@@ -9,7 +9,7 @@ $(document).ready(function() {
     }
     
     $(window).trigger('resize');
-  })
+  }, 100));
 
 // handle the email sharing of transcripts
     $('.transcript-control-card .email-button').click(function() {
