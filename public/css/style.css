@@ -469,31 +469,40 @@ a img {
 }
 
 .transcript-contents {
-  z-index: -1;
+  z-index: auto;
 }
 
 .transcript-control-card {
   height: 100%;
   overflow: visible;
+  z-index: 9999;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 16px;
+}
+
+@media screen and (max-width: 839px) {
+  .transcript-control-card {
+    position: inherit;
+    top: 0px;
+  }
+  .transcript-control-card.sticky .mdl-card__supporting-text .waveform-container {
+    position: fixed;
+    top: 50px;
+    width: 100vw;
+    left: 0;
+    background-color: white;
+    padding: 5px 0px;
+    border-bottom: 1px solid black;
+  }
+  .transcript-control-card.sticky .mdl-card__supporting-text .waveform-container .transcript-play-button {
+    right: 48px;
+  }
 }
 
 .transcript-control-card .mdl-card__supporting-text {
   position: relative;
   overflow: visible;
-}
-
-.transcript-control-card .mdl-card__supporting-text .waveform-container.sticky {
-  position: fixed;
-  top: 50px;
-  width: 100vw;
-  left: 0;
-  background-color: white;
-  padding: 5px 0px;
-  border-bottom: 1px solid black;
-}
-
-.transcript-control-card .mdl-card__supporting-text .waveform-container.sticky .transcript-play-button {
-  right: 48px;
 }
 
 .transcript-control-card .mdl-card__supporting-text .waveform-container .waveform {
@@ -516,6 +525,7 @@ a img {
 .transcript-grid {
   padding: 0px;
   margin: inherit;
+  z-index: auto;
 }
 
 .transcript-grid .mdl-card {

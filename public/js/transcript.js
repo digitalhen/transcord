@@ -1,10 +1,11 @@
 $(document).ready(function() {
-  // handle appear and disappear of control card (for mobile)
+
+  // handle appear and disappear of control card (only applies on narrow screens)
   $('main').scroll(function() {
     if($(this).scrollTop() > $('.transcript-control-card')[0].scrollHeight) {
-      $('.waveform-container').addClass('sticky');
+      $('.transcript-control-card').addClass('sticky');
     } else {
-      $('.waveform-container').removeClass('sticky');
+      $('.transcript-control-card').removeClass('sticky');
     }
     
     $(window).trigger('resize');
@@ -68,7 +69,7 @@ $(document).ready(function() {
     var wavesurfer = WaveSurfer.create({
       container: waveformId,
       barWidth: 3,
-      responsive: true,
+      //responsive: true,
       height: 100
     });
 
@@ -97,6 +98,11 @@ $(document).ready(function() {
     wavesurfer.on('audioprocess', function (percents) { 
       var currentTime = wavesurfer.getCurrentTime();
       processAudioPosition(currentTime);
+    });
+
+    // force a redraw on resize
+    $(window).resize(function() {
+      wavesurfer.drawBuffer();
     });
 
     $('.word').click(function() {

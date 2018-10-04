@@ -502,19 +502,40 @@ a img {
 }
 
 .transcript-contents {
-  z-index: -1;
+  z-index: auto;
 }
 
 .transcript-control-card {
   height: 100%;
-  //position: sticky;
-  //position: -webkit-sticky;
-  //top: 16px; 
   overflow: visible;
+  z-index: 9999;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 16px; 
 
   @media screen and (max-width: '839px') {
-    //position: inherit;
-    //top: 0px;
+    position: inherit;
+    top: 0px;
+
+    &.sticky {
+
+      .mdl-card__supporting-text {
+        
+        .waveform-container {
+          position: fixed;
+          top: 50px;
+          width: 100vw;
+          left: 0;
+          background-color: white;
+          padding: 5px 0px;
+          border-bottom: 1px solid black;
+  
+          .transcript-play-button {
+            right: 48px;
+          }
+        }
+      }
+    }
   }
 
   .mdl-card__supporting-text {
@@ -522,25 +543,6 @@ a img {
     overflow: visible;
 
     .waveform-container {
-
-      &.sticky {
-        position: fixed;
-        top: 50px;
-        width: 100vw;
-        left: 0;
-        background-color: white;
-        padding: 5px 0px;
-        border-bottom: 1px solid black;
-
-        .transcript-play-button {
-          right: 48px;
-        }
-
-        wave {
-          //height: 50px;
-        }
-      }
-
       .waveform {
         padding-top: 10px;
       }
@@ -565,6 +567,7 @@ a img {
 .transcript-grid {
     padding: 0px;
     margin: inherit;
+    z-index: auto;
 
     .mdl-card {
       border-radius: 5px;
