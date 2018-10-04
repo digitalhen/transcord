@@ -35,14 +35,17 @@ block content
         div.mdl-card__title
           h2.mdl-card__title-text Call details
         div.mdl-card__supporting-text
-          p <b>Number: </b>
+          p 
+            b Number: 
             if recording.direction == 0
               a.phoneNumber(href="tel:" + recording.numberCalled) !{recording.numberCalledFormatted}
             else if recording.direction == 1
               a.phoneNumber(href="tel:" + recording.numberFrom) !{recording.numberFromFormatted}
-          p <b>Date: </b>
+          p 
+            b Date: 
             | !{moment(recording.startTime).format(strings.shared.dateFormat)}
-          p <b>Position: </b>
+          p.position-container 
+            b.position-label Position: 
             span.position 00:00
             | /!{moment.utc(recording.duration*1000).format('mm:ss')}
           div.waveform-container

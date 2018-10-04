@@ -486,6 +486,16 @@ a img {
     position: inherit;
     top: 0px;
   }
+  .transcript-control-card.sticky .mdl-card__supporting-text .position-container {
+    position: fixed;
+    top: 145px;
+    z-index: 9999;
+    left: 7px;
+    font-size: 12px;
+  }
+  .transcript-control-card.sticky .mdl-card__supporting-text .position-container .position-label {
+    display: none;
+  }
   .transcript-control-card.sticky .mdl-card__supporting-text .waveform-container {
     position: fixed;
     top: 50px;

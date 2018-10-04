@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // throttle & handle appear and disappear of control card (only applies on narrow screens)
-  $('main').on('scroll', _.throttle(function() {
+  $('main').on('scroll', _.debounce(function() {
     if($(this).scrollTop() > $('.transcript-control-card')[0].scrollHeight) {
       $('.transcript-control-card').addClass('sticky');
     } else {

@@ -520,6 +520,17 @@ a img {
     &.sticky {
 
       .mdl-card__supporting-text {
+        .position-container {
+          position: fixed;
+          top: 145px;
+          z-index: 9999;
+          left: 7px;
+          font-size: 12px;
+
+          .position-label {
+            display: none;
+          }
+        }
         
         .waveform-container {
           position: fixed;
