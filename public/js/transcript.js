@@ -1,4 +1,15 @@
 $(document).ready(function() {
+  // handle appear and disappear of control card (for mobile)
+  $('main').scroll(function() {
+    if($(this).scrollTop() > $('.transcript-control-card')[0].scrollHeight) {
+      $('.waveform-container').addClass('sticky');
+    } else {
+      $('.waveform-container').removeClass('sticky');
+    }
+    
+    $(window).trigger('resize');
+  })
+
 // handle the email sharing of transcripts
     $('.transcript-control-card .email-button').click(function() {
         var dialog = $('#sharetranscript-dialog')[0];
@@ -57,6 +68,8 @@ $(document).ready(function() {
     var wavesurfer = WaveSurfer.create({
       container: waveformId,
       barWidth: 3,
+      responsive: true,
+      height: 100
     });
 
     wavesurfer.load($(this).attr('data-recordingUrl'));

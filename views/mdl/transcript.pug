@@ -45,11 +45,11 @@ block content
           p <b>Position: </b>
             span.position 00:00
             | /!{moment.utc(recording.duration*1000).format('mm:ss')}
-          div.waveform(id='waveform-0' data-id='0' data-recordingUrl=recording.recordingUrl)
-            div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
-          button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
-            i#button-text-0.material-icons.play play_arrow
-        - console.log('user: ' + user);
+          div.waveform-container
+            div.waveform(id='waveform-0' data-id='0' data-recordingUrl=recording.recordingUrl)
+              div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
+            button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
+              i#button-text-0.material-icons.play play_arrow
         if(user)
           div.mdl-card__actions.mdl-card--border
             div(style="float:left")
@@ -69,7 +69,7 @@ block content
                   i#delete-icon.icon.material-icons delete
                   div.mdl-tooltip(data-mdl-for="delete-icon") Delete
 
-      div.mdl-card.mdl-cell.mdl-cell--8-col
+      div.transcript-contents.mdl-card.mdl-cell.mdl-cell--8-col
         div.mdl-card__title.mdl-color--primary.mdl-color-text--white
           h2.mdl-card__title-text Transcript
 

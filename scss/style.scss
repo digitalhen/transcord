@@ -501,20 +501,51 @@ a img {
   }
 }
 
+.transcript-contents {
+  z-index: -1;
+}
+
 .transcript-control-card {
   height: 100%;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 16px;
+  //position: sticky;
+  //position: -webkit-sticky;
+  //top: 16px; 
   overflow: visible;
+
+  @media screen and (max-width: '839px') {
+    //position: inherit;
+    //top: 0px;
+  }
 
   .mdl-card__supporting-text {
     position: relative;
     overflow: visible;
 
-    .waveform {
-      padding-top: 10px;
+    .waveform-container {
+
+      &.sticky {
+        position: fixed;
+        top: 50px;
+        width: 100vw;
+        left: 0;
+        background-color: white;
+        padding: 5px 0px;
+        border-bottom: 1px solid black;
+
+        .transcript-play-button {
+          right: 48px;
+        }
+
+        wave {
+          //height: 50px;
+        }
+      }
+
+      .waveform {
+        padding-top: 10px;
+      }
     }
+    
 
     a.phoneNumber {
       text-decoration:none;
@@ -523,7 +554,7 @@ a img {
     }
 
     .transcript-play-button {
-      z-index: 10;
+      z-index: 999;
       position: absolute;
       right: 25px;
       bottom: -28px;
