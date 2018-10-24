@@ -59,7 +59,8 @@
     "tinytim": "^0.1.1",
     "twilio": "^3.0.0-rc.17",
     "unirest": "^0.5.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "waveform-node": "^0.3.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

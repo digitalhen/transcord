@@ -48,8 +48,9 @@ block content
             b.position-label Position: 
             span.position 00:00
             | /!{moment.utc(recording.duration*1000).format('mm:ss')}
+            - console.log(peaks);
           div.waveform-container
-            div.waveform(id='waveform-0' data-id='0' data-recordingUrl=recording.recordingUrl)
+            div.waveform(id='waveform-0' data-peaks=peaks data-id='0' data-recordingUrl=recording.recordingUrl)
               div(id="progress-" + 0 class="mdl-progress mdl-js-progress mdl-progress__indeterminate")
             button#button-0.transcript-play-button.mdl-button.mdl-js-button.mdl-button--fab.mdl-button--colored
               i#button-text-0.material-icons.play play_arrow

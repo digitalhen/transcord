@@ -17,6 +17,7 @@ const strings = require('../strings.json');
 const uuidv1 = require('uuid/v1');
 //const fuse = require('fuse.js');
 const fuzzysort = require('fuzzysort');
+var waveform = require('waveform-node');
 
 
 var dashController = {};
@@ -308,11 +309,12 @@ dashController.recordings = function(req, res) {
   });
 }
 
+// searches recordings
 dashController.ajaxSearchRecordings = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
     if(!req.user) {
-        return res.status(404).send('Not found');
+        return res.status(401).send('Not authenticated');
     }
 
     // empty reply object
@@ -407,23 +409,35 @@ dashController.transcript = function(req, res) {
   // TODO: this is how we used to do it
   //var transcription = JSON.parse(req.user.recordings[0].transcription);
 
-  // TODO: we shouldn't need this really
-  var transcription = JSON.parse(req.user.recordings[0].transcription);
+  // generate waveform
+  var options = {};
 
-  res.render('transcript', {
-      user: req.user,
-      transcription: transcription,
-      tim: tim,
-      strings: strings,
-      recording: req.user.recordings[0]
-  });
+    waveform.getWaveForm(req.user.recordings[0].recordingUrl, options, function(error, peaks) {
+        if(error) {
+            console.log('Error generating waveform');
+        }
+
+        // TODO: we shouldn't need this really
+        var transcription = JSON.parse(req.user.recordings[0].transcription);
+
+        res.render('transcript', {
+            user: req.user,
+            transcription: transcription,
+            peaks: peaks,
+            tim: tim,
+            strings: strings,
+            recording: req.user.recordings[0]
+        });
+    });
+
+  
 }
 
 dashController.ajaxSendTranscript = function(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
     if(!req.user) {
-        return res.status(404).send('Not found');
+        return res.status(401).send('Not authenticated');
     }
 
     // generate token to send to user

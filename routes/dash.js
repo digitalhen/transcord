@@ -55,5 +55,4 @@ router.post('/ajaxSendTranscript', dash.ajaxSendTranscript);
 //  for getting a transcription without being logged in
 router.get('/transcript/:recordingSid/token/:token', dash.sharedTranscript);
 
-
 module.exports = router;

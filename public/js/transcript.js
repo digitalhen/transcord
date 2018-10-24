@@ -73,7 +73,7 @@ $(document).ready(function() {
       height: 100
     });
 
-    wavesurfer.load($(this).attr('data-recordingUrl'));
+    wavesurfer.load($(this).attr('data-recordingUrl'), $(this).attr('data-peaks'));
 
     wavesurfer.on('loading', function (percents) {
       document.getElementById(progressId).value = percents;
