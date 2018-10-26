@@ -649,6 +649,8 @@ function processFiles(user, recordingObject) {
                                 console.log("Saving peaks to recordingObject, length is: " + peaks.length);
                                 recordingObject.peaks = JSON.stringify(peaks);
 
+                                console.log(recordingObject);
+
                                 // upload it to the cloud
                                 bucket.upload(dest + '-main.wav', (err, file) => {
                                     fs.unlink(dest + '.wav', (err, file) => {});
