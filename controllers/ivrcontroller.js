@@ -551,6 +551,9 @@ function runTranscription(user, recordingObject) {
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
 
+  console.log(recordingObject);
+
+
   // look up the user and recording, if we don't find it, then push it
   User.update({
       "_id": user._id,
@@ -648,8 +651,6 @@ function processFiles(user, recordingObject) {
                                 // save peaks
                                 console.log("Saving peaks to recordingObject, length is: " + peaks.length);
                                 recordingObject.peaks = JSON.stringify(peaks);
-
-                                console.log(recordingObject);
 
                                 // upload it to the cloud
                                 bucket.upload(dest + '-main.wav', (err, file) => {
