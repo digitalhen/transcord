@@ -645,6 +645,8 @@ function processFiles(user, recordingObject) {
                                     console.log('Error generating waveform');
                                 }
 
+                                // save peaks
+                                console.log("Saving peaks to recordingObject, length is: " + peaks.length);
                                 recordingObject.peaks = JSON.stringify(peaks);
 
                                 // upload it to the cloud
