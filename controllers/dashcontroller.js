@@ -409,7 +409,7 @@ dashController.transcript = function(req, res) {
   //var transcription = JSON.parse(req.user.recordings[0].transcription);
 
     // parse data from recording that's in json 
-    var peaks = peaks ? JSON.parse(req.user.recordings[0].peaks) : null; // load them if we have them processed, otherwise pass nothing
+    var peaks = req.user.recordings[0].peaks ? JSON.parse(req.user.recordings[0].peaks) : null; // load them if we have them processed, otherwise pass nothing
     var transcription = JSON.parse(req.user.recordings[0].transcription);
 
     res.render('transcript', {
