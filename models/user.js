@@ -44,6 +44,7 @@ const UserSchema = new mongoose.Schema({
 			transcriptionPlainText: String,
 			transcriptionLeft: String,
 			transcriptionRight: String,
+			peaks: String,
 			processingStatus: Number,
 			shareTokens: [
 				{
