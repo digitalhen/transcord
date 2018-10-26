@@ -28,7 +28,7 @@ $(document).ready(function() {
         dialog.close();
     });
 
-    $('#sharetranscript-dialog #form-sharetranscript').submit(function() {
+    $('#sharetranscript-dialog #form-sharetranscripwt').submit(function() {
         var form = $(this);
 
         if(form.find('.is-invalid').length > 0) {
@@ -73,7 +73,14 @@ $(document).ready(function() {
       height: 100
     });
 
-    wavesurfer.load($(this).attr('data-recordingUrl'), $(this).attr('data-peaks'));
+    // force hide process bar
+    document.getElementById(progressId).style.display = 'none';
+
+    // if the backend has passed forward peaks, let's use them to display things quickly.
+    if(peaks.length>0)
+      wavesurfer.load($(this).attr('data-recordingUrl'), peaks);
+    else
+      wavesurfer.load($(this).attr('data-recordingUrl'));
 
     wavesurfer.on('loading', function (percents) {
       document.getElementById(progressId).value = percents;

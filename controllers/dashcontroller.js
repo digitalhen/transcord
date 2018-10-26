@@ -17,7 +17,6 @@ const strings = require('../strings.json');
 const uuidv1 = require('uuid/v1');
 //const fuse = require('fuse.js');
 const fuzzysort = require('fuzzysort');
-var waveform = require('waveform-node');
 
 
 var dashController = {};
@@ -409,25 +408,17 @@ dashController.transcript = function(req, res) {
   // TODO: this is how we used to do it
   //var transcription = JSON.parse(req.user.recordings[0].transcription);
 
-  // generate waveform
-  var options = {};
+    // parse data from recording that's in json 
+    var peaks = peaks ? JSON.parse(req.user.recordings[0].peaks) : null; // load them if we have them processed, otherwise pass nothing
+    var transcription = JSON.parse(req.user.recordings[0].transcription);
 
-    waveform.getWaveForm(req.user.recordings[0].recordingUrl, options, function(error, peaks) {
-        if(error) {
-            console.log('Error generating waveform');
-        }
-
-        // TODO: we shouldn't need this really
-        var transcription = JSON.parse(req.user.recordings[0].transcription);
-
-        res.render('transcript', {
-            user: req.user,
-            transcription: transcription,
-            peaks: peaks,
-            tim: tim,
-            strings: strings,
-            recording: req.user.recordings[0]
-        });
+    res.render('transcript', {
+        user: req.user,
+        transcription: transcription,
+        peaks: peaks,
+        tim: tim,
+        strings: strings,
+        recording: req.user.recordings[0]
     });
 
   

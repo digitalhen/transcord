@@ -18,6 +18,7 @@ const transcriptionHelper = require('../helpers/transcriptionHelper');
 const numberHelper = require("../helpers/numberHelper");
 const tim = require('tinytim').tim;
 const strings = require('../strings.json');
+var waveform = require('waveform-node');
 
 var ivrController = {};
 
@@ -637,28 +638,39 @@ function processFiles(user, recordingObject) {
                         .audioBitrate('16k')
                         .audioCodec('pcm_s16le')
                         .on('end', function() {
-                            bucket.upload(dest + '-main.wav', (err, file) => {
-                                fs.unlink(dest + '.wav', (err, file) => {});
-                                fs.unlink(dest + '-main.wav', (err, file) => {
-                                  bucket.file(filename + '-main.wav').getSignedUrl({
-                                      action: 'read',
-                                      expires: '03-09-2491'
-                                  }).then(signedUrls => {
-                                      recordingObject.recordingUrl = signedUrls[0];
+                            // generate the peaks of the audio
+                            var options = {};
+                            waveform.getWaveForm(dest + '-main.wav', options, function(error, peaks) {
+                                if(error) {
+                                    console.log('Error generating waveform');
+                                }
 
-                                      status.main = true;
+                                recordingObject.peaks = JSON.stringify(peaks);
 
-                                      if(status.main && status.left && status.right) {
-                                        // mark progress
-                                        recordingObject.processingStatus = 1; // audio complete
-                                        
-                                        // save progress to the database
-                                        saveToDatabase(user, recordingObject);
+                                // upload it to the cloud
+                                bucket.upload(dest + '-main.wav', (err, file) => {
+                                    fs.unlink(dest + '.wav', (err, file) => {});
+                                    fs.unlink(dest + '-main.wav', (err, file) => {
+                                    bucket.file(filename + '-main.wav').getSignedUrl({
+                                        action: 'read',
+                                        expires: '03-09-2491'
+                                    }).then(signedUrls => {
+                                        recordingObject.recordingUrl = signedUrls[0];
 
-                                        // now try and run the transcription
-                                        runTranscription(user, recordingObject);
-                                    }
-                                  });
+                                        status.main = true;
+
+                                        if(status.main && status.left && status.right) {
+                                            // mark progress
+                                            recordingObject.processingStatus = 1; // audio complete
+                                            
+                                            // save progress to the database
+                                            saveToDatabase(user, recordingObject);
+
+                                            // now try and run the transcription
+                                            runTranscription(user, recordingObject);
+                                        }
+                                    });
+                                    });
                                 });
                             });
                         })
