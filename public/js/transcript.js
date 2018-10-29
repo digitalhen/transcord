@@ -28,7 +28,7 @@ $(document).ready(function() {
         dialog.close();
     });
 
-    $('#sharetranscript-dialog #form-sharetranscripwt').submit(function() {
+    $('#sharetranscript-dialog #form-sharetranscript').submit(function() {
         var form = $(this);
 
         if(form.find('.is-invalid').length > 0) {
