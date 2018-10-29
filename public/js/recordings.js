@@ -6,7 +6,7 @@ $(document).ready(function(){
   // TODO: handle pagination button click
 
   // TODO: handle search field changes
-  $('#sample6').on('input',function(e){
+  $('#search').on('input',function(e){
       $.bbq.pushState({'page': 1, 'search': $(this).val()}); // go back to page 1
       refreshView();
   });
@@ -185,6 +185,21 @@ function buildPagination(pages, page) {
     } else {
       $('#pagination-container .pagination .left-pagination').removeClass('disabled');
       $('#pagination-container .pagination .left-pagination .page').attr('data-page',(page-1));
+    }
+
+    if(pages>10) { // we have a lot of pages, so let's trim
+      // hide them all
+      $('#pagination-container .pagination .paginator .page').hide();
+
+      // only show the ones we want
+      
+      $('#pagination-container .pagination .paginator .page').first().show(); // first
+      $('#pagination-container .pagination .paginator .page').children().eq(1); //second
+      $('#pagination-container .pagination .paginator .page').last().show(); // last
+      
+      $('#pagination-container .pagination .paginator .page').filter(function () { // the page, and 2 either side of it
+        return $(this).data('page') == page || ($(this).data('page') >= page-3 && $(this).data('page') <= page+3) ;
+      }).show();
     }
 
   } else {
