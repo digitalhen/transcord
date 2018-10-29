@@ -1,7 +1,6 @@
 doctype html
 html
 	head
-		script(src='/js/libs/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
 
 		- var title = title || tim(strings.shared.title) + " - Transcord"
 		meta(charset="utf-8")
@@ -115,6 +114,7 @@ html
 				div.mdl-layout.mdl-js-layout
 					block content
 
+		script(src='/js/libs/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
 
 		script(src="/js/libs/material.min.js")
 		script(src="/js/libs/dialog-polyfill.js")
