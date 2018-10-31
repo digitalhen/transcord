@@ -638,34 +638,6 @@ function processFiles(user, recordingObject) {
                         .audioBitrate('16k')
                         .audioCodec('pcm_s16le')
                         .on('end', function() {
-
-                             // upload it to the cloud
-                             bucket.upload(dest + '-main.wav', (err, file) => {
-                                fs.unlink(dest + '.wav', (err, file) => {});
-                                fs.unlink(dest + '-main.wav', (err, file) => {
-                                bucket.file(filename + '-main.wav').getSignedUrl({
-                                    action: 'read',
-                                    expires: '03-09-2491'
-                                }).then(signedUrls => {
-                                    recordingObject.recordingUrl = signedUrls[0];
-
-                                    status.main = true;
-
-                                    if(status.main && status.left && status.right) {
-                                        // mark progress
-                                        recordingObject.processingStatus = 1; // audio complete
-                                        
-                                        // save progress to the database
-                                        saveToDatabase(user, recordingObject);
-
-                                        // now try and run the transcription
-                                        runTranscription(user, recordingObject);
-                                    }
-                                });
-                                });
-                            });
-                            
-                            /*
                             // generate the peaks of the audio
                             var options = {};
                             waveform.getWaveForm(dest + '-main.wav', options, function(error, peaks) {
@@ -702,7 +674,7 @@ function processFiles(user, recordingObject) {
                                     });
                                     });
                                 });
-                            }); */
+                            });
                         })
                         .save(dest + '-main.wav');
 
