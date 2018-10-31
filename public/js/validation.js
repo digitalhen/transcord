@@ -200,6 +200,10 @@ var shareTranscriptValidator = $('#form-sharetranscript').validate({
         notEqual: "This is you!",
         remote: "This phone number is registered in another account.",
       },
+      zip: {
+        required: "Please enter a US zip code.",
+        zipcode: "Not a valid US zip code."
+      }
     }
   });
 
@@ -279,6 +283,10 @@ var shareTranscriptValidator = $('#form-sharetranscript').validate({
         required: "Please enter a phone number.",
         phoneUS: "Not a valid US phone number.",
         remote: "An account with this phone number exists."
+      },
+      zip: {
+        required: "Please enter a US zip code.",
+        zipcode: "Not a valid US zip code."
       }
     }
   });
