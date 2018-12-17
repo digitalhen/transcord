@@ -130,7 +130,6 @@ function refreshView() {
       clone.find('audio').children('source').attr('src', recording.recordingUrl);
 
       // Show the processing button
-      console.log(recording.processingStatus);
       if(recording.processingStatus==2) {
         clone.find('.still-processing').remove();
       } else {
