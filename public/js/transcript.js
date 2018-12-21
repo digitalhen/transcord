@@ -70,7 +70,8 @@ $(document).ready(function() {
       container: waveformId,
       barWidth: 3,
       //responsive: true,
-      height: 100
+      height: 100,
+      backend: "MediaElement"
     });
 
     // force hide process bar
@@ -78,7 +79,7 @@ $(document).ready(function() {
 
     // if the backend has passed forward peaks, let's use them to display things quickly.
     if(peaks.length>0)
-      wavesurfer.load($(this).attr('data-recordingUrl'), peaks);
+      wavesurfer.load($(this).attr('data-recordingUrl'), peaks, 'auto');
     else
       wavesurfer.load($(this).attr('data-recordingUrl'));
 
