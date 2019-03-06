@@ -480,11 +480,25 @@ function runTranscription(user, recordingObject) {
   const client = new speech.SpeechClient({projectId: config.google_project_id,
         keyFilename: config.google_key});
 
+    // object to throw if the transcription process has no words
+    function EmptyAudio(message) {
+            this.message = message;
+            this.name = 'EmptyAudio';
+    };
+
     // make async call to google transcribe and then wait to hear back
   client
     .longRunningRecognize(left)
     .then(data => {
       const operation = data[0];
+
+      // handle an empty response from google
+      operation.on('progress', function(metadata, apiResponse) {
+        if (apiResponse.done && !apiResponse.response) {
+          throw new EmptyAudio('No words detected in left audio');
+        }
+      });
+
       // Get a Promise representation of the final result of the job
       return operation.promise();
     })
@@ -492,22 +506,20 @@ function runTranscription(user, recordingObject) {
       //console.log(data);
       const response = data[0];
 
+      // save the transcription
       status.left = true;
-
-      leftResults = response.results;
-
       recordingObject.transcriptionLeft = JSON.stringify(response.results);
 
-      if(status.left && status.right) {
-        var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
-        var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
-        recordingObject.transcription = JSON.stringify(transcription);
-        recordingObject.transcriptionPlainText = transcriptionPlainText;
-        recordingObject.processingStatus = 2; // finished (with transcription)
-        saveToDatabase(user,recordingObject);
-        //console.log(transcription);
-        generateTranscriptEmail(user, recordingObject);
-      }
+      // if both are done, move on
+      if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
+    })
+    .catch(EmptyAudio => {
+      // save the transcription
+      status.left = true;
+      recordingObject.transcriptionLeft = JSON.stringify({});
+
+      // if both are done, move on
+      if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
     })
     .catch(err => {
       console.error('ERROR:', err);
@@ -517,36 +529,53 @@ function runTranscription(user, recordingObject) {
       .longRunningRecognize(right)
       .then(data => {
         const operation = data[0];
+
+        // handle an empty response from google
+        operation.on('progress', function(metadata, apiResponse) {
+            if (apiResponse.done && !apiResponse.response) {
+                throw new EmptyAudio('No words detected in right audio');
+            }
+        });
+        
         // Get a Promise representation of the final result of the job
         return operation.promise();
       })
       .then(data => {
         const response = data[0];
 
+        // save the transcription
         status.right = true;
-
-        rightResults = response.results;
-
         recordingObject.transcriptionRight = JSON.stringify(response.results);
 
-        if(status.left && status.right) {
-            var transcription = transcriptionHelper.buildTranscription(leftResults, rightResults);
-            var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
-            recordingObject.processingStatus = 2; // finished (with transcription)
-            recordingObject.transcription = JSON.stringify(transcription);
-            recordingObject.transcriptionPlainText = transcriptionPlainText;
-            saveToDatabase(user,recordingObject);
-            //console.log(transcription);
-            generateTranscriptEmail(user, recordingObject);
-        }
+        // if both are done, move on
+        if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
 
+      })
+      .catch(EmptyAudio => {
+        // save the transcription
+        status.right = true;
+        recordingObject.transcriptionRight = JSON.stringify({});
+
+        // if both are done, move on
+        if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
       })
       .catch(err => {
         console.error('ERROR:', err);
       });
 }
 
-
+// When both sides of transcription are done, handle it here and save to the database, send out the email
+function handleFinishedTranscription(user, recordingObject) {
+    console.log("Got both sides of the transcription, so finishing up...");
+    var transcription = transcriptionHelper.buildTranscription(JSON.parse(recordingObject.leftResults), JSON.parse(rightResults));
+    var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
+    recordingObject.processingStatus = 2; // finished (with transcription)
+    recordingObject.transcription = JSON.stringify(transcription);
+    recordingObject.transcriptionPlainText = transcriptionPlainText;
+    saveToDatabase(user,recordingObject);
+    //console.log(transcription);
+    generateTranscriptEmail(user, recordingObject);
+}
 
 function saveToDatabase(user, recordingObject) {
   console.log("Updating recording object for user: " + user.username + ", recordingSid: " + recordingObject.recordingSid + ", status: " + recordingObject.processingStatus);
