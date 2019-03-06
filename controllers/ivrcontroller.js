@@ -495,6 +495,7 @@ function runTranscription(user, recordingObject) {
       // handle an empty response from google
       operation.on('progress', function(metadata, apiResponse) {
         if (apiResponse.done && !apiResponse.response) {
+          console.log("Received empty response for left audio, so handling...");
           throw new EmptyAudio('No words detected in left audio');
         }
       });
@@ -503,6 +504,7 @@ function runTranscription(user, recordingObject) {
       return operation.promise();
     })
     .then(data => {
+      console.log("Left audio complete...");
       //console.log(data);
       const response = data[0];
 
@@ -514,6 +516,8 @@ function runTranscription(user, recordingObject) {
       if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
     })
     .catch(EmptyAudio => {
+        console.log("Left audio (empty) complete...");
+
       // save the transcription
       status.left = true;
       recordingObject.transcriptionLeft = JSON.stringify({});
@@ -533,6 +537,7 @@ function runTranscription(user, recordingObject) {
         // handle an empty response from google
         operation.on('progress', function(metadata, apiResponse) {
             if (apiResponse.done && !apiResponse.response) {
+                console.log("Received empty response for right audio, so handling...");
                 throw new EmptyAudio('No words detected in right audio');
             }
         });
@@ -541,6 +546,8 @@ function runTranscription(user, recordingObject) {
         return operation.promise();
       })
       .then(data => {
+        console.log("Right audio complete...");
+
         const response = data[0];
 
         // save the transcription
@@ -552,6 +559,8 @@ function runTranscription(user, recordingObject) {
 
       })
       .catch(EmptyAudio => {
+        console.log("Right audio (empty) complete...");
+
         // save the transcription
         status.right = true;
         recordingObject.transcriptionRight = JSON.stringify({});
