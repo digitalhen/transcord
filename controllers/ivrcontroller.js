@@ -434,9 +434,6 @@ function runTranscription(user, recordingObject) {
 
   console.log("Running transcriptions for recording: " + recordingObject.recordingSid);
 
-  var leftResults = [];
-  var rightResults = [];
-
   var status = {
     //main: false,
     left: false,
@@ -495,7 +492,7 @@ function runTranscription(user, recordingObject) {
           
           // save the transcription
             status.left = true;
-            recordingObject.transcriptionLeft = JSON.stringify({});
+            recordingObject.transcriptionLeft = JSON.stringify([]);
 
             // if both are done, move on
             if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
@@ -533,7 +530,7 @@ function runTranscription(user, recordingObject) {
                 
                 // save the transcription
                 status.right = true;
-                recordingObject.transcriptionRight = JSON.stringify({});
+                recordingObject.transcriptionRight = JSON.stringify([]);
 
                 // if both are done, move on
                 if(status.left && status.right) handleFinishedTranscription(user, recordingObject);
@@ -564,7 +561,7 @@ function runTranscription(user, recordingObject) {
 // When both sides of transcription are done, handle it here and save to the database, send out the email
 function handleFinishedTranscription(user, recordingObject) {
     console.log("Got both sides of the transcription, so finishing up...");
-    var transcription = transcriptionHelper.buildTranscription(JSON.parse(recordingObject.leftResults), JSON.parse(rightResults));
+    var transcription = transcriptionHelper.buildTranscription(JSON.parse(recordingObject.transcriptionLeft), JSON.parse(recordingObject.transcriptionRight));
     var transcriptionPlainText = transcriptionHelper.buildPlainText(recordingObject, transcription);
     recordingObject.processingStatus = 2; // finished (with transcription)
     recordingObject.transcription = JSON.stringify(transcription);
