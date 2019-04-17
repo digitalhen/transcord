@@ -629,7 +629,7 @@ function processFiles(user, recordingObject) {
     // this downloads files from twilio and puts them in to google cloud
 
   var status = {
-    mono: true,
+    mono: false,
     main: false,
     left: false,
     right: false
@@ -658,8 +658,8 @@ function processFiles(user, recordingObject) {
                     // TODO: swap the sides of the audio, left and right are on the wrong side
 
                     // purely for generating small file to process waveforms
-                    /*
-                    var mono = ffmpeg(dest + '.mp3')
+                    
+                    var mono = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
                         .audioBitrate('16k')
                         .audioCodec('libmp3lame')
@@ -685,6 +685,7 @@ function processFiles(user, recordingObject) {
                                     // mark progress
                                     recordingObject.processingStatus = 1; // audio complete
                                     
+				    /*
                                     // TODO: send long run email?
                                     if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
                                         var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
@@ -699,7 +700,7 @@ function processFiles(user, recordingObject) {
                                         }
 
                                         emailHelper.sendEmail(user, subject, htmlEmail);
-                                    }
+                                    } */
 
                                     // save progress to the database
                                     saveToDatabase(user, recordingObject);
@@ -709,7 +710,7 @@ function processFiles(user, recordingObject) {
                                 }
                             });
                         })
-                        .save(dest + '-mono.mp3'); */
+                        .save(dest + '-mono.mp3'); 
 
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
