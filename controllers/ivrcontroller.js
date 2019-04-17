@@ -437,7 +437,7 @@ function runTranscription(user, recordingObject) {
   // if it's long, let's send out a notification
   if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
         console.log("This is a long recording, so notifying the user...");
-        
+
         var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
 
         var htmlEmail = pug.renderFile('views/email/transcriptDelay.pug', locals);
@@ -445,7 +445,7 @@ function runTranscription(user, recordingObject) {
         var subject = 'Long running transcript for your call ';
         if(recordingObject.direction==0) {
             subject = subject + 'to ' + recordingObject.numberCalledFormatted;
-        } else if (recording.direction==1) {
+        } else if (recordingObject.direction==1) {
             subject = subject + 'from ' + recordingObject.numberFromFormatted;
         }
 
