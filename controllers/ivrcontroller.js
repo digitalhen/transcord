@@ -656,14 +656,16 @@ function processFiles(user, recordingObject) {
                     // download the dual audio
                     // TODO: swap the sides of the audio, left and right are on the wrong side
 
-                    var main = ffmpeg(dest + '.wav')
+                    // purely for generating small file to process waveforms
+                    var mono = ffmpeg(dest + '.mp3')
                         .inputFormat('wav')
                         .audioBitrate('16k')
-                        .audioCodec('pcm_s16le')
+                        .audioCodec('libmp3lame')
+                        .outputOptions('-map_channel 0.0.1')
                         .on('end', function() {
                             // generate the peaks of the audio
                             var options = {};
-                            waveform.getWaveForm(dest + '-main.wav', options, function(error, peaks) {
+                            waveform.getWaveForm(dest + '-mono.mp3', options, function(error, peaks) {
                                 if(error) {
                                     console.log('Error generating waveform');
                                 }
@@ -672,10 +674,50 @@ function processFiles(user, recordingObject) {
                                 console.log("Saving peaks to recordingObject, length is: " + peaks.length);
                                 recordingObject.peaks = JSON.stringify(peaks);
 
-                                // upload it to the cloud
-                                bucket.upload(dest + '-main.wav', (err, file) => {
-                                    fs.unlink(dest + '.wav', (err, file) => {});
-                                    fs.unlink(dest + '-main.wav', (err, file) => {
+                                // delete audio file
+                                fs.unlink(dest + '-mono.mp3', (err, file) => {});
+
+                                status.mono = true;
+
+                                if(status.mono & status.main && status.left && status.right) {
+                                    // mark progress
+                                    recordingObject.processingStatus = 1; // audio complete
+                                    
+                                    // TODO: send long run email?
+                                    if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
+                                        var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
+
+                                        var htmlEmail = pug.renderFile('views/email/transcriptDelay.pug', locals);
+
+                                        var subject = 'Long running transcript for your call ';
+                                        if(recordingObject.direction==0) {
+                                            subject = subject + 'to ' + recordingObject.numberCalledFormatted;
+                                        } else if (recording.direction==1) {
+                                            subject = subject + 'from ' + recordingObject.numberFromFormatted;
+                                        }
+
+                                        emailHelper.sendEmail(user, subject, htmlEmail);
+                                    }
+
+                                    // save progress to the database
+                                    saveToDatabase(user, recordingObject);
+
+                                    // now try and run the transcription
+                                    runTranscription(user, recordingObject);
+                                }
+                            });
+                        })
+                        .save(dest + '-mono.mp3');
+
+                    var main = ffmpeg(dest + '.wav')
+                        .inputFormat('wav')
+                        .audioBitrate('16k')
+                        .audioCodec('pcm_s16le')
+                        .on('end', function() {
+                            // upload it to the cloud
+                            bucket.upload(dest + '-main.wav', (err, file) => {
+                                fs.unlink(dest + '.wav', (err, file) => {});
+                                fs.unlink(dest + '-main.wav', (err, file) => {
                                     bucket.file(filename + '-main.wav').getSignedUrl({
                                         action: 'read',
                                         expires: '03-09-2491'
@@ -684,17 +726,32 @@ function processFiles(user, recordingObject) {
 
                                         status.main = true;
 
-                                        if(status.main && status.left && status.right) {
+                                        if(status.mono && status.main && status.left && status.right) {
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
                                             
+                                            // TODO: send long run email?
+                                            if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
+                                                var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
+
+                                                var htmlEmail = pug.renderFile('views/email/transcriptDelay.pug', locals);
+
+                                                var subject = 'Long running transcript for your call ';
+                                                if(recordingObject.direction==0) {
+                                                    subject = subject + 'to ' + recordingObject.numberCalledFormatted;
+                                                } else if (recording.direction==1) {
+                                                    subject = subject + 'from ' + recordingObject.numberFromFormatted;
+                                                }
+
+                                                emailHelper.sendEmail(user, subject, htmlEmail);
+                                            }
+
                                             // save progress to the database
                                             saveToDatabase(user, recordingObject);
 
                                             // now try and run the transcription
                                             runTranscription(user, recordingObject);
                                         }
-                                    });
                                     });
                                 });
                             });
@@ -719,7 +776,7 @@ function processFiles(user, recordingObject) {
 
                                       status.right = true;
 
-                                      if(status.main && status.left && status.right) {
+                                      if(status.mono && status.main && status.left && status.right) {
                                         // mark progress
                                         recordingObject.processingStatus = 1; // audio complete
                                         
@@ -770,10 +827,26 @@ function processFiles(user, recordingObject) {
 
                                         status.left = true;
 
-                                        if(status.main && status.left && status.right) {
+                                        if(status.mono && status.main && status.left && status.right) {
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
                                             
+                                            // TODO: send long run email?
+                                            if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
+                                                var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
+
+                                                var htmlEmail = pug.renderFile('views/email/transcriptDelay.pug', locals);
+
+                                                var subject = 'Long running transcript for your call ';
+                                                if(recordingObject.direction==0) {
+                                                    subject = subject + 'to ' + recordingObject.numberCalledFormatted;
+                                                } else if (recording.direction==1) {
+                                                    subject = subject + 'from ' + recordingObject.numberFromFormatted;
+                                                }
+
+                                                emailHelper.sendEmail(user, subject, htmlEmail);
+                                            }
+
                                             // save progress to the database
                                             saveToDatabase(user, recordingObject);
 
