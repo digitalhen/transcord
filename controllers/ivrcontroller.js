@@ -733,7 +733,8 @@ function processFiles(user, recordingObject) {
 
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
-                                            
+                                           
+                                            /*
                                             // TODO: send long run email?
                                             if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
                                                 var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
@@ -748,7 +749,7 @@ function processFiles(user, recordingObject) {
                                                 }
 
                                                 emailHelper.sendEmail(user, subject, htmlEmail);
-                                            }
+                                            } */
 
                                             // save progress to the database
                                             saveToDatabase(user, recordingObject);
@@ -786,6 +787,7 @@ function processFiles(user, recordingObject) {
                                         // mark progress
                                         recordingObject.processingStatus = 1; // audio complete
                                         
+                                        /*
                                         // TODO: send long run email?
                                         if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
                                             var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
@@ -800,7 +802,7 @@ function processFiles(user, recordingObject) {
                                             }
 
                                             emailHelper.sendEmail(user, subject, htmlEmail);
-                                        }
+                                        } */
 
                                         // save progress to the database
                                         saveToDatabase(user, recordingObject);
@@ -839,6 +841,7 @@ function processFiles(user, recordingObject) {
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
                                             
+                                            /*
                                             // TODO: send long run email?
                                             if(recordingObject.duration>config.long_running_time) { // long running email -- 10 minutes
                                                 var locals = {'moment': moment, 'user': user, 'recording': recordingObject, 'config': config, 'strings': strings};
@@ -853,7 +856,7 @@ function processFiles(user, recordingObject) {
                                                 }
 
                                                 emailHelper.sendEmail(user, subject, htmlEmail);
-                                            }
+                                            } */
 
                                             // save progress to the database
                                             saveToDatabase(user, recordingObject);
