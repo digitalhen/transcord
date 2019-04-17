@@ -629,6 +629,7 @@ function processFiles(user, recordingObject) {
     // this downloads files from twilio and puts them in to google cloud
 
   var status = {
+    mono: true,
     main: false,
     left: false,
     right: false
@@ -657,6 +658,7 @@ function processFiles(user, recordingObject) {
                     // TODO: swap the sides of the audio, left and right are on the wrong side
 
                     // purely for generating small file to process waveforms
+                    /*
                     var mono = ffmpeg(dest + '.mp3')
                         .inputFormat('wav')
                         .audioBitrate('16k')
@@ -707,7 +709,7 @@ function processFiles(user, recordingObject) {
                                 }
                             });
                         })
-                        .save(dest + '-mono.mp3');
+                        .save(dest + '-mono.mp3'); */
 
                     var main = ffmpeg(dest + '.wav')
                         .inputFormat('wav')
@@ -727,6 +729,8 @@ function processFiles(user, recordingObject) {
                                         status.main = true;
 
                                         if(status.mono && status.main && status.left && status.right) {
+                                            console.log("Audio processing complete");
+
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
                                             
@@ -777,6 +781,8 @@ function processFiles(user, recordingObject) {
                                       status.right = true;
 
                                       if(status.mono && status.main && status.left && status.right) {
+                                        console.log("Audio processing complete");
+
                                         // mark progress
                                         recordingObject.processingStatus = 1; // audio complete
                                         
@@ -828,6 +834,8 @@ function processFiles(user, recordingObject) {
                                         status.left = true;
 
                                         if(status.mono && status.main && status.left && status.right) {
+                                            console.log("Audio processing complete");
+
                                             // mark progress
                                             recordingObject.processingStatus = 1; // audio complete
                                             
